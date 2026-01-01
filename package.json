@@ -1,0 +1,25 @@
+{
+  "name": "typescript-basics-tutorial",
+  "version": "1.0.0",
+  "description": "A comprehensive TypeScript basics tutorial with examples",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "example:variables": "ts-node src/01-variables-and-types.ts",
+    "example:control-flow": "ts-node src/02-control-flow.ts",
+    "example:arrays-objects": "ts-node src/03-arrays-tuples-objects.ts",
+    "example:functions": "ts-node src/04-functions.ts",
+    "example:scope": "ts-node src/05-scope-and-best-practices.ts",
+    "run-all": "npm run example:variables && npm run example:control-flow && npm run example:arrays-objects && npm run example:functions && npm run example:scope"
+  },
+  "keywords": ["typescript", "tutorial", "basics", "learning"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
