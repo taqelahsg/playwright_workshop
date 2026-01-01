@@ -481,14 +481,38 @@ console.log("2. Second example:", value);
 
 ### Running in VS Code
 
-1. Open the project folder in VS Code
-2. Open any `.ts` file
-3. Read the code and comments
-4. Run the file using the terminal:
+#### Method 1: Using Code Runner Extension (Recommended)
+
+1. **Install Code Runner Extension:**
+   - Open Extensions panel (`Cmd+Shift+X` or `Ctrl+Shift+X`)
+   - Search for "Code Runner" by Jun Han
+   - Click Install
+
+2. **Run Any TypeScript File:**
+   - Open any `.ts` file in the editor
+   - Right-click and select "Run Code"
+   - Or press `Ctrl+Alt+N` (Windows/Linux) or `Cmd+Alt+N` (Mac)
+   - View the output in the integrated terminal
+
+3. **Configuration:**
+   - The project includes [.vscode/settings.json](.vscode/settings.json) with Code Runner pre-configured
+   - It uses `npx ts-node` to run TypeScript files directly
+
+#### Method 2: Using npm Scripts
+
+1. Open the integrated terminal (`Ctrl+\`` or `Cmd+\``)
+2. Run the appropriate npm script:
    ```bash
    npm run example:variables
    ```
-5. See the output in the terminal
+3. See the output in the terminal
+
+#### Method 3: Direct Terminal Execution
+
+Run any TypeScript file directly:
+```bash
+npx ts-node src/01-variables-and-types.ts
+```
 
 ---
 

@@ -13,6 +13,8 @@
  * - Nested objects and arrays
  */
 
+namespace ArraysTuplesObjects {
+
 console.log("=== ARRAYS, TUPLES, AND OBJECTS ===\n");
 
 // ==========================================
@@ -441,7 +443,7 @@ console.log("\n");
 console.log("=== DESTRUCTURING ===\n");
 
 // Object destructuring
-let book = {
+let book: { title: string; author: string; year: number; pages: number; edition?: number } = {
   title: "TypeScript Handbook",
   author: "Microsoft",
   year: 2023,
@@ -518,3 +520,5 @@ let contact: PersonWithContact = {
 console.log("74. Intersection type:", contact);
 
 console.log("\n=== END OF ARRAYS, TUPLES, AND OBJECTS EXAMPLES ===");
+
+} // End of ArraysTuplesObjects namespace

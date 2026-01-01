@@ -13,6 +13,8 @@
  * - Error handling
  */
 
+namespace ScopeAndBestPractices {
+
 console.log("=== SCOPE MANAGEMENT AND BEST PRACTICES ===\n");
 
 // ==========================================
@@ -100,6 +102,7 @@ console.log("\n");
 console.log("=== VARIABLE HOISTING ===\n");
 
 // var declarations are hoisted
+// @ts-expect-error - Intentional demonstration of var hoisting behavior
 console.log("8. Hoisted var:", typeof hoistedVar); // undefined (not error)
 var hoistedVar: string = "I am hoisted";
 console.log("9. Hoisted var after:", hoistedVar);
@@ -571,3 +574,5 @@ console.log("14. Understand scope (block, function, global)");
 console.log("15. Use arrow functions to preserve 'this' context");
 
 console.log("\n=== END OF SCOPE AND BEST PRACTICES ===");
+
+} // End of ScopeAndBestPractices namespace

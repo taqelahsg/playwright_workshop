@@ -12,6 +12,8 @@
  * - for...of and for...in loops
  */
 
+namespace ControlFlow {
+
 console.log("=== CONTROL FLOW EXAMPLES ===\n");
 
 // ==========================================
@@ -20,7 +22,7 @@ console.log("=== CONTROL FLOW EXAMPLES ===\n");
 
 console.log("=== IF/ELSE STATEMENTS ===\n");
 
-let temperature: number = 25;
+let temperature: number = 31;
 
 // Simple if statement
 if (temperature > 30) {
@@ -409,18 +411,6 @@ for (let i: number = 2; i < 10; i++) {
 }
 console.log(`   ${fib.join(", ")}`);
 
-// Example 3: FizzBuzz
-console.log("30. FizzBuzz (1 to 15):");
-for (let i: number = 1; i <= 15; i++) {
-  if (i % 15 === 0) {
-    console.log(`   ${i}: FizzBuzz`);
-  } else if (i % 3 === 0) {
-    console.log(`   ${i}: Fizz`);
-  } else if (i % 5 === 0) {
-    console.log(`   ${i}: Buzz`);
-  } else {
-    console.log(`   ${i}: ${i}`);
-  }
-}
-
 console.log("\n=== END OF CONTROL FLOW EXAMPLES ===");
+
+} // End of ControlFlow namespace
