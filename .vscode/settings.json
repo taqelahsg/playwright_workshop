@@ -1,0 +1,7 @@
+{
+  "code-runner.executorMap": {
+    "typescript": "cd $dir && npx ts-node $fileName"
+  },
+  "code-runner.runInTerminal": true,
+  "code-runner.clearPreviousOutput": true
+}

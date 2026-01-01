@@ -614,8 +614,12 @@ This section provides in-depth explanations of all code examples in the tutorial
 
 **Example: Using `let`**
 ```typescript
-let username: string = "Alice";
-username = "Bob"; // OK - can reassign
+// Declare a variable with 'let' keyword
+// 'string' is the type annotation - tells TypeScript this variable holds text
+let username: string = "Alice";  // username is now "Alice"
+
+// We can reassign 'let' variables to new values
+username = "Bob";  // username is now "Bob" - this is allowed!
 ```
 - `let` declares a **block-scoped** variable that can be reassigned
 - Only exists within the `{ }` block where it's defined
@@ -624,8 +628,12 @@ username = "Bob"; // OK - can reassign
 
 **Example: Using `const`**
 ```typescript
-const PI: number = 3.14159;
-// PI = 3.14; // Error: Cannot assign to 'PI' because it is a constant
+// Declare a constant with 'const' keyword
+// Constants CANNOT be reassigned once set
+const PI: number = 3.14159;  // PI is now 3.14159
+
+// Trying to reassign a const will cause an error
+// PI = 3.14;  // ❌ Error: Cannot assign to 'PI' because it is a constant
 ```
 - `const` declares a **block-scoped** constant that cannot be reassigned
 - Must be initialized when declared
@@ -634,9 +642,14 @@ const PI: number = 3.14159;
 
 **Example: `const` with Objects**
 ```typescript
+// Create a const object - the REFERENCE is constant, not the content
 const userProfile = { name: "Alice", age: 30 };
-userProfile.age = 31; // OK - can modify object properties
-// userProfile = { name: "Bob", age: 25 }; // Error: Cannot reassign const variable
+
+// We CAN modify properties of a const object
+userProfile.age = 31;  // ✅ This works! age is now 31
+
+// But we CANNOT reassign the entire object
+// userProfile = { name: "Bob", age: 25 };  // ❌ Error: Cannot reassign const variable
 ```
 - The object reference is constant, but properties can be changed
 - Use `readonly` or `Object.freeze()` for true immutability
@@ -770,11 +783,15 @@ id = 12345;    // OK
 
 **Type Narrowing**
 ```typescript
+// This function accepts EITHER a string OR a number (union type)
 function printId(id: string | number): void {
+  // Check if id is a string using typeof
   if (typeof id === "string") {
-    console.log(id.toUpperCase()); // TypeScript knows it's a string
+    // Inside this block, TypeScript KNOWS id is a string
+    console.log(id.toUpperCase());  // ✅ Can use string methods
   } else {
-    console.log(id.toFixed(2));    // TypeScript knows it's a number
+    // TypeScript KNOWS id must be a number here
+    console.log(id.toFixed(2));  // ✅ Can use number methods
   }
 }
 ```
@@ -1167,7 +1184,11 @@ let index = scores.findIndex(score => score >= 90);
 
 **forEach - Execute Function for Each Element**
 ```typescript
+// forEach runs a function for EACH element in the array
+// Parameters: (currentElement, index) => { ... }
 scores.forEach((score, index) => {
+  // score = current element value
+  // index = position in array (0, 1, 2, ...)
   console.log(`Index ${index}: ${score}`);
 });
 ```
@@ -1176,33 +1197,55 @@ scores.forEach((score, index) => {
 
 **map - Transform Each Element**
 ```typescript
+// map creates a NEW array by transforming each element
+// It takes each element, applies a function, and returns the result
 let doubled = scores.map(score => score * 2);
-// [170, 184, 156, 180, 176]
+// For each score: 85*2=170, 92*2=184, 78*2=156, 90*2=180, 88*2=176
+// Result: [170, 184, 156, 180, 176]
 ```
 - Returns **new array** with transformed values
 - Original array unchanged
 
 **filter - Keep Matching Elements**
 ```typescript
+// filter creates a NEW array with only elements that pass a test
+// It checks each element and keeps only those where the function returns true
 let highScores = scores.filter(score => score >= 85);
-// [85, 92, 90, 88]
+// Check each score: 85>=85✅, 92>=85✅, 78>=85❌, 90>=85✅, 88>=85✅
+// Result: [85, 92, 90, 88] - only scores that are 85 or higher
 ```
 - Returns **new array** with elements passing test
 - Original array unchanged
 
 **reduce - Reduce to Single Value**
 ```typescript
+// reduce combines all elements into a SINGLE value
+// Parameters: (accumulator, currentElement) => newAccumulator, initialValue
 let total = scores.reduce((sum, score) => sum + score, 0);
-// sum starts at 0, adds each score
-// Result: 433
+// sum starts at 0 (initial value)
+// Step 1: sum=0, score=85 → 0+85=85
+// Step 2: sum=85, score=92 → 85+92=177
+// Step 3: sum=177, score=78 → 177+78=255
+// Step 4: sum=255, score=90 → 255+90=345
+// Step 5: sum=345, score=88 → 345+88=433
+// Result: 433 (total of all scores)
 ```
 - Format: `reduce((accumulator, currentValue) => newAccumulator, initialValue)`
 - Powerful for summing, counting, grouping, etc.
 
 **some and every**
 ```typescript
-let hasFailingGrade = scores.some(score => score < 60);  // false
-let allPassing = scores.every(score => score >= 60);     // true
+// some() checks if AT LEAST ONE element passes the test
+// Returns true if ANY element makes the condition true
+let hasFailingGrade = scores.some(score => score < 60);
+// Check: 85<60? No, 92<60? No, 78<60? No, 90<60? No, 88<60? No
+// Result: false (no failing grades found)
+
+// every() checks if ALL elements pass the test
+// Returns true only if EVERY element makes the condition true
+let allPassing = scores.every(score => score >= 60);
+// Check: 85>=60? Yes, 92>=60? Yes, 78>=60? Yes, 90>=60? Yes, 88>=60? Yes
+// Result: true (all scores are passing)
 ```
 - `some`: Returns true if **any** element matches
 - `every`: Returns true if **all** elements match
@@ -1210,15 +1253,21 @@ let allPassing = scores.every(score => score >= 60);     // true
 #### Array Sorting
 
 ```typescript
+// Start with an unsorted array
 let unsorted = [5, 2, 8, 1, 9];
 
-// Ascending
+// Ascending order (smallest to largest)
+// [...unsorted] creates a COPY so we don't modify the original
+// (a, b) => a - b means: if a < b return negative (a comes first)
 let sorted = [...unsorted].sort((a, b) => a - b);
-// [1, 2, 5, 8, 9]
+// Comparison: a-b < 0 means a comes before b
+// Result: [1, 2, 5, 8, 9]
 
-// Descending
+// Descending order (largest to smallest)
+// (a, b) => b - a means: if b < a return negative (b comes first)
 let sortedDesc = [...unsorted].sort((a, b) => b - a);
-// [9, 8, 5, 2, 1]
+// Comparison: b-a < 0 means b comes before a
+// Result: [9, 8, 5, 2, 1]
 ```
 - **Important:** `sort()` modifies original array
 - Use spread operator `[...array]` to create copy first
@@ -1226,58 +1275,93 @@ let sortedDesc = [...unsorted].sort((a, b) => b - a);
 
 **String Sorting**
 ```typescript
+// Strings can be sorted without a compare function
 let words = ["banana", "apple", "cherry"];
-words.sort(); // ["apple", "banana", "cherry"]
+words.sort();  // Alphabetically: ["apple", "banana", "cherry"]
+// For strings, default sort works correctly (alphabetical order)
 ```
 
 #### Array Joining and Combining
 
 **join - Array to String**
 ```typescript
+// join() combines all elements into a STRING
+// You specify the separator between elements
 let letters = ["a", "b", "c"];
-let joined = letters.join("-"); // "a-b-c"
+let joined = letters.join("-");  // Use "-" as separator
+// Result: "a-b-c" (a string, not an array!)
 ```
 
 **concat - Combine Arrays**
 ```typescript
+// concat() creates a NEW array by combining two or more arrays
 let arr1 = ["a", "b"];
 let arr2 = ["c", "d"];
-let combined = arr1.concat(arr2); // ["a", "b", "c", "d"]
+let combined = arr1.concat(arr2);  // Merge arr1 and arr2
+// Result: ["a", "b", "c", "d"] - a new array with all elements
+// arr1 and arr2 remain unchanged
 ```
 
 **Spread Operator**
 ```typescript
-let spreadCombined = [...arr1, ...arr2]; // ["a", "b", "c", "d"]
+// ... (spread operator) "spreads out" array elements
+// Modern alternative to concat()
+let spreadCombined = [...arr1, ...arr2];
+// ...arr1 expands to "a", "b"
+// ...arr2 expands to "c", "d"
+// Result: ["a", "b", "c", "d"] - same as concat but more flexible
 ```
 
 #### Multi-Dimensional Arrays
 
 **2D Array (Matrix)**
 ```typescript
+// A 2D array is an "array of arrays" - like a table or grid
+// number[][] means "array of number arrays"
 let matrix: number[][] = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9]
+  [1, 2, 3],    // Row 0
+  [4, 5, 6],    // Row 1
+  [7, 8, 9]     // Row 2
 ];
+// Visualize as:
+//   Col0 Col1 Col2
+//   [1,  2,   3  ]  Row 0
+//   [4,  5,   6  ]  Row 1
+//   [7,  8,   9  ]  Row 2
 
-console.log(matrix[1][2]); // 6 (row 1, column 2)
+console.log(matrix[1][2]);
+// matrix[1] gets Row 1 → [4, 5, 6]
+// [2] gets index 2 of that row → 6
+// Result: 6
 ```
 
 **3D Array**
 ```typescript
+// A 3D array is an "array of 2D arrays" - like stacked grids
+// number[][][] means "array of array of number arrays"
 let cube: number[][][] = [
-  [[1, 2], [3, 4]],
-  [[5, 6], [7, 8]]
+  [[1, 2], [3, 4]],  // Layer 0
+  [[5, 6], [7, 8]]   // Layer 1
 ];
-console.log(cube[1][0][1]); // 6
+
+console.log(cube[1][0][1]);
+// cube[1] gets Layer 1 → [[5, 6], [7, 8]]
+// [0] gets first row of that layer → [5, 6]
+// [1] gets index 1 of that row → 6
+// Result: 6
 ```
 
 #### Tuples
 
 **Fixed-Length Typed Arrays**
 ```typescript
+// A tuple is like an array but with FIXED length and SPECIFIC types for each position
+// [string, number, boolean] means: position 0 is string, position 1 is number, position 2 is boolean
 let person: [string, number, boolean] = ["Alice", 30, true];
 //           [name,   age,    active]
+// Position 0: "Alice" (string) - name
+// Position 1: 30 (number) - age
+// Position 2: true (boolean) - active status
 ```
 - Fixed number of elements
 - Each position has specific type
@@ -1285,69 +1369,99 @@ let person: [string, number, boolean] = ["Alice", 30, true];
 
 **Destructuring Tuples**
 ```typescript
+// Destructuring "unpacks" the tuple into individual variables
+// Variable names can be anything - position matters, not names
 let [name, age, isActive] = person;
+// name = person[0] = "Alice"
+// age = person[1] = 30
+// isActive = person[2] = true
 console.log(name, age, isActive); // Alice, 30, true
 ```
 
 **Optional Elements**
 ```typescript
+// The ? makes an element optional - it can be present or omitted
 let optionalTuple: [string, number?] = ["Bob"];
-// Second element is optional
+// Position 0: "Bob" (required string) ✅
+// Position 1: undefined (optional number, not provided) ✅
+// This is valid because the second element is optional
 ```
 
 **Rest Elements**
 ```typescript
+// ...number[] means "any number of numbers can follow"
+// First element is fixed (string), remaining elements can be any amount of numbers
 let restTuple: [string, ...number[]] = ["scores", 85, 90, 92, 88];
-// First is string, rest are numbers
+// Position 0: "scores" (string) - required
+// Position 1+: 85, 90, 92, 88 (any number of numbers) - rest elements
+// Useful when you have a fixed start but variable-length data
 ```
 
 **Readonly Tuples**
 ```typescript
+// 'readonly' keyword prevents any modifications to the tuple
 let readonlyTuple: readonly [string, number] = ["Charlie", 25];
-// readonlyTuple[0] = "Dave"; // Error: Cannot modify
+// You can READ the values but cannot CHANGE them
+// readonlyTuple[0] = "Dave"; // ❌ Error: Cannot assign to '0' because it is a read-only property
+// Useful for data that should never change after creation
 ```
 
 #### Objects
 
 **Object Literals**
 ```typescript
+// An object is a collection of key-value pairs (properties)
+// Curly braces { } define an object
 let user = {
-  name: "John Doe",
-  age: 28,
-  email: "john@example.com"
+  name: "John Doe",        // property: name, value: "John Doe"
+  age: 28,                 // property: age, value: 28
+  email: "john@example.com" // property: email, value: "john@example.com"
 };
+// Objects group related data together
 ```
 
 **Accessing Properties**
 ```typescript
-console.log(user.name);     // Dot notation
-console.log(user["email"]); // Bracket notation (for dynamic keys)
+// Two ways to access object properties:
+
+// 1. Dot notation - most common, cleaner syntax
+console.log(user.name);     // "John Doe"
+
+// 2. Bracket notation - useful for dynamic keys or keys with spaces
+console.log(user["email"]); // "john@example.com"
+// Use brackets when key is in a variable or contains special characters
 ```
 
 **Modifying Properties**
 ```typescript
-user.age = 29;
-console.log(user.age); // 29
+// You can change property values by reassigning them
+user.age = 29;           // Change age from 28 to 29
+console.log(user.age);   // 29 - updated value
+// Object properties are mutable (can be changed)
 ```
 
 #### Interfaces
 
 ```typescript
+// An interface defines the STRUCTURE (shape) an object must have
+// It's like a contract - objects must follow this blueprint
 interface Product {
-  id: number;
-  name: string;
-  price: number;
-  inStock: boolean;
-  description?: string; // Optional property
+  id: number;           // Required: must be a number
+  name: string;         // Required: must be a string
+  price: number;        // Required: must be a number
+  inStock: boolean;     // Required: must be a boolean
+  description?: string; // Optional: ? means not required
 }
 
+// Create an object that follows the Product interface
 let laptop: Product = {
   id: 1,
   name: "Laptop",
   price: 999.99,
   inStock: true
-  // description omitted (optional)
+  // description omitted - that's OK because it's optional
 };
+// TypeScript checks that laptop has all required properties with correct types
 ```
 - Defines shape of objects
 - Optional properties with `?`
@@ -1355,62 +1469,78 @@ let laptop: Product = {
 
 **Readonly Properties**
 ```typescript
+// 'readonly' prevents properties from being changed after creation
 interface Point {
-  readonly x: number;
-  readonly y: number;
+  readonly x: number;  // Can only be set during initialization
+  readonly y: number;  // Cannot be changed later
 }
 
-let point: Point = { x: 10, y: 20 };
-// point.x = 15; // Error: Cannot assign to readonly property
+let point: Point = { x: 10, y: 20 };  // ✅ Setting values during creation
+// point.x = 15; // ❌ Error: Cannot assign to 'x' because it is a read-only property
+// Readonly ensures coordinates can't be accidentally modified
 ```
 
 #### Nested Objects
 
 ```typescript
+// Objects can contain other objects (nested structure)
+// Define an Address interface
 interface Address {
   street: string;
   city: string;
   zipCode: string;
 }
 
+// Employee has an 'address' property that is itself an Address object
 interface Employee {
   id: number;
   name: string;
-  address: Address;
-  skills: string[];
+  address: Address;    // This property is an object (nested)
+  skills: string[];    // This property is an array
 }
 
+// Create an employee with nested address object
 let employee: Employee = {
   id: 101,
   name: "Alice Smith",
-  address: {
+  address: {           // Nested object - object inside an object
     street: "123 Main St",
     city: "New York",
     zipCode: "10001"
   },
-  skills: ["TypeScript", "React", "Node.js"]
+  skills: ["TypeScript", "React", "Node.js"]  // Array of strings
 };
 
-console.log(employee.address.city); // New York
+// Access nested property using dot notation
+console.log(employee.address.city);
+// employee.address gets the address object
+// .city gets the city property from that object
+// Result: "New York"
 ```
 
 #### Object Methods
 
 ```typescript
+// Objects can have FUNCTIONS as properties - these are called "methods"
 let calculator = {
-  value: 0,
+  value: 0,  // Property to store current value
+
+  // add is a METHOD (function inside an object)
   add(n: number): number {
-    this.value += n;
-    return this.value;
+    this.value += n;      // 'this' refers to the calculator object
+    return this.value;    // Return the updated value
   },
+
+  // subtract is another METHOD
   subtract(n: number): number {
-    this.value -= n;
+    this.value -= n;      // 'this' accesses the object's value property
     return this.value;
   }
 };
 
-calculator.add(10);  // 10
-calculator.subtract(3); // 7
+calculator.add(10);       // value becomes 0 + 10 = 10
+calculator.subtract(3);   // value becomes 10 - 3 = 7
+// Methods let objects have behaviors, not just data
 ```
 - Methods can access object properties via `this`
 
@@ -1420,91 +1550,148 @@ calculator.subtract(3); // 7
 ```typescript
 let car = { brand: "Toyota", model: "Camry", year: 2023 };
 
+// Object.keys() returns an ARRAY of all property names (keys)
 Object.keys(car);    // ["brand", "model", "year"]
+
+// Object.values() returns an ARRAY of all property values
 Object.values(car);  // ["Toyota", "Camry", 2023]
+
+// Object.entries() returns an ARRAY of [key, value] pairs
 Object.entries(car); // [["brand", "Toyota"], ["model", "Camry"], ["year", 2023]]
+// Useful for iterating over objects
 ```
 
 **Object.assign - Copy/Merge**
 ```typescript
+// Object.assign() copies properties from one or more objects to a target object
+// Format: Object.assign(target, ...sources)
+
+// Copy an object: copy all properties from 'car' into a new empty object {}
 let copy = Object.assign({}, car);
+// Result: { brand: "Toyota", model: "Camry", year: 2023 }
+
+// Merge objects: combine car properties with new properties
 let merged = Object.assign({}, car, { color: "blue" });
+// Result: { brand: "Toyota", model: "Camry", year: 2023, color: "blue" }
 ```
 
 **Spread Operator for Objects**
 ```typescript
+// ... (spread operator) "spreads out" object properties
+// Modern, cleaner alternative to Object.assign()
+
+// Copy an object
 let spreadCopy = { ...car };
+// ...car expands to: brand: "Toyota", model: "Camry", year: 2023
+// Result: { brand: "Toyota", model: "Camry", year: 2023 }
+
+// Merge and override properties
 let spreadMerge = { ...car, color: "red", year: 2024 };
+// Spreads car's properties, then adds color and overrides year
+// Result: { brand: "Toyota", model: "Camry", year: 2024, color: "red" }
 ```
 
 #### Destructuring
 
 **Object Destructuring**
 ```typescript
+// Destructuring extracts properties from objects into individual variables
 let book = { title: "TypeScript Handbook", author: "Microsoft", year: 2023 };
 
+// Extract title and author properties into variables
 let { title, author } = book;
+// title = book.title = "TypeScript Handbook"
+// author = book.author = "Microsoft"
 console.log(title, author); // TypeScript Handbook, Microsoft
+// Cleaner than: let title = book.title; let author = book.author;
 ```
 
 **Destructuring with Renaming**
 ```typescript
+// You can rename variables while destructuring using the syntax: oldName: newName
 let { title: bookTitle, year: publicationYear } = book;
+// bookTitle = book.title = "TypeScript Handbook"
+// publicationYear = book.year = 2023
+// Useful when property names conflict with existing variables
 ```
 
 **Destructuring with Defaults**
 ```typescript
-let { title, edition = 1 } = book; // edition defaults to 1 if not present
+// Provide default values for properties that might not exist
+let { title, edition = 1 } = book;
+// title = book.title = "TypeScript Handbook"
+// edition = book.edition ?? 1 = 1 (book doesn't have 'edition', so use default)
+// Prevents undefined values for missing properties
 ```
 
 **Array Destructuring**
 ```typescript
+// Destructuring works with arrays too - extracts by POSITION
 let colors = ["red", "green", "blue"];
 let [first, second] = colors;
+// first = colors[0] = "red"
+// second = colors[1] = "green"
+// "blue" is not extracted (we only asked for 2 variables)
 console.log(first, second); // red, green
 ```
 
 **Rest in Destructuring**
 ```typescript
+// ...rest collects ALL remaining properties into a new object
 let { title, ...rest } = book;
+// title = "TypeScript Handbook" (extracted separately)
+// rest = { author: "Microsoft", year: 2023 } (everything else)
 console.log(rest); // { author: "Microsoft", year: 2023 }
+// Useful for extracting some properties while keeping the rest together
 ```
 
 #### Type Aliases vs Interfaces
 
 **Type Alias**
 ```typescript
+// 'type' creates a reusable type definition
+// Can define object shapes, unions, primitives, etc.
 type Animal = {
   name: string;
   age: number;
 };
+// Now Animal can be used as a type anywhere
 ```
 
 **Interface**
 ```typescript
+// 'interface' defines object structure (similar to type for objects)
+// Preferred for object shapes, can be extended
 interface Vehicle {
   brand: string;
   speed: number;
 }
+// Interfaces are more traditional for OOP-style code
 ```
 
 **Extending Interfaces**
 ```typescript
+// Interfaces can be extended to create new interfaces
+// ElectricVehicle INHERITS all properties from Vehicle
 interface ElectricVehicle extends Vehicle {
-  batteryLife: number;
+  batteryLife: number;  // Plus adds its own property
 }
+// ElectricVehicle has: brand, speed, AND batteryLife
 ```
 
 **Intersection Types**
 ```typescript
+// Type aliases can be combined using & (intersection)
 type Person = { name: string };
 type Contact = { email: string };
-type PersonWithContact = Person & Contact;
+type PersonWithContact = Person & Contact;  // Combines both types
 
+// Objects of this type must have BOTH name and email
 let contact: PersonWithContact = {
   name: "Alice",
   email: "alice@example.com"
 };
+// Intersection merges multiple types into one
 ```
 
 ---
@@ -1514,9 +1701,14 @@ let contact: PersonWithContact = {
 #### Function Declarations
 
 ```typescript
+// Traditional function declaration syntax
+// function keyword, name, parameters with types, return type
 function greet(name: string): string {
-  return `Hello, ${name}!`;
+  // name: string - parameter must be a string
+  // : string - function returns a string
+  return `Hello, ${name}!`;  // Return a greeting message
 }
+// Can be called before it's defined (hoisted)
 ```
 - Traditional function syntax
 - Hoisted (can be called before declaration)
@@ -1525,9 +1717,14 @@ function greet(name: string): string {
 #### Function Expressions
 
 ```typescript
+// Function assigned to a variable (function expression)
+// The function itself is anonymous (no name after 'function' keyword)
 const subtract = function(a: number, b: number): number {
-  return a - b;
+  // Takes two numbers as parameters
+  return a - b;  // Returns the difference
 };
+// NOT hoisted - must be defined before use
+// subtract is a const variable holding a function
 ```
 - Assigned to a variable
 - Not hoisted
@@ -1537,21 +1734,35 @@ const subtract = function(a: number, b: number): number {
 
 **Basic Arrow Function**
 ```typescript
+// Arrow function - modern, concise syntax
+// Uses => (arrow) instead of 'function' keyword
 const square = (n: number): number => {
-  return n * n;
+  // (n: number) - parameter
+  // : number - return type
+  // => - arrow indicating function body follows
+  return n * n;  // Calculate square
 };
+// Shorter syntax, lexical 'this' binding
 ```
 
 **Concise Arrow Function (Implicit Return)**
 ```typescript
+// When function body is a single expression, you can omit {} and 'return'
 const cube = (n: number): number => n * n * n;
+// No braces {} = implicit return
+// The expression n * n * n is automatically returned
+// Same as: const cube = (n: number): number => { return n * n * n; };
 ```
 - No braces `{}`: implicit return
 - For single expressions
 
 **Returning Objects**
 ```typescript
+// To return an object literal with implicit return, wrap it in parentheses
 const createPerson = (name: string, age: number) => ({ name, age });
+// ({ name, age }) - parentheses distinguish object from function body braces
+// { name, age } is shorthand for { name: name, age: age }
+// Without (), TypeScript would think { } is the function body, not an object
 ```
 - Wrap object in parentheses to distinguish from function body
 
@@ -1559,38 +1770,53 @@ const createPerson = (name: string, age: number) => ({ name, age });
 
 **Optional Parameters**
 ```typescript
+// The ? makes a parameter optional - caller can omit it
 function buildName(firstName: string, lastName?: string): string {
+  // firstName is REQUIRED
+  // lastName? is OPTIONAL (will be undefined if not provided)
   if (lastName) {
+    // If lastName was provided
     return `${firstName} ${lastName}`;
   }
+  // If lastName was not provided
   return firstName;
 }
 
-buildName("John", "Doe"); // John Doe
-buildName("Jane");        // Jane
+buildName("John", "Doe"); // "John Doe" - both parameters provided
+buildName("Jane");        // "Jane" - lastName is undefined, only firstName used
 ```
 - Mark with `?`
 - Must come after required parameters
 
 **Default Parameters**
 ```typescript
+// = "Hello" provides a default value if parameter is not provided
 function greetUser(name: string, greeting: string = "Hello"): string {
+  // name - required
+  // greeting = "Hello" - optional with default value
+  // If greeting is not provided, it defaults to "Hello"
   return `${greeting}, ${name}!`;
 }
 
-greetUser("Alice");         // Hello, Alice!
-greetUser("Bob", "Hi");     // Hi, Bob!
+greetUser("Alice");         // "Hello, Alice!" - greeting uses default "Hello"
+greetUser("Bob", "Hi");     // "Hi, Bob!" - greeting is "Hi" (overrides default)
 ```
 - Provides default value if argument not passed
 
 **Rest Parameters**
 ```typescript
+// ...numbers collects ALL arguments into an array
+// Allows passing any number of arguments
 function sum(...numbers: number[]): number {
+  // numbers is an ARRAY containing all passed arguments
+  // Use reduce to add all numbers together
   return numbers.reduce((total, n) => total + n, 0);
+  // Starting with 0, add each number to the total
 }
 
-sum(1, 2, 3);        // 6
-sum(1, 2, 3, 4, 5);  // 15
+sum(1, 2, 3);        // numbers = [1, 2, 3] → 6
+sum(1, 2, 3, 4, 5);  // numbers = [1, 2, 3, 4, 5] → 15
+// Can pass any number of arguments
 ```
 - Collects remaining arguments into array
 - Must be last parameter
@@ -1599,23 +1825,26 @@ sum(1, 2, 3, 4, 5);  // 15
 #### Function Overloading
 
 ```typescript
-function format(value: string): string;
-function format(value: number): string;
-function format(value: boolean): string;
+// Overload signatures - define multiple ways to call the function
+function format(value: string): string;   // Can be called with string
+function format(value: number): string;   // Can be called with number
+function format(value: boolean): string;  // Can be called with boolean
 
+// Implementation signature - the actual function that handles all cases
 function format(value: string | number | boolean): string {
+  // Check what type was passed and handle accordingly
   if (typeof value === "string") {
-    return value.toUpperCase();
+    return value.toUpperCase();  // Strings → uppercase
   } else if (typeof value === "number") {
-    return value.toFixed(2);
+    return value.toFixed(2);     // Numbers → 2 decimal places
   } else {
-    return value ? "YES" : "NO";
+    return value ? "YES" : "NO";  // Booleans → YES/NO
   }
 }
 
-format("hello");  // HELLO
-format(123.456);  // 123.46
-format(true);     // YES
+format("hello");  // "HELLO" - uses string overload
+format(123.456);  // "123.46" - uses number overload
+format(true);     // "YES" - uses boolean overload
 ```
 - Multiple function signatures
 - One implementation handling all cases
@@ -1624,51 +1853,72 @@ format(true);     // YES
 
 **Basic Generic**
 ```typescript
+// <T> is a TYPE PARAMETER - a placeholder for any type
+// Makes the function work with ANY type while maintaining type safety
 function identity<T>(arg: T): T {
-  return arg;
+  // T can be string, number, boolean, or any other type
+  // arg's type is T, and return type is also T (same type in and out)
+  return arg;  // Returns the same value that was passed in
 }
 
-identity<string>("Hello"); // Explicit type
-identity(42);              // Type inferred
+identity<string>("Hello"); // Explicit: T = string, returns string
+identity(42);              // Type inferred: T = number, returns number
+// Generic functions are reusable for any type
 ```
 - `<T>` is a type parameter (placeholder)
 - Makes function reusable for any type
 
 **Generic with Constraints**
 ```typescript
+// Define what properties T must have
 interface HasLength {
-  length: number;
+  length: number;  // T must have a 'length' property
 }
 
+// <T extends HasLength> - T can be any type, BUT it MUST have a length property
 function logLength<T extends HasLength>(arg: T): number {
-  console.log(arg.length);
+  // Since T extends HasLength, we KNOW arg.length exists
+  console.log(arg.length);  // Safe to access .length
   return arg.length;
 }
 
-logLength("Hello");      // 5 (string has length)
-logLength([1, 2, 3, 4]); // 4 (array has length)
-// logLength(42);        // Error: number doesn't have length
+logLength("Hello");      // 5 (string has length) ✅
+logLength([1, 2, 3, 4]); // 4 (array has length) ✅
+// logLength(42);        // ❌ Error: number doesn't have length property
+// Constraints limit T to only types with required properties
 ```
 - `extends` constrains type to those with specific properties
 
 **Multiple Type Parameters**
 ```typescript
+// Functions can have MULTIPLE type parameters (T, U, V, etc.)
+// <T, U> means two different type parameters
 function pair<T, U>(first: T, second: U): [T, U] {
+  // first has type T, second has type U (can be different types)
+  // Returns a tuple: [T, U]
   return [first, second];
 }
 
-pair<string, number>("age", 25); // ["age", 25]
+pair<string, number>("age", 25); // T=string, U=number → ["age", 25]
+// Useful when you need different types for different parameters
 ```
 
 #### Callback Functions
 
 ```typescript
+// A callback is a FUNCTION passed as an ARGUMENT to another function
+// callback: (n: number) => number means callback takes a number and returns a number
 function processArray(arr: number[], callback: (n: number) => number): number[] {
-  return arr.map(callback);
+  // arr - array to process
+  // callback - function to apply to each element
+  return arr.map(callback);  // Apply callback to each element
 }
 
+// Pass an arrow function as the callback
 const doubled = processArray([1, 2, 3, 4], n => n * 2);
-// [2, 4, 6, 8]
+// callback is: n => n * 2
+// Result: [2, 4, 6, 8]
+// Callbacks allow functions to be customized with different behaviors
 ```
 - Function passed as argument
 - Called by another function
@@ -1677,46 +1927,71 @@ const doubled = processArray([1, 2, 3, 4], n => n * 2);
 
 **Function Returning Function**
 ```typescript
+// A higher-order function is a function that RETURNS another function
+// Return type: (n: number) => number means it returns a function
 function createMultiplier(multiplier: number): (n: number) => number {
+  // This function CREATES and RETURNS a new function
   return (n: number) => n * multiplier;
+  // The returned function "remembers" the multiplier value (closure)
 }
 
-const multiplyBy2 = createMultiplier(2);
-const multiplyBy10 = createMultiplier(10);
+// multiplyBy2 is a FUNCTION (not a number)
+const multiplyBy2 = createMultiplier(2);  // Creates function that multiplies by 2
+const multiplyBy10 = createMultiplier(10); // Creates function that multiplies by 10
 
-multiplyBy2(5);  // 10
-multiplyBy10(5); // 50
+multiplyBy2(5);  // 5 * 2 = 10
+multiplyBy10(5); // 5 * 10 = 50
+// Each function "remembers" its own multiplier value
 ```
 
 **Currying**
 ```typescript
+// Currying: breaking a function with multiple parameters into a chain of functions
+// Each function takes ONE parameter and returns another function (until the last one)
 const curriedAdd = (a: number) => (b: number) => (c: number) => a + b + c;
+// Step 1: takes 'a', returns function that takes 'b'
+// Step 2: takes 'b', returns function that takes 'c'
+// Step 3: takes 'c', returns a + b + c
 
-curriedAdd(1)(2)(3); // 6
+curriedAdd(1)(2)(3); // Call with (1), then (2), then (3) → 1 + 2 + 3 = 6
+// Allows partial application of functions
 ```
 - Transform function with multiple arguments into sequence of functions
 
 #### Function Composition
 
 ```typescript
+// Function composition: combining multiple functions to create a new function
+// Each function's output becomes the next function's input
 const addOne = (n: number) => n + 1;
 const multiplyByTwo = (n: number) => n * 2;
 const subtractThree = (n: number) => n - 3;
 
+// Nested function calls - read from INSIDE OUT
 const result = subtractThree(multiplyByTwo(addOne(5)));
-// (5 + 1) * 2 - 3 = 9
+// Step 1: addOne(5) = 6
+// Step 2: multiplyByTwo(6) = 12
+// Step 3: subtractThree(12) = 9
+// Final result: 9
 ```
 
 **Compose Helper**
 ```typescript
+// compose() creates a single function from multiple functions
+// ...fns collects all function arguments into an array
 function compose<T>(...fns: Array<(arg: T) => T>) {
+  // Returns a NEW function that applies all the functions in sequence
   return (value: T): T => {
+    // reduceRight applies functions from RIGHT to LEFT
     return fns.reduceRight((acc, fn) => fn(acc), value);
+    // Start with 'value', apply last function, then second-to-last, etc.
   };
 }
 
+// Create a composed function (not yet executed)
 const composed = compose(subtractThree, multiplyByTwo, addOne);
-composed(5); // 9
+// Order: addOne → multiplyByTwo → subtractThree (right to left)
+composed(5); // 5 → addOne(5)=6 → multiplyByTwo(6)=12 → subtractThree(12)=9
 ```
 - Combines multiple functions into one
 - Executes right to left
@@ -1725,67 +2000,98 @@ composed(5); // 9
 
 **Factorial**
 ```typescript
+// Recursion: a function that CALLS ITSELF
 function factorial(n: number): number {
-  if (n <= 1) return 1;        // Base case
-  return n * factorial(n - 1); // Recursive case
+  // BASE CASE: stop recursion when n <= 1
+  if (n <= 1) return 1;
+
+  // RECURSIVE CASE: call factorial again with n-1
+  return n * factorial(n - 1);
+  // factorial(5) = 5 * factorial(4)
+  //              = 5 * 4 * factorial(3)
+  //              = 5 * 4 * 3 * factorial(2)
+  //              = 5 * 4 * 3 * 2 * factorial(1)
+  //              = 5 * 4 * 3 * 2 * 1 = 120
 }
 
-factorial(5); // 5 * 4 * 3 * 2 * 1 = 120
+factorial(5); // 120
 ```
 - Function calls itself
 - Must have base case to stop recursion
 
 **Fibonacci**
 ```typescript
+// Fibonacci: each number is the sum of the previous two numbers
 function fibonacci(n: number): number {
+  // BASE CASES: fib(0)=0, fib(1)=1
   if (n <= 1) return n;
+
+  // RECURSIVE CASE: add the two previous fibonacci numbers
   return fibonacci(n - 1) + fibonacci(n - 2);
+  // fibonacci(7) = fib(6) + fib(5)
+  //              = (fib(5) + fib(4)) + (fib(4) + fib(3))
+  //              ... eventually resolves to 13
 }
 
-fibonacci(7); // 13
+fibonacci(7); // Sequence: 0,1,1,2,3,5,8,13 → 13
 ```
 
 #### IIFE (Immediately Invoked Function Expression)
 
 ```typescript
+// IIFE: A function that runs IMMEDIATELY when it's defined
+// Wrap function in (), then call it with () at the end
 (function() {
   console.log("IIFE executed!");
 })();
+// ( function() {...} ) defines the function
+// () at the end immediately calls it
+// Runs as soon as JavaScript reads this line
 ```
 - Executes immediately when defined
 - Creates private scope
 
 **With Parameters**
 ```typescript
+// IIFEs can accept parameters
 (function(name: string) {
   console.log(`Hello, ${name}`);
 })("TypeScript");
+// ("TypeScript") passes "TypeScript" as the 'name' parameter
+// Immediately logs: "Hello, TypeScript"
 ```
 
 **Arrow IIFE**
 ```typescript
+// IIFEs work with arrow functions too
 (() => {
   console.log("Arrow IIFE");
 })();
+// Arrow function wrapped in (), then immediately called with ()
 ```
 
 #### Function Type Annotations
 
 **Type Alias for Function**
 ```typescript
+// Create a reusable type for functions that take 2 numbers and return a number
 type MathOperation = (a: number, b: number) => number;
 
+// Both functions must follow the MathOperation type signature
 const add: MathOperation = (a, b) => a + b;
 const subtract: MathOperation = (a, b) => a - b;
+// Type safety: both functions guaranteed to have same signature
 ```
 
 **Interface for Function**
 ```typescript
+// Interfaces can also define function signatures
 interface StringFormatter {
-  (str: string): string;
+  (str: string): string;  // Function that takes a string, returns a string
 }
 
 const uppercase: StringFormatter = (str) => str.toUpperCase();
+// uppercase must follow StringFormatter signature
 ```
 
 #### Practical Examples
