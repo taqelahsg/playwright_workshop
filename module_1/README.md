@@ -571,33 +571,6 @@ npx ts-node src/01-variables-and-types.ts
 
 ---
 
-## Next Steps
-
-After completing this tutorial:
-
-1. **Build a small project** - Apply what you've learned
-2. **Learn about:**
-   - Classes and Object-Oriented Programming
-   - Modules and namespaces
-   - Async/await and Promises
-   - Decorators
-   - Advanced types (conditional types, mapped types)
-3. **Explore frameworks:**
-   - React with TypeScript
-   - Node.js with Express and TypeScript
-   - Angular (uses TypeScript by default)
-
----
-
-## Contributing
-
-Found an issue or want to improve the examples? Feel free to:
-- Report issues
-- Suggest improvements
-- Add more examples
-
----
-
 ## License
 
 This tutorial is provided for educational purposes.
