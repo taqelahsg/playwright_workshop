@@ -3,5 +3,7 @@
     "typescript": "cd $dir && npx ts-node $fileName"
   },
   "code-runner.runInTerminal": true,
-  "code-runner.clearPreviousOutput": true
+  "code-runner.clearPreviousOutput": true,
+  "playwright.reusedContext": false,
+  "playwright.searchForWorkspaceFiles": true
 }

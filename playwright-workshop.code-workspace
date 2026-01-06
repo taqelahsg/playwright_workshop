@@ -1,0 +1,24 @@
+{
+  "folders": [
+    {
+      "name": "Root",
+      "path": "."
+    },
+    {
+      "name": "Playwright Hello World",
+      "path": "module_2/playwright-hello-world-project"
+    },
+    {
+      "name": "Playwright Fixtures",
+      "path": "module_2/playwright-fixtures"
+    }
+  ],
+  "settings": {
+    "code-runner.executorMap": {
+      "typescript": "cd $dir && npx ts-node $fileName"
+    },
+    "code-runner.runInTerminal": true,
+    "code-runner.clearPreviousOutput": true,
+    "playwright.reusedContext": false
+  }
+}

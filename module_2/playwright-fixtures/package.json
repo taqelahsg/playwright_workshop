@@ -1,0 +1,23 @@
+{
+  "name": "playwright-fixtures",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "test:builtin": "playwright test tests/1-builtin-fixtures.spec.ts",
+    "test:custom": "playwright test tests/2-custom-fixtures.spec.ts",
+    "test:advanced": "playwright test tests/3-advanced-fixtures.spec.ts",
+    "test:auto": "playwright test tests/4-automatic-fixtures.spec.ts",
+    "test:override": "playwright test tests/5-fixture-override.spec.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
+  }
+}
