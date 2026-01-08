@@ -1,0 +1,36 @@
+{
+  "name": "playwright-retries-timeouts",
+  "version": "1.0.0",
+  "description": "Playwright test retries and timeouts examples and patterns",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "test:retry-examples": "playwright test retry-examples.spec.ts",
+    "test:timeout-examples": "playwright test timeout-examples.spec.ts",
+    "test:combined": "playwright test retry-timeout-combined.spec.ts",
+    "test:standard": "playwright test --project=chromium-standard",
+    "test:no-retry": "playwright test --project=chromium-no-retries",
+    "test:aggressive": "playwright test --project=chromium-aggressive-retries",
+    "test:fast": "playwright test --project=chromium-fast-tests",
+    "test:slow": "playwright test --project=chromium-slow-tests"
+  },
+  "keywords": [
+    "playwright",
+    "test",
+    "retries",
+    "timeouts",
+    "e2e",
+    "testing",
+    "flaky-tests",
+    "automation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
+  }
+}
