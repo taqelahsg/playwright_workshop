@@ -1,0 +1,9 @@
+taskId,description,priority,category,estimatedMinutes
+1,Write documentation,high,documentation,60
+2,Fix login bug,critical,bug,30
+3,Update dependencies,medium,maintenance,45
+4,Add unit tests,high,testing,90
+5,Review pull requests,low,code-review,20
+6,Deploy to staging,medium,deployment,15
+7,Performance optimization,high,performance,120
+8,Refactor authentication,medium,refactoring,180

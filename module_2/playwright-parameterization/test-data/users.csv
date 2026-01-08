@@ -1,0 +1,8 @@
+username,password,role,shouldSucceed
+admin,admin123,Administrator,true
+user1,pass123,User,true
+user2,pass456,User,true
+manager,mgr789,Manager,true
+guest,guest123,Guest,true
+invalid,wrongpass,N/A,false
+hacker,12345,N/A,false

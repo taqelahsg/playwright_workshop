@@ -1,0 +1,36 @@
+{
+  "name": "playwright-parameterization",
+  "version": "1.0.0",
+  "description": "Playwright test parameterization examples and best practices",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:basic": "playwright test --project=basic-parameterization",
+    "test:project": "playwright test --project=user-alice --project=user-bob --project=user-charlie-prod",
+    "test:role": "playwright test --project=role-admin --project=role-user --project=role-guest",
+    "test:csv": "playwright test --project=csv-tests",
+    "test:env": "playwright test --project=env-tests",
+    "test:matrix": "playwright test --project=matrix-chrome-mobile --project=matrix-chrome-desktop",
+    "test:report": "playwright show-report",
+    "test:trace": "playwright test --trace on",
+    "test:codegen": "playwright codegen https://demo.playwright.dev/todomvc"
+  },
+  "keywords": [
+    "playwright",
+    "testing",
+    "parameterization",
+    "e2e",
+    "automation",
+    "data-driven-testing"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "csv-parse": "^6.1.0",
+    "dotenv": "^17.2.3"
+  }
+}
