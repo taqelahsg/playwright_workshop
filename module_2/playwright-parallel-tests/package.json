@@ -1,0 +1,30 @@
+{
+  "name": "playwright-parallel-tests",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:parallel": "playwright test --workers=4",
+    "test:serial": "playwright test --workers=1",
+    "test:headed": "playwright test --headed",
+    "test:example1": "playwright test example1-parallel-tests.spec.ts",
+    "test:example2": "playwright test example2-serial-mode.spec.ts",
+    "test:example3": "playwright test example3-parallel-mode.spec.ts",
+    "test:example4": "playwright test example4-worker-control.spec.ts",
+    "test:example5": "playwright test example5-sharding.spec.ts",
+    "test:example6": "playwright test example6-worker-index.spec.ts",
+    "test:example7": "playwright test example7-fully-parallel.spec.ts",
+    "test:example8": "playwright test example8-real-world-scenario.spec.ts",
+    "test:shard1": "playwright test --shard=1/3",
+    "test:shard2": "playwright test --shard=2/3",
+    "test:shard3": "playwright test --shard=3/3",
+    "test:report": "playwright show-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "playwright-test-projects",
+  "version": "1.0.0",
+  "description": "Playwright Test Projects Examples - Cross-browser and device testing",
+  "scripts": {
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:mobile": "playwright test --project=mobile-chrome --project=mobile-safari",
+    "test:smoke": "playwright test --project=smoke",
+    "test:authenticated": "playwright test --project=authenticated",
+    "test:guest": "playwright test --project=guest",
+    "test:api": "playwright test --project=api",
+    "test:ui": "playwright test --project=ui-chrome",
+    "report": "playwright show-report",
+    "ui": "playwright test --ui"
+  },
+  "keywords": ["playwright", "testing", "e2e", "test-projects"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
+  }
+}

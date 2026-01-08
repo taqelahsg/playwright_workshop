@@ -1,0 +1,22 @@
+{
+  "name": "playwright-global-setup-teardown",
+  "version": "1.0.0",
+  "description": "Playwright global setup and teardown demo",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:ui": "npx playwright test --ui",
+    "report": "npx playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "testing",
+    "global-setup",
+    "teardown"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.41.0"
+  }
+}
