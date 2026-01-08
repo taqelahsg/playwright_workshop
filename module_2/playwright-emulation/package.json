@@ -1,0 +1,33 @@
+{
+  "name": "playwright-emulation",
+  "version": "1.0.0",
+  "description": "Playwright examples demonstrating device, locale, and environment emulation",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:device": "playwright test tests/device-emulation.spec.ts",
+    "test:geo": "playwright test tests/geolocation.spec.ts",
+    "test:locale": "playwright test tests/locale-timezone.spec.ts",
+    "test:color": "playwright test tests/color-scheme.spec.ts",
+    "test:permissions": "playwright test tests/permissions.spec.ts",
+    "test:network": "playwright test tests/network-conditions.spec.ts",
+    "test:mobile": "playwright test --project='Mobile Chrome'",
+    "test:dark": "playwright test --project='Desktop Chrome Dark Mode'",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "testing",
+    "emulation",
+    "e2e",
+    "device-testing",
+    "responsive"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
+  }
+}
