@@ -1,0 +1,31 @@
+{
+  "name": "playwright-retries",
+  "version": "1.0.0",
+  "description": "Playwright test retries examples and patterns",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:standard": "playwright test --project=standard-retries",
+    "test:no-retry": "playwright test --project=no-retries",
+    "test:flaky": "playwright test --project=aggressive-retries",
+    "test:serial": "playwright test --project=serial-with-retries",
+    "test:report": "playwright show-report",
+    "test:ui": "playwright test --ui"
+  },
+  "keywords": [
+    "playwright",
+    "test",
+    "retries",
+    "e2e",
+    "testing",
+    "flaky-tests",
+    "automation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
+  }
+}
