@@ -1,0 +1,35 @@
+{
+  "name": "module-10-test-reporting",
+  "version": "1.0.0",
+  "description": "Playwright Test Reporting Examples",
+  "scripts": {
+    "test": "playwright test",
+    "test:list": "playwright test --reporter=list",
+    "test:dot": "playwright test --reporter=dot",
+    "test:line": "playwright test --reporter=line",
+    "test:html": "playwright test --reporter=html",
+    "test:json": "playwright test --reporter=json",
+    "test:junit": "playwright test --reporter=junit",
+    "test:multiple": "playwright test --config=examples/multiple-reporters.config.ts",
+    "test:ci": "playwright test --config=examples/ci-reporters.config.ts",
+    "test:custom": "playwright test --config=examples/custom-reporter.config.ts",
+    "test:blob": "playwright test --reporter=blob",
+    "test:sharded": "npm run test:shard1 && npm run test:shard2 && npm run test:shard3 && npm run merge:reports",
+    "test:shard1": "playwright test --shard=1/3 --reporter=blob",
+    "test:shard2": "playwright test --shard=2/3 --reporter=blob",
+    "test:shard3": "playwright test --shard=3/3 --reporter=blob",
+    "merge:reports": "playwright merge-reports --reporter html ./blob-report",
+    "show:report": "playwright show-report",
+    "show:report:custom": "playwright show-report playwright-report-custom"
+  },
+  "keywords": [
+    "playwright",
+    "testing",
+    "reporting"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.41.0"
+  }
+}

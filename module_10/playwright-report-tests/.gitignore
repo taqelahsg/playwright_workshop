@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Test results
+test-results/
+playwright-report/
+playwright-report-*/
+
+# Blob reports
+blob-report/
+
+# Traces
+trace.zip
+playwright/.cache/
+
+# Screenshots and videos
+*.png
+*.webm
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
