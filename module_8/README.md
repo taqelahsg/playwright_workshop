@@ -1,10 +1,10 @@
 # Module 8: Locator Strategies & Test Assertions
 
-**Duration:** 3-4 hours (Full coverage) | 25 minutes (Intensive workshop)
+**Duration:** 3-4 hours (Full coverage) | 30 minutes (Intensive workshop)
 **Level:** Intermediate
 **Prerequisites:** Completed Modules 2-6
 
-> **Note:** In the intensive one-day workshop (9 AM - 2 PM), this module is covered in 25 minutes focusing on user-facing locators (role, text, label) and auto-retrying assertions.
+> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 30 minutes focusing on user-facing locators (role, text, label) and auto-retrying assertions.
 
 ---
 

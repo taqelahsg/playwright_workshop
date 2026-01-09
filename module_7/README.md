@@ -1,10 +1,10 @@
 # Module 7: Advanced Topics (Optional)
 
-**Duration:** 2-3 hours (Full coverage) | 25 minutes (Intensive workshop)
+**Duration:** 2-3 hours (Full coverage) | 30 minutes (Intensive workshop)
 **Level:** Advanced
 **Prerequisites:** Completed Modules 2-6
 
-> **Note:** In the intensive one-day workshop (9 AM - 2 PM), this module is covered in 25 minutes with overview of global setup/teardown and CI/CD integration concepts.
+> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 30 minutes with overview of global setup/teardown and CI/CD integration concepts.
 
 ---
 

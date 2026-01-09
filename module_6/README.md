@@ -1,10 +1,10 @@
 # Module 6: Cross-Browser and Device Testing
 
-**Duration:** 2-3 hours (Full coverage) | 25 minutes (Intensive workshop)
+**Duration:** 2-3 hours (Full coverage) | 30 minutes (Intensive workshop)
 **Level:** Intermediate
 **Prerequisites:** Completed Modules 2-5
 
-> **Note:** In the intensive one-day workshop (9 AM - 2 PM), this module is covered in 25 minutes with a quick demo of device emulation and mobile testing.
+> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 30 minutes with a quick demo of device emulation and mobile testing.
 
 ---
 

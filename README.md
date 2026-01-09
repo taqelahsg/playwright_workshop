@@ -1,6 +1,6 @@
 # One-Day Intensive Playwright Workshop
 
-Welcome to the comprehensive one-day Playwright Testing Workshop! This intensive workshop is designed to take you from beginner to proficient in Playwright test automation in just 5 hours (9 AM - 2 PM).
+Welcome to the comprehensive one-day Playwright Testing Workshop! This intensive workshop is designed to take you from beginner to proficient in Playwright test automation in just 6 hours (9 AM - 3 PM).
 
 ---
 
@@ -29,33 +29,34 @@ This workshop is organized into progressive modules, each building on the previo
 
 ## 🎯 One-Day Intensive Workshop Schedule
 
-### Workshop Overview: 9 AM to 2 PM
+### Workshop Overview: 9 AM to 3 PM
 **Comprehensive coverage of all essential Playwright topics (Modules 2-10)**
 
 Perfect for teams needing a complete Playwright overview in a single day.
 
 **Key Information:**
-- ⏰ **Duration:** 5 hours (9 AM - 2 PM)
+- ⏰ **Duration:** 6 hours (9 AM - 3 PM)
 - 📚 **Coverage:** Modules 2-10 (all essential topics)
 - ☕ **Breaks:** 2 × 15-minute breaks + 45-minute lunch
 - 👨‍🏫 **Format:** Instructor-led demos with focused hands-on practice
-- 🎯 **Net Teaching Time:** 3 hours 45 minutes
+- 🎯 **Net Teaching Time:** 4 hours 45 minutes
 
 **Workshop Schedule:**
 
 | Time | Duration | Module | Topics |
 |------|----------|--------|--------|
-| 9:00 - 9:45 AM | 45 min | **Module 2** | Getting Started, First Test |
-| 9:45 - 10:20 AM | 35 min | **Module 3** | Configuration, Codegen, CLI |
-| 10:20 - 10:35 AM | 15 min | ☕ **Break** | |
-| 10:35 - 11:05 AM | 30 min | **Module 4** | Trace Viewer, Fixtures |
-| 11:05 - 11:35 AM | 30 min | **Module 5** | Parallel Tests, Projects |
-| 11:35 - 12:00 PM | 25 min | **Module 6** | Device Emulation |
-| 12:00 - 12:45 PM | 45 min | 🍽️ **Lunch** | |
-| 12:45 - 1:10 PM | 25 min | **Module 7** | Global Setup, CI/CD |
-| 1:10 - 1:35 PM | 25 min | **Module 8** | Locators & Assertions |
-| 1:35 - 1:50 PM | 15 min | ☕ **Break** | |
-| 1:50 - 2:00 PM | 10 min | **Modules 9 & 10** | API Testing + Reporting (Combined) |
+| 9:00 - 9:50 AM | 50 min | **Module 2** | Getting Started, First Test |
+| 9:50 - 10:30 AM | 40 min | **Module 3** | Configuration, Codegen, CLI |
+| 10:30 - 10:45 AM | 15 min | ☕ **Break** | |
+| 10:45 - 11:20 AM | 35 min | **Module 4** | Trace Viewer, Fixtures |
+| 11:20 - 12:00 PM | 40 min | **Module 5** | Parallel Tests, Projects |
+| 12:00 - 12:30 PM | 30 min | **Module 6** | Device Emulation |
+| 12:30 - 1:15 PM | 45 min | 🍽️ **Lunch** | |
+| 1:15 - 1:45 PM | 30 min | **Module 7** | Global Setup, CI/CD |
+| 1:45 - 2:15 PM | 30 min | **Module 8** | Locators & Assertions |
+| 2:15 - 2:30 PM | 15 min | ☕ **Break** | |
+| 2:30 - 2:50 PM | 20 min | **Module 9** | API Testing Basics |
+| 2:50 - 3:00 PM | 10 min | **Module 10** | Test Reporting |
 
 **What You Will Learn:**
 - ✅ Write and run Playwright tests
