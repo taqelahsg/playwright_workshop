@@ -118,463 +118,209 @@ Learn about:
 
 ---
 
-## 🧪 Lab Exercises
+## 🧪 Implemented Test Suites
 
-### Lab 1: Your First API Test (20 minutes)
+The following test suites are fully implemented in the `playwright-inventory-api-tests` project.
 
-**Task:** Write a basic GET request test
+### Test Suite 1: GET /items - Fetch All Items
+**File:** [get-items.spec.ts](playwright-inventory-api-tests/tests/get-items.spec.ts)
 
+**Tests implemented:**
+- ✅ Validates 200 status code response
+- ✅ Verifies JSON content type in response headers
+- ✅ Confirms response is an array with items
+- ✅ Validates item structure (id, name, description, price, quantity)
+- ✅ Verifies correct data types (number for id/price/quantity, string for name/description)
+- ✅ Validates item data values (positive IDs, non-empty names, non-negative prices/quantities)
+- ✅ Measures response time (should be under 1000ms)
+
+**Key validations:**
 ```typescript
-import { test, expect, request } from '@playwright/test';
+// Status and content type
+expect(response.status()).toBe(200);
+expect(response.headers()['content-type']).toContain('application/json');
 
-test('GET - Fetch all inventory items', async ({ request }) => {
-  const response = await request.get('http://localhost:8080/items');
-
-  // Validate status code
-  expect(response.status()).toBe(200);
-
-  // Validate response body
-  const items = await response.json();
-  expect(Array.isArray(items)).toBeTruthy();
-
-  console.log(`Found ${items.length} items`);
-});
+// Array and structure validation
+expect(Array.isArray(items)).toBeTruthy();
+expect(firstItem).toHaveProperty('id');
+expect(typeof firstItem.price).toBe('number');
 ```
 
 ---
 
-### Lab 2: Creating Resources with POST (25 minutes)
+### Test Suite 2: POST /items - Create New Items
+**File:** [post-items.spec.ts](playwright-inventory-api-tests/tests/post-items.spec.ts)
 
-**Task:** Create new items using POST requests
+**Tests implemented:**
+- ✅ Creates new item with valid data and validates 201 status
+- ✅ Verifies JSON content type in response
+- ✅ Creates item with minimum required fields
+- ✅ Handles decimal prices correctly (99.99)
+- ✅ Handles zero quantity items
+- ✅ Handles large quantities (10000)
+- ✅ Handles special characters in item names and descriptions
 
+**Key test scenarios:**
 ```typescript
-test('POST - Create a new inventory item', async ({ request }) => {
-  const newItem = {
-    name: 'Laptop',
-    description: 'Dell XPS 15',
-    price: 1299.99,
-    quantity: 5
-  };
+// Standard creation
+const newItem = {
+  name: 'Test Laptop',
+  description: 'High-end gaming laptop',
+  price: 2499.99,
+  quantity: 5
+};
 
-  const response = await request.post('http://localhost:8080/items', {
-    data: newItem
-  });
-
-  expect(response.status()).toBe(201);
-
-  const createdItem = await response.json();
-  expect(createdItem).toHaveProperty('id');
-  expect(createdItem.name).toBe(newItem.name);
-  expect(createdItem.price).toBe(newItem.price);
-});
+// Edge cases tested
+- Zero quantity items (out of stock)
+- Large quantities (bulk items)
+- Special characters: @#$%&()
+- Decimal price precision
 ```
 
 ---
 
-### Lab 3: Updating Resources (25 minutes)
+### Test Suite 3: PUT /items/{id} - Full Update
+**File:** [put-items.spec.ts](playwright-inventory-api-tests/tests/put-items.spec.ts)
 
-**Task:** Update existing items with PUT and PATCH
+**Tests implemented:**
+- ✅ Fully updates all fields of an existing item
+- ✅ Verifies JSON content type
+- ✅ Updates all fields at once
+- ✅ Handles zero price updates
+- ✅ Handles zero quantity updates
+- ✅ Preserves item ID after update
+- ✅ Handles long descriptions (200+ characters)
 
+**Key features:**
 ```typescript
-test('PUT - Update an inventory item', async ({ request }) => {
-  // First, create an item
-  const createResponse = await request.post('http://localhost:8080/items', {
-    data: {
-      name: 'Monitor',
-      description: '24 inch',
-      price: 299.99,
-      quantity: 10
-    }
-  });
-
-  const createdItem = await createResponse.json();
-  const itemId = createdItem.id;
-
-  // Update the item
-  const updatedData = {
-    name: 'Monitor',
-    description: '27 inch 4K',
-    price: 499.99,
-    quantity: 8
-  };
-
-  const updateResponse = await request.put(
-    `http://localhost:8080/items/${itemId}`,
-    { data: updatedData }
-  );
-
-  expect(updateResponse.status()).toBe(200);
-
-  const updatedItem = await updateResponse.json();
-  expect(updatedItem.description).toBe('27 inch 4K');
-  expect(updatedItem.price).toBe(499.99);
+// Uses beforeEach to create test item
+test.beforeEach(async ({ request }) => {
+  const response = await request.post('/items', { data: newItem });
+  testItemId = (await response.json()).id;
 });
 
-test('PATCH - Partially update an item', async ({ request }) => {
-  // Create an item first
-  const createResponse = await request.post('http://localhost:8080/items', {
-    data: {
-      name: 'Keyboard',
-      description: 'Mechanical',
-      price: 89.99,
-      quantity: 15
-    }
-  });
-
-  const createdItem = await createResponse.json();
-
-  // Patch only the quantity
-  const patchResponse = await request.patch(
-    `http://localhost:8080/items/${createdItem.id}`,
-    {
-      data: { quantity: 20 }
-    }
-  );
-
-  expect(patchResponse.status()).toBe(200);
-
-  const patchedItem = await patchResponse.json();
-  expect(patchedItem.quantity).toBe(20);
-  expect(patchedItem.name).toBe('Keyboard'); // Unchanged
-});
+// Full replacement of all fields
+const updatedData = {
+  name: 'Updated Item Name',
+  description: 'Updated description',
+  price: 150.0,
+  quantity: 20
+};
 ```
 
 ---
 
-### Lab 4: Deleting Resources (20 minutes)
+### Test Suite 4: PATCH /items/{id} - Partial Update
+**File:** [patch-items.spec.ts](playwright-inventory-api-tests/tests/patch-items.spec.ts)
 
-**Task:** Delete items using DELETE requests
+**Tests implemented:**
+- ✅ Updates only the name field
+- ✅ Updates only the price field
+- ✅ Updates only the quantity field
+- ✅ Updates only the description field
+- ✅ Updates multiple fields but not all
+- ✅ Returns JSON content type
+- ✅ Returns 400 error for non-existent item with error message
+- ✅ Handles setting quantity to zero
+- ✅ Preserves item ID after partial update
 
+**Key validation:**
 ```typescript
-test('DELETE - Remove an inventory item', async ({ request }) => {
-  // Create an item to delete
-  const createResponse = await request.post('http://localhost:8080/items', {
-    data: {
-      name: 'Mouse',
-      description: 'Wireless',
-      price: 29.99,
-      quantity: 50
-    }
-  });
+// Verifies only updated fields changed
+expect(updatedItem.name).toBe(patchData.name);
+expect(updatedItem.description).toBe(originalItemData.description); // Unchanged
+expect(updatedItem.price).toBe(originalItemData.price); // Unchanged
 
-  const createdItem = await createResponse.json();
-  const itemId = createdItem.id;
-
-  // Delete the item
-  const deleteResponse = await request.delete(
-    `http://localhost:8080/items/${itemId}`
-  );
-
-  expect(deleteResponse.status()).toBe(204);
-
-  // Verify item is deleted
-  const getResponse = await request.get(
-    `http://localhost:8080/items/${itemId}`
-  );
-
-  expect(getResponse.status()).toBe(404);
-});
+// Error handling
+expect(response.status()).toBe(400);
+expect(error.error).toBe('item not found');
 ```
 
 ---
 
-### Lab 5: Working with Headers (25 minutes)
+### Test Suite 5: DELETE /items/{id} - Delete Item
+**File:** [delete-items.spec.ts](playwright-inventory-api-tests/tests/delete-items.spec.ts)
 
-**Task:** Send and validate request/response headers
+**Tests implemented:**
+- ✅ Deletes an existing item with 200 status
+- ✅ Returns success message: `{message: 'item deleted'}`
+- ✅ Verifies item no longer exists after deletion (404 on GET)
+- ✅ Returns 404 when deleting non-existent item
+- ✅ Returns 404 when deleting already deleted item
+- ✅ Verifies other items remain unaffected
+- ✅ Handles deletion of items with zero quantity
+- ✅ Handles deletion of items with zero price
+- ✅ Measures deletion response time (should be under 500ms)
 
+**Key test patterns:**
 ```typescript
-test('Request headers and custom headers', async ({ request }) => {
-  const response = await request.get('http://localhost:8080/items', {
-    headers: {
-      'Accept': 'application/json',
-      'User-Agent': 'Playwright-Test',
-      'X-Custom-Header': 'test-value'
-    }
-  });
+// Deletion verification
+const deleteResponse = await request.delete(`/items/${testItemId}`);
+expect(deleteResponse.status()).toBe(200);
 
-  expect(response.status()).toBe(200);
+const responseData = await deleteResponse.json();
+expect(responseData.message).toBe('item deleted');
 
-  // Validate response headers
-  const headers = response.headers();
-  expect(headers['content-type']).toContain('application/json');
-
-  console.log('Response headers:', headers);
-});
-
-test('Content-Type for POST requests', async ({ request }) => {
-  const response = await request.post('http://localhost:8080/items', {
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    data: {
-      name: 'Headphones',
-      description: 'Noise cancelling',
-      price: 199.99,
-      quantity: 12
-    }
-  });
-
-  expect(response.status()).toBe(201);
-});
+// Verify deletion
+const getResponse = await request.get(`/items/${testItemId}`);
+expect(getResponse.status()).toBe(404);
 ```
 
 ---
 
-### Lab 6: Complex Response Validation (30 minutes)
+### Test Suite 6: GET /items/{id} - Get Item by ID
+**File:** [get-item-by-id.spec.ts](playwright-inventory-api-tests/tests/get-item-by-id.spec.ts)
 
-**Task:** Validate complex JSON structures and arrays
+**Tests implemented:**
+- ⚠️ Documents that endpoint returns 404 for all items in this PlayPI instance
+- ✅ Tests 404 response for non-existent item IDs
 
-```typescript
-test('Validate array response structure', async ({ request }) => {
-  const response = await request.get('http://localhost:8080/items');
-
-  expect(response.status()).toBe(200);
-
-  const items = await response.json();
-
-  // Array validations
-  expect(Array.isArray(items)).toBeTruthy();
-  expect(items.length).toBeGreaterThan(0);
-
-  // Validate first item structure
-  const firstItem = items[0];
-  expect(firstItem).toHaveProperty('id');
-  expect(firstItem).toHaveProperty('name');
-  expect(firstItem).toHaveProperty('price');
-  expect(firstItem).toHaveProperty('quantity');
-
-  // Type validations
-  expect(typeof firstItem.id).toBe('string');
-  expect(typeof firstItem.name).toBe('string');
-  expect(typeof firstItem.price).toBe('number');
-  expect(typeof firstItem.quantity).toBe('number');
-});
-
-test('Filter and validate specific items', async ({ request }) => {
-  const response = await request.get('http://localhost:8080/items');
-  const items = await response.json();
-
-  // Find items with price > 100
-  const expensiveItems = items.filter(item => item.price > 100);
-  expect(expensiveItems.length).toBeGreaterThan(0);
-
-  // Validate all expensive items
-  expensiveItems.forEach(item => {
-    expect(item.price).toBeGreaterThan(100);
-  });
-});
-```
+**Note:** This endpoint appears to have an issue in the PlayPI instance where it returns 404 for all item IDs, even valid ones. Tests document this behavior.
 
 ---
 
-### Lab 7: Task Management API (35 minutes)
+## 📊 Test Coverage Summary
 
-**Task:** Work with the Task Management API (Port 8085)
+**Total Test Suites:** 6
+**Total Tests:** 42+
 
-```typescript
-test('Task API - Create and manage tasks', async ({ request }) => {
-  const baseURL = 'http://localhost:8085';
+**Coverage by HTTP Method:**
+- GET /items: 6 tests
+- GET /items/{id}: 2 tests (endpoint issue noted)
+- POST /items: 7 tests
+- PUT /items/{id}: 7 tests
+- PATCH /items/{id}: 9 tests
+- DELETE /items/{id}: 9 tests
 
-  // Create a new task
-  const newTask = {
-    title: 'Write API tests',
-    description: 'Complete module 9 exercises',
-    status: 'pending',
-    priority: 'high'
-  };
-
-  const createResponse = await request.post(`${baseURL}/tasks`, {
-    data: newTask
-  });
-
-  expect(createResponse.status()).toBe(201);
-
-  const createdTask = await createResponse.json();
-  expect(createdTask).toHaveProperty('id');
-  expect(createdTask.title).toBe(newTask.title);
-
-  const taskId = createdTask.id;
-
-  // Get the task
-  const getResponse = await request.get(`${baseURL}/tasks/${taskId}`);
-  expect(getResponse.status()).toBe(200);
-
-  // Update task status
-  const updateResponse = await request.patch(`${baseURL}/tasks/${taskId}`, {
-    data: { status: 'in-progress' }
-  });
-
-  expect(updateResponse.status()).toBe(200);
-  const updatedTask = await updateResponse.json();
-  expect(updatedTask.status).toBe('in-progress');
-
-  // Complete the task
-  const completeResponse = await request.patch(`${baseURL}/tasks/${taskId}`, {
-    data: { status: 'completed' }
-  });
-
-  expect(completeResponse.status()).toBe(200);
-});
-
-test('Task API - List all tasks', async ({ request }) => {
-  const response = await request.get('http://localhost:8085/tasks');
-
-  expect(response.status()).toBe(200);
-
-  const tasks = await response.json();
-  expect(Array.isArray(tasks)).toBeTruthy();
-
-  // Validate task structure
-  if (tasks.length > 0) {
-    const task = tasks[0];
-    expect(task).toHaveProperty('id');
-    expect(task).toHaveProperty('title');
-    expect(task).toHaveProperty('status');
-  }
-});
-```
+**Test Categories:**
+- ✅ Happy path scenarios
+- ✅ Status code validation
+- ✅ Response header validation
+- ✅ JSON structure validation
+- ✅ Data type validation
+- ✅ Edge cases (zero values, large numbers, special characters)
+- ✅ Error handling (404, 400 errors)
+- ✅ Performance testing (response time)
+- ✅ State verification (deletion, updates)
 
 ---
 
-### Lab 8: Error Handling (25 minutes)
+## 🎯 Running the Tests
 
-**Task:** Test error scenarios and validation
+```bash
+cd module_9/playwright-inventory-api-tests
 
-```typescript
-test('Handle 404 - Item not found', async ({ request }) => {
-  const response = await request.get('http://localhost:8080/items/nonexistent-id');
+# Run all tests
+npx playwright test
 
-  expect(response.status()).toBe(404);
-});
+# Run specific test file
+npx playwright test tests/get-items.spec.ts
 
-test('Handle 400 - Bad request', async ({ request }) => {
-  const invalidItem = {
-    // Missing required fields
-    name: 'Invalid Item'
-    // price and quantity missing
-  };
+# Run tests in UI mode
+npx playwright test --ui
 
-  const response = await request.post('http://localhost:8080/items', {
-    data: invalidItem
-  });
-
-  // Expecting validation error
-  expect([400, 422]).toContain(response.status());
-});
-
-test('Validate error response structure', async ({ request }) => {
-  const response = await request.get('http://localhost:8080/items/invalid-id');
-
-  expect(response.status()).toBe(404);
-
-  const errorBody = await response.json();
-  expect(errorBody).toHaveProperty('error');
-  // Or check for error message
-  console.log('Error response:', errorBody);
-});
-```
-
----
-
-### Lab 9: API Context and Fixtures (30 minutes)
-
-**Task:** Use API request context and fixtures for reusable setup
-
-```typescript
-import { test as base, expect } from '@playwright/test';
-
-// Extend base test with custom fixtures
-const test = base.extend({
-  inventoryAPI: async ({ request }, use) => {
-    const baseURL = 'http://localhost:8080';
-
-    // Helper functions
-    const api = {
-      getAllItems: () => request.get(`${baseURL}/items`),
-
-      getItem: (id: string) => request.get(`${baseURL}/items/${id}`),
-
-      createItem: (data: any) => request.post(`${baseURL}/items`, { data }),
-
-      updateItem: (id: string, data: any) =>
-        request.put(`${baseURL}/items/${id}`, { data }),
-
-      deleteItem: (id: string) => request.delete(`${baseURL}/items/${id}`)
-    };
-
-    await use(api);
-  }
-});
-
-test('Use inventory API fixture', async ({ inventoryAPI }) => {
-  // Create item
-  const createResponse = await inventoryAPI.createItem({
-    name: 'Test Product',
-    description: 'Fixture test',
-    price: 99.99,
-    quantity: 5
-  });
-
-  expect(createResponse.status()).toBe(201);
-  const item = await createResponse.json();
-
-  // Get item
-  const getResponse = await inventoryAPI.getItem(item.id);
-  expect(getResponse.status()).toBe(200);
-
-  // Delete item
-  const deleteResponse = await inventoryAPI.deleteItem(item.id);
-  expect(deleteResponse.status()).toBe(204);
-});
-```
-
----
-
-### Lab 10: UI + API Integration (40 minutes)
-
-**Task:** Combine UI and API testing
-
-```typescript
-test('Setup test data via API, verify in UI', async ({ page, request }) => {
-  // Setup: Create items via API
-  const items = [
-    { name: 'Product 1', description: 'Description 1', price: 10.99, quantity: 100 },
-    { name: 'Product 2', description: 'Description 2', price: 20.99, quantity: 50 },
-    { name: 'Product 3', description: 'Description 3', price: 30.99, quantity: 25 }
-  ];
-
-  for (const item of items) {
-    await request.post('http://localhost:8080/items', { data: item });
-  }
-
-  // Verify: Check UI displays the items
-  await page.goto('http://localhost:8000'); // PlayPI dashboard
-
-  // Navigate to inventory view (adjust based on actual UI)
-  // await page.getByRole('link', { name: 'Inventory' }).click();
-
-  // Verify items appear in UI
-  // await expect(page.getByText('Product 1')).toBeVisible();
-  // await expect(page.getByText('Product 2')).toBeVisible();
-});
-
-test('UI action, verify via API', async ({ page, request }) => {
-  // Perform UI action (e.g., create item through form)
-  await page.goto('http://localhost:8000/inventory/new');
-
-  await page.getByLabel('Name').fill('UI Created Item');
-  await page.getByLabel('Price').fill('59.99');
-  await page.getByLabel('Quantity').fill('10');
-  await page.getByRole('button', { name: 'Submit' }).click();
-
-  // Verify via API
-  const response = await request.get('http://localhost:8080/items');
-  const items = await response.json();
-
-  const createdItem = items.find(item => item.name === 'UI Created Item');
-  expect(createdItem).toBeDefined();
-  expect(createdItem.price).toBe(59.99);
-});
+# Run tests with HTML report
+npx playwright test --reporter=html
 ```
 
 ---
