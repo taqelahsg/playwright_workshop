@@ -58,7 +58,26 @@ Learn about:
 - gRPC services (Ports 8082, 8084)
 - WebSocket Chat API (Port 8086)
 
-### 3. Making API Requests (60-90 minutes)
+### 3. Network Mocking and Interception (45-60 minutes)
+**File:** [03_network_mocking.md](03_network_mocking.md)
+
+Learn about:
+- What is network mocking and why use it
+- Blocking unwanted requests (images, CSS, tracking)
+- Mocking API responses with custom data
+- Simulating errors and edge cases
+- Modifying requests (headers, methods, body)
+- Modifying responses (body, headers, delays)
+- Monitoring network traffic
+- WebSocket mocking
+- Authentication handling
+
+**Hands-on Project:**
+- [playwright-network-mocking](playwright-network-mocking/) - 60+ examples across 7 test suites
+- Practical examples for all mocking scenarios
+- Quick reference guide included
+
+### 4. Making API Requests (60-90 minutes)
 **File:** [03_api_requests.md](03_api_requests.md)
 
 Learn about:
@@ -76,7 +95,7 @@ Learn about:
 - Work with Inventory API
 - Work with Task Management API
 
-### 4. API Response Validation (60-75 minutes)
+### 5. API Response Validation (60-75 minutes)
 **File:** [04_api_assertions.md](04_api_assertions.md)
 
 Learn about:
@@ -94,7 +113,7 @@ Learn about:
 - Date/time validation
 - Nested object assertions
 
-### 5. Advanced API Testing (45-60 minutes)
+### 6. Advanced API Testing (45-60 minutes)
 **File:** [05_advanced_api_testing.md](05_advanced_api_testing.md)
 
 Learn about:
@@ -106,7 +125,7 @@ Learn about:
 - Data-driven testing
 - Performance testing basics
 
-### 6. Combining UI and API Testing (30-45 minutes)
+### 7. Combining UI and API Testing (30-45 minutes)
 **File:** [06_ui_api_integration.md](06_ui_api_integration.md)
 
 Learn about:
@@ -118,7 +137,48 @@ Learn about:
 
 ---
 
-## 🧪 Implemented Test Suites
+## 🧪 Implemented Projects
+
+### Project 1: API Testing with PlayPI
+**Directory:** [playwright-inventory-api-tests](playwright-inventory-api-tests/)
+
+Comprehensive API testing examples using the PlayPI local API testing service.
+
+### Project 2: Network Mocking Examples
+**Directory:** [playwright-network-mocking](playwright-network-mocking/)
+
+Complete examples demonstrating Playwright's network mocking and interception capabilities.
+
+**What's included:**
+- ✅ **Blocking requests** - Speed up tests by blocking images, CSS, tracking
+- ✅ **Mocking API responses** - Return custom data without backend dependencies
+- ✅ **Modifying requests** - Add headers, change methods, modify bodies
+- ✅ **Modifying responses** - Transform real API responses on the fly
+- ✅ **Monitoring network** - Track requests, measure performance
+- ✅ **Real-world scenarios** - Login flows, error handling, loading states
+- ✅ **Advanced patterns** - Stateful mocks, conditional mocking, performance testing
+
+**7 comprehensive test suites with 60+ examples:**
+1. [Blocking Requests](playwright-network-mocking/tests/01-blocking-requests.spec.ts) - Block images, CSS, tracking
+2. [Mocking API Responses](playwright-network-mocking/tests/02-mocking-api-responses.spec.ts) - Custom data, errors, pagination
+3. [Modifying Requests](playwright-network-mocking/tests/03-modifying-requests.spec.ts) - Headers, auth, body modifications
+4. [Modifying Responses](playwright-network-mocking/tests/04-modifying-responses.spec.ts) - Transform responses, add delays
+5. [Monitoring Network](playwright-network-mocking/tests/05-monitoring-network.spec.ts) - Track calls, measure performance
+6. [Real-World Scenarios](playwright-network-mocking/tests/06-real-world-scenarios.spec.ts) - Login, errors, pagination
+7. [Advanced Patterns](playwright-network-mocking/tests/07-advanced-patterns.spec.ts) - Stateful mocks, chaos testing
+
+**Quick start:**
+```bash
+cd playwright-network-mocking
+npm install
+npm test
+```
+
+See the [Network Mocking README](playwright-network-mocking/README.md) for full documentation.
+
+---
+
+## 🧪 API Testing Test Suites (PlayPI Project)
 
 The following test suites are fully implemented in the `playwright-inventory-api-tests` project.
 

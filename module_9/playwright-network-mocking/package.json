@@ -1,0 +1,19 @@
+{
+  "name": "playwright-network-mocking",
+  "version": "1.0.0",
+  "description": "Playwright examples demonstrating network mocking and interception",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report"
+  },
+  "keywords": ["playwright", "network-mocking", "api-mocking", "interception"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/node": "^22.0.0"
+  }
+}
