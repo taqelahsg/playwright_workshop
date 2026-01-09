@@ -1,6 +1,6 @@
-# Playwright Workshop for Beginners
+# One-Day Intensive Playwright Workshop
 
-Welcome to the comprehensive Playwright Testing Workshop! This workshop is designed to take you from beginner to proficient in Playwright test automation.
+Welcome to the comprehensive one-day Playwright Testing Workshop! This intensive workshop is designed to take you from beginner to proficient in Playwright test automation in just 5 hours (9 AM - 2 PM).
 
 ---
 
@@ -27,90 +27,52 @@ This workshop is organized into progressive modules, each building on the previo
 
 ---
 
-## 🎯 Learning Paths
+## 🎯 One-Day Intensive Workshop Schedule
 
-### Path 1: Intensive One-Day Workshop (6 hours) - 9 AM to 3 PM ⚡ NEW
-**Accelerated coverage of all essential topics (Modules 2-10)**
+### Workshop Overview: 9 AM to 2 PM
+**Comprehensive coverage of all essential Playwright topics (Modules 2-10)**
 
-Perfect for teams needing comprehensive Playwright overview in a single day.
+Perfect for teams needing a complete Playwright overview in a single day.
 
 **Key Information:**
-- ⏰ **Duration:** 6 hours (9 AM - 3 PM)
+- ⏰ **Duration:** 5 hours (9 AM - 2 PM)
 - 📚 **Coverage:** Modules 2-10 (all essential topics)
 - ☕ **Breaks:** 2 × 15-minute breaks + 45-minute lunch
 - 👨‍🏫 **Format:** Instructor-led demos with focused hands-on practice
-- 🎯 **Net Teaching Time:** 4 hours 45 minutes
+- 🎯 **Net Teaching Time:** 3 hours 45 minutes
 
-**Schedule:**
+**Workshop Schedule:**
 
 | Time | Duration | Module | Topics |
 |------|----------|--------|--------|
-| 9:00 - 9:50 AM | 50 min | **Module 2** | Getting Started, First Test |
-| 9:50 - 10:30 AM | 40 min | **Module 3** | Configuration, Codegen, CLI |
-| 10:30 - 10:45 AM | 15 min | ☕ **Break** | |
-| 10:45 - 11:20 AM | 35 min | **Module 4** | Trace Viewer, Fixtures |
-| 11:20 - 12:00 PM | 40 min | **Module 5** | Parallel Tests, Projects |
-| 12:00 - 12:30 PM | 30 min | **Module 6** | Device Emulation |
-| 12:30 - 1:15 PM | 45 min | 🍽️ **Lunch** | |
-| 1:15 - 1:45 PM | 30 min | **Module 7** | Global Setup, CI/CD |
-| 1:45 - 2:15 PM | 30 min | **Module 8** | Locators & Assertions |
-| 2:15 - 2:30 PM | 15 min | ☕ **Break** | |
-| 2:30 - 2:50 PM | 20 min | **Module 9** | API Testing Basics |
-| 2:50 - 3:00 PM | 10 min | **Module 10** | Test Reporting |
+| 9:00 - 9:45 AM | 45 min | **Module 2** | Getting Started, First Test |
+| 9:45 - 10:20 AM | 35 min | **Module 3** | Configuration, Codegen, CLI |
+| 10:20 - 10:35 AM | 15 min | ☕ **Break** | |
+| 10:35 - 11:05 AM | 30 min | **Module 4** | Trace Viewer, Fixtures |
+| 11:05 - 11:35 AM | 30 min | **Module 5** | Parallel Tests, Projects |
+| 11:35 - 12:00 PM | 25 min | **Module 6** | Device Emulation |
+| 12:00 - 12:45 PM | 45 min | 🍽️ **Lunch** | |
+| 12:45 - 1:10 PM | 25 min | **Module 7** | Global Setup, CI/CD |
+| 1:10 - 1:35 PM | 25 min | **Module 8** | Locators & Assertions |
+| 1:35 - 1:50 PM | 15 min | ☕ **Break** | |
+| 1:50 - 2:00 PM | 10 min | **Modules 9 & 10** | API Testing + Reporting (Combined) |
 
-**Net Teaching Time:** 4 hours 45 minutes
-**You will learn:** All core Playwright concepts with focused demos and essential hands-on practice
-**Format:** Instructor-led demos with abbreviated labs, emphasis on key concepts
-**Post-workshop:** Access to all detailed module content for self-paced deep-dive practice
+**What You Will Learn:**
+- ✅ Write and run Playwright tests
+- ✅ Configure projects and use Codegen
+- ✅ Debug with Trace Viewer
+- ✅ Organize and run tests in parallel
+- ✅ Test across browsers and devices
+- ✅ Master locators and assertions
+- ✅ Test APIs with Playwright
+- ✅ Generate comprehensive test reports
+- ✅ Integrate with CI/CD pipelines
 
----
-
-### Path 2: Half-Day Workshop (4 hours)
-Perfect for quick introduction and hands-on practice.
-
-- **Module 2:** Getting Started (2 hours)
-- **Module 3:** Core Testing Skills (2 hours - abbreviated)
-
-**You will learn:** Write and run basic Playwright tests, use codegen, configure projects
-
----
-
-### Path 3: Full-Day Workshop (8 hours)
-Comprehensive introduction to Playwright testing.
-
-- **Module 2:** Getting Started (2-3 hours)
-- **Module 3:** Core Testing Skills (3-4 hours)
-- **Module 4:** Debugging & Test Management (2-3 hours)
-
-**You will learn:** Everything from Path 2 plus debugging, fixtures, and Page Object Model
-
----
-
-### Path 4: Two-Day Workshop (16 hours)
-Deep dive into Playwright for professional test automation.
-
-**Day 1:**
-- **Module 2:** Getting Started
-- **Module 3:** Core Testing Skills
-- **Module 4:** Debugging & Test Management
-
-**Day 2:**
-- **Module 5:** Test Organization & Execution
-- **Module 6:** Cross-Browser Testing
-- **Module 8:** Locator Strategies & Assertions (abbreviated)
-
-**You will learn:** Complete Playwright testing including parallel execution, cross-browser testing, and advanced locator strategies
-
----
-
-### Path 5: Three-Day Workshop (24 hours)
-Complete mastery including advanced enterprise topics.
-
-**Day 1:** Modules 2-4 (Foundations)
-**Day 2:** Modules 5-8 (Intermediate Skills)
-**Day 3:** Modules 9-10 + Module 7 (Advanced Topics)
-
-**You will learn:** Everything including API testing, reporting, CI/CD integration, and enterprise patterns
+**Learning Approach:**
+- Instructor-led demos with abbreviated labs
+- Emphasis on core concepts and best practices
+- Hands-on practice for foundational modules
+- Access to all detailed module content for self-paced deep-dive after the workshop
 
 ---
 
@@ -370,25 +332,27 @@ Track your progress through the workshop:
 
 ---
 
-## 📊 Workshop Formats
+## 📊 Post-Workshop Self-Study
 
-### Self-Paced Learning
-- Work through modules at your own speed
-- Complete all hands-on labs
-- Use Discord for questions
-- Estimated: 2-3 weeks part-time
+After completing the one-day intensive workshop, continue your learning:
 
-### Instructor-Led Workshop
-- Follow instructor through modules
-- Pair programming for labs
-- Group discussions
-- Estimated: 1-3 days full-time
+### Self-Paced Deep Dive
+- Review all module READMEs for comprehensive coverage
+- Complete all hands-on labs at your own speed
+- Each module has 2-4 hours of additional practice material
+- Use Discord for questions and community support
 
-### Hybrid Format
-- Self-paced modules with weekly sessions
-- Office hours for questions
-- Peer code reviews
-- Estimated: 4-6 weeks
+### Recommended Practice Schedule
+- **Week 1:** Deep dive into Modules 2-4 (Foundations)
+- **Week 2:** Practice Modules 5-6 (Test Organization & Cross-Browser)
+- **Week 3:** Master Modules 7-8 (Advanced Topics & Locators)
+- **Week 4:** Complete Modules 9-10 (API Testing & Reporting)
+
+### Continuous Learning
+- Apply concepts to your own projects
+- Join the Playwright Discord community
+- Follow Playwright blog for latest updates
+- Share knowledge with your team
 
 ---
 

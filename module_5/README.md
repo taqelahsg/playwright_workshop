@@ -1,10 +1,10 @@
 # Module 5: Test Organization and Execution
 
-**Duration:** 3-4 hours (Full coverage) | 40 minutes (Intensive workshop)
+**Duration:** 3-4 hours (Full coverage) | 30 minutes (Intensive workshop)
 **Level:** Intermediate
 **Prerequisites:** Completed Modules 2-4
 
-> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 40 minutes focusing on parallel execution concepts and test projects.
+> **Note:** In the intensive one-day workshop (9 AM - 2 PM), this module is covered in 30 minutes focusing on parallel execution concepts and test projects.
 
 ---
 

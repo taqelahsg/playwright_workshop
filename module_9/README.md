@@ -1,10 +1,10 @@
 # Module 9: API Testing with Playwright
 
-**Duration:** 3-4 hours (Full coverage) | 20 minutes (Intensive workshop)
+**Duration:** 3-4 hours (Full coverage) | 5 minutes (Intensive workshop - combined with Module 10)
 **Level:** Intermediate
 **Prerequisites:** Completed Modules 1-3
 
-> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 20 minutes with live demo of GET/POST requests and response validation basics.
+> **Note:** In the intensive one-day workshop (9 AM - 2 PM), this module is covered in 5 minutes combined with Module 10, focusing on quick overview of API testing capabilities.
 
 ---
 

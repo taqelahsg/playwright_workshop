@@ -1,10 +1,10 @@
 # Module 3: Core Testing Skills
 
-**Duration:** 3-4 hours (Full coverage) | 40 minutes (Intensive workshop)
+**Duration:** 3-4 hours (Full coverage) | 35 minutes (Intensive workshop)
 **Level:** Beginner
 **Prerequisites:** Completed Module 2
 
-> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 40 minutes with focused demos on configuration, Codegen, CLI, annotations, and retries.
+> **Note:** In the intensive one-day workshop (9 AM - 2 PM), this module is covered in 35 minutes with focused demos on configuration, Codegen, CLI, annotations, and retries.
 
 ---
 
