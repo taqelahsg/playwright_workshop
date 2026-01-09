@@ -16,17 +16,56 @@ This workshop is organized into progressive modules, each building on the previo
 | **Module 5** | [Test Organization & Execution](module_5/) | 3-4 hours | Intermediate | ⚡ Recommended |
 | **Module 6** | [Cross-Browser Testing](module_6/) | 2-3 hours | Intermediate | ⚡ Recommended |
 | **Module 7** | [Advanced Topics](module_7/) | 2-3 hours | Advanced | 🎯 Optional |
+| **Module 8** | [Locator Strategies & Assertions](module_8/) | 3-4 hours | Intermediate | ⚡ Recommended |
+| **Module 9** | [API Testing](module_9/) | 3-4 hours | Intermediate | ⚡ Recommended |
+| **Module 10** | [Test Reporting](module_10/) | 2-3 hours | Intermediate | ⚡ Recommended |
 
 **Total Duration:**
 - **Beginner Track** (Modules 2-4): 7-10 hours
 - **Intermediate Track** (Modules 2-6): 12-17 hours
-- **Complete Workshop** (Modules 2-7): 14-20 hours
+- **Complete Workshop** (Modules 2-10): 21-30 hours
 
 ---
 
 ## 🎯 Learning Paths
 
-### Path 1: Half-Day Workshop (4 hours)
+### Path 1: Intensive One-Day Workshop (6 hours) - 9 AM to 3 PM ⚡ NEW
+**Accelerated coverage of all essential topics (Modules 2-10)**
+
+Perfect for teams needing comprehensive Playwright overview in a single day.
+
+**Key Information:**
+- ⏰ **Duration:** 6 hours (9 AM - 3 PM)
+- 📚 **Coverage:** Modules 2-10 (all essential topics)
+- ☕ **Breaks:** 2 × 15-minute breaks + 45-minute lunch
+- 👨‍🏫 **Format:** Instructor-led demos with focused hands-on practice
+- 🎯 **Net Teaching Time:** 4 hours 45 minutes
+
+**Schedule:**
+
+| Time | Duration | Module | Topics |
+|------|----------|--------|--------|
+| 9:00 - 9:50 AM | 50 min | **Module 2** | Getting Started, First Test |
+| 9:50 - 10:30 AM | 40 min | **Module 3** | Configuration, Codegen, CLI |
+| 10:30 - 10:45 AM | 15 min | ☕ **Break** | |
+| 10:45 - 11:20 AM | 35 min | **Module 4** | Trace Viewer, Fixtures |
+| 11:20 - 12:00 PM | 40 min | **Module 5** | Parallel Tests, Projects |
+| 12:00 - 12:30 PM | 30 min | **Module 6** | Device Emulation |
+| 12:30 - 1:15 PM | 45 min | 🍽️ **Lunch** | |
+| 1:15 - 1:45 PM | 30 min | **Module 7** | Global Setup, CI/CD |
+| 1:45 - 2:15 PM | 30 min | **Module 8** | Locators & Assertions |
+| 2:15 - 2:30 PM | 15 min | ☕ **Break** | |
+| 2:30 - 2:50 PM | 20 min | **Module 9** | API Testing Basics |
+| 2:50 - 3:00 PM | 10 min | **Module 10** | Test Reporting |
+
+**Net Teaching Time:** 4 hours 45 minutes
+**You will learn:** All core Playwright concepts with focused demos and essential hands-on practice
+**Format:** Instructor-led demos with abbreviated labs, emphasis on key concepts
+**Post-workshop:** Access to all detailed module content for self-paced deep-dive practice
+
+---
+
+### Path 2: Half-Day Workshop (4 hours)
 Perfect for quick introduction and hands-on practice.
 
 - **Module 2:** Getting Started (2 hours)
@@ -36,18 +75,18 @@ Perfect for quick introduction and hands-on practice.
 
 ---
 
-### Path 2: Full-Day Workshop (8 hours)
+### Path 3: Full-Day Workshop (8 hours)
 Comprehensive introduction to Playwright testing.
 
 - **Module 2:** Getting Started (2-3 hours)
 - **Module 3:** Core Testing Skills (3-4 hours)
 - **Module 4:** Debugging & Test Management (2-3 hours)
 
-**You will learn:** Everything from Path 1 plus debugging, fixtures, and Page Object Model
+**You will learn:** Everything from Path 2 plus debugging, fixtures, and Page Object Model
 
 ---
 
-### Path 3: Two-Day Workshop (16 hours)
+### Path 4: Two-Day Workshop (16 hours)
 Deep dive into Playwright for professional test automation.
 
 **Day 1:**
@@ -58,19 +97,20 @@ Deep dive into Playwright for professional test automation.
 **Day 2:**
 - **Module 5:** Test Organization & Execution
 - **Module 6:** Cross-Browser Testing
+- **Module 8:** Locator Strategies & Assertions (abbreviated)
 
-**You will learn:** Complete Playwright testing including parallel execution, cross-browser testing, and advanced organization
+**You will learn:** Complete Playwright testing including parallel execution, cross-browser testing, and advanced locator strategies
 
 ---
 
-### Path 4: Three-Day Workshop (24 hours)
+### Path 5: Three-Day Workshop (24 hours)
 Complete mastery including advanced enterprise topics.
 
-**Day 1:** Modules 2-3
-**Day 2:** Modules 4-5
-**Day 3:** Modules 6-7
+**Day 1:** Modules 2-4 (Foundations)
+**Day 2:** Modules 5-8 (Intermediate Skills)
+**Day 3:** Modules 9-10 + Module 7 (Advanced Topics)
 
-**You will learn:** Everything including CI/CD integration, global setup, and advanced patterns
+**You will learn:** Everything including API testing, reporting, CI/CD integration, and enterprise patterns
 
 ---
 
@@ -177,6 +217,63 @@ Complete mastery including advanced enterprise topics.
 
 ---
 
+### Module 8: Locator Strategies & Assertions
+**🎯 Goal:** Master element selection and test validation
+
+**Topics:**
+- User-facing locators (role, text, label)
+- Locator best practices and prioritization
+- Chaining and filtering locators
+- Working with lists and dynamic content
+- Auto-retrying assertions
+- Visibility, state, and content assertions
+- Soft assertions and custom messages
+
+**Hands-on Projects:**
+- `playwright-locators/`
+
+**After this module:** You can write resilient tests with robust locators and reliable assertions
+
+---
+
+### Module 9: API Testing
+**🎯 Goal:** Test APIs effectively with Playwright
+
+**Topics:**
+- API testing fundamentals
+- Setting up PlayPI for local testing
+- HTTP requests (GET, POST, PUT, PATCH, DELETE)
+- Response validation and assertions
+- Network mocking and interception
+- Combining UI and API testing
+- Authentication handling
+
+**Hands-on Projects:**
+- `playwright-inventory-api-tests/`
+- `playwright-network-mocking/`
+
+**After this module:** You can test REST APIs and mock network requests in your tests
+
+---
+
+### Module 10: Test Reporting
+**🎯 Goal:** Generate and analyze comprehensive test reports
+
+**Topics:**
+- Built-in reporters (list, HTML, JSON, JUnit)
+- HTML reporter features and navigation
+- Multiple reporters configuration
+- CI/CD integration strategies
+- Blob reports for sharded tests
+- Custom reporter implementation
+
+**Hands-on Projects:**
+- Reporting examples and configurations
+
+**After this module:** You can generate professional test reports and integrate with CI/CD pipelines
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -267,6 +364,9 @@ Track your progress through the workshop:
 - [ ] **Module 5 Complete** - Can organize large test suites
 - [ ] **Module 6 Complete** - Can test across browsers and devices
 - [ ] **Module 7 Complete** - Can build enterprise test automation
+- [ ] **Module 8 Complete** - Can use advanced locators and assertions
+- [ ] **Module 9 Complete** - Can test APIs and mock network requests
+- [ ] **Module 10 Complete** - Can generate comprehensive test reports
 
 ---
 
@@ -350,6 +450,86 @@ Need help? Here's where to find it:
 - **Discord:** [Playwright Discord Server](https://aka.ms/playwright/discord)
 - **GitHub Issues:** [Playwright Issues](https://github.com/microsoft/playwright/issues)
 - **Stack Overflow:** Tag `playwright`
+
+---
+
+## 📋 Intensive One-Day Workshop - Instructor Guide
+
+### Pre-Workshop Preparation (Critical for Success)
+
+**Before 9 AM, ensure:**
+1. ✅ Playwright installed on all participant machines
+2. ✅ Node.js v18+ verified on all systems
+3. ✅ Sample project with pre-written tests ready
+4. ✅ PlayPI Docker container running for Module 9 (API testing)
+5. ✅ Pre-generated HTML report available for Module 10 demo
+6. ✅ Test URLs bookmarked and accessible
+7. ✅ VS Code with Playwright extension installed (recommended)
+
+### Teaching Tips for Tight Schedule
+
+**Modules 2-3 (Foundation - 90 minutes)**:
+- Use pre-installed environment to save setup time
+- Live code a basic test, let students follow along
+- Quick Codegen demo: record a test in 5 minutes
+- Focus on "getting tests running" over theory
+
+**Modules 4-5 (Intermediate - 75 minutes)**:
+- Show Trace Viewer on a pre-failed test
+- Demonstrate fixtures with one concrete example
+- Run tests in parallel: show before/after timing comparison
+- Skip deep configuration, focus on practical usage
+
+**Module 6 (Cross-Browser - 30 minutes)**:
+- Device emulation: show one mobile test execution
+- Quick demo of viewport and user agent changes
+- Mention locale/timezone capabilities without deep dive
+
+**Module 7 (Advanced - 30 minutes)**:
+- Global setup: explain concept, show config file
+- CI/CD: show GitHub Actions workflow file
+- Emphasize these are "starting points" for self-study
+
+**Modules 8-10 (Advanced - 60 minutes)**:
+- Module 8: Focus on 3-4 key locator types with one chaining example
+- Module 9: Live demo of GET/POST requests with PlayPI
+- Module 10: Show HTML report from earlier test run, explain JUnit for CI
+
+### Interactive Elements
+
+**Throughout the workshop:**
+- ✅ Ask questions while typing code (maintain engagement)
+- ✅ Use `--headed` mode for all demos (visual learning)
+- ✅ Encourage "code along" for Modules 2-3 only
+- ✅ Demo-only for Modules 8-10 (due to time constraints)
+- ✅ Quick Q&A at end of each module (2-3 minutes max)
+- ✅ Share additional resources link for self-paced learning
+
+### Backup Plan (If Running Behind)
+
+**Must Cover (Core Essentials)**:
+- ✅ Module 2: Getting Started (50 min)
+- ✅ Module 3: Core Testing Skills (40 min)
+- ✅ Module 8: Locators & Assertions (30 min)
+- ✅ Module 4: Trace Viewer only (20 min)
+
+**Abbreviated Coverage**:
+- ⚡ Module 5: Parallel execution concept (10 min)
+- ⚡ Module 9: API testing demo (10 min)
+- ⚡ Module 10: Reporting overview (5 min)
+
+**Reference Only**:
+- 📖 Modules 6-7: Mention briefly, share documentation links
+
+### Post-Workshop Follow-Up
+
+**Provide participants with:**
+- 📚 Links to all module READMEs with detailed labs
+- 💻 Access to complete hands-on project code
+- 🎯 Self-paced lab exercises (3-4 hours per module)
+- 🔗 Bookmark to official Playwright documentation
+- 💬 Discord/Slack channel for ongoing questions
+- 📧 Follow-up email with key resources and next steps
 
 ---
 

@@ -1,8 +1,10 @@
 # Module 4: Debugging and Test Management
 
-**Duration:** 2-3 hours
+**Duration:** 2-3 hours (Full coverage) | 35 minutes (Intensive workshop)
 **Level:** Beginner to Intermediate
 **Prerequisites:** Completed Modules 2-3
+
+> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 35 minutes focusing on Trace Viewer and fixtures basics.
 
 ---
 

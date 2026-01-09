@@ -1,8 +1,10 @@
 # Module 10: Test Reporting with Playwright
 
-**Duration:** 2-3 hours
+**Duration:** 2-3 hours (Full coverage) | 10 minutes (Intensive workshop)
 **Level:** Intermediate
 **Prerequisites:** Completed Modules 1-3
+
+> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 10 minutes with overview of reporter types and HTML report demo.
 
 ---
 

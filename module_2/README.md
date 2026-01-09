@@ -1,8 +1,10 @@
 # Module 2: Getting Started with Playwright
 
-**Duration:** 2-3 hours
+**Duration:** 2-3 hours (Full coverage) | 50 minutes (Intensive workshop)
 **Level:** Beginner
 **Prerequisites:** Basic JavaScript/TypeScript knowledge
+
+> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 50 minutes with focused demos and essential hands-on practice.
 
 ---
 
