@@ -1,6 +1,5 @@
 # Module 3: Core Testing Skills
 
-**Duration:** 40 minutes (Intensive workshop)
 **Level:** Beginner
 **Prerequisites:** Completed Module 2
 
