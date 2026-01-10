@@ -42,6 +42,9 @@ export default defineConfig({
 
     /* Video on failure */
     video: 'retain-on-failure',
+
+    /* Run browsers in headed mode */
+    headless: false,
   },
 
   /* Configure projects for major browsers */
