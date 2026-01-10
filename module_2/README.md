@@ -3,9 +3,6 @@
 **Duration:** 50 minutes (Intensive workshop)
 **Level:** Beginner
 **Prerequisites:** Basic JavaScript/TypeScript knowledge
-
-> **Note:** In the intensive one-day workshop (9 AM - 6 PM), this module is covered in 50 minutes with focused demos and essential hands-on practice.
-
 ---
 
 ## 🎯 Learning Objectives
