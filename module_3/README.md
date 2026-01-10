@@ -174,19 +174,16 @@ npx playwright test --project=chromium
 
 ### Lab 4: Organize Tests with Annotations
 **Task:** Create organized test suite:
-1. Create `tests/organized.spec.ts`
-2. Write 5 tests:
-   - 2 tests tagged with @smoke
-   - 2 tests tagged with @regression
-   - 1 test that should be skipped
+1. Create `tests/login-validation.spec.ts`
+2. Write 2 tests:
+   - 2 tests tagged with @regression (successful login with valid credentials and failed login with invalid password )
+   - 1 test tagged with @smoke (successful login with valid credentials)
 3. Run only smoke tests: `npx playwright test --grep @smoke`
-4. Run all except skipped: Verify skipped test doesn't run
 
 **Example structure:**
 ```typescript
-test('login @smoke', async ({ page }) => { /* ... */ });
-test('checkout @regression', async ({ page }) => { /* ... */ });
-test.skip('known issue', async ({ page }) => { /* ... */ });
+test('successful login with valid credentials @regression @smoke', async ({ page }) => { /* ... */ });
+test('failed login with invalid password @regression', async ({ page }) => { /* ... */ });
 ```
 ---
 
