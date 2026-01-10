@@ -1,10 +1,8 @@
 # Module 3: Core Testing Skills
 
-**Duration:** 3-4 hours (Full coverage) | 40 minutes (Intensive workshop)
+**Duration:** 40 minutes (Intensive workshop)
 **Level:** Beginner
 **Prerequisites:** Completed Module 2
-
-> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 40 minutes with focused demos on configuration, Codegen, CLI, annotations, and retries.
 
 ---
 
@@ -21,7 +19,7 @@ By the end of this module, you will be able to:
 
 ## 📚 Topics Covered
 
-### 1. Basic Playwright Configuration (60 minutes)
+### 1. Basic Playwright Configuration
 **File:** [1_basic_configuration.md](1_basic_configuration.md)
 
 Learn about:
@@ -40,7 +38,7 @@ Learn about:
 
 ---
 
-### 2. Recording Tests with Codegen (45 minutes)
+### 2. Recording Tests with Codegen
 **File:** [2_recording_tests.md](2_recording_tests.md)
 
 Learn how to:
@@ -57,7 +55,7 @@ Learn how to:
 
 ---
 
-### 3. Command Line Interface Basics (60 minutes)
+### 3. Command Line Interface Basics
 **File:** [3_cli_basics.md](3_cli_basics.md)
 
 Learn essential CLI commands:
@@ -76,7 +74,7 @@ Learn essential CLI commands:
 
 ---
 
-### 4. Test Annotations (45 minutes)
+### 4. Test Annotations
 **File:** [4_test_annotations.md](4_test_annotations.md)
 
 Learn about:
@@ -95,7 +93,7 @@ Learn about:
 
 ---
 
-### 5. Retries and Timeouts (45 minutes)
+### 5. Retries and Timeouts
 **File:** [5_retries_and_timeouts.md](5_retries_and_timeouts.md)
 
 Learn about:
@@ -115,9 +113,9 @@ Learn about:
 
 ## 🧪 Lab Exercises
 
-### Lab 1: Configure Your Project (30 minutes)
+### Lab 1: Configure Your Project
 **Task:** Create a custom configuration:
-1. Set base URL to https://the-internet.herokuapp.com
+1. Set base URL to https://taqelah.sg/taqelah-demo-site.html
 2. Configure screenshots on failure
 3. Set test timeout to 60 seconds
 4. Enable video recording on failure
@@ -127,18 +125,30 @@ Learn about:
 
 ---
 
-### Lab 2: Record Tests with Codegen (30 minutes)
-**Task:** Use Codegen to record tests:
-1. Run: `npx playwright codegen https://the-internet.herokuapp.com`
-2. Record a test that:
-   - Clicks "A/B Testing"
-   - Verifies the heading exists
-3. Save to `tests/recorded.spec.ts`
-4. Clean up and improve the generated code
+### Lab 2: Record Login Test with Codegen
+**Task:** Use Codegen to record a login test with base URL:
+1. First, set the base URL in your `playwright.config.ts`:
+   ```typescript
+   use: {
+     baseURL: 'https://taqelah.sg/taqelah-demo-site.html',
+   }
+   ```
+2. Run: `npx playwright codegen https://taqelah.sg/taqelah-demo-site.html`
+3. Record a test that:
+   - Clicks on the login link/button
+   - Fills in username (similar to Module 2)
+   - Fills in password
+   - Clicks the Login button
+   - Verifies successful login
+4. Save to `tests/login-recorded.spec.ts`
+5. Clean up and improve the generated code
+6. Update the `page.goto()` to use the base URL (change from full URL to `'/'`)
+
+**Expected outcome:** A working login test that uses the configured base URL
 
 ---
 
-### Lab 3: Master the CLI (30 minutes)
+### Lab 3: Master the CLI
 **Practice these commands:**
 ```bash
 # Run all tests
@@ -162,7 +172,7 @@ npx playwright test --project=chromium
 
 ---
 
-### Lab 4: Organize Tests with Annotations (45 minutes)
+### Lab 4: Organize Tests with Annotations
 **Task:** Create organized test suite:
 1. Create `tests/organized.spec.ts`
 2. Write 5 tests:
@@ -178,17 +188,6 @@ test('login @smoke', async ({ page }) => { /* ... */ });
 test('checkout @regression', async ({ page }) => { /* ... */ });
 test.skip('known issue', async ({ page }) => { /* ... */ });
 ```
-
----
-
-### Lab 5: Handle Flaky Tests (30 minutes)
-**Task:** Work with retries and timeouts:
-1. Open `playwright-retries-timeouts/` project
-2. Run the tests and observe failures/retries
-3. Modify timeout configurations
-4. Experiment with retry counts
-5. Understand when retries help vs hurt
-
 ---
 
 ## ✅ Success Criteria
