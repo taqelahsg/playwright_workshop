@@ -14,6 +14,8 @@ Quick navigation guide for all workshop modules and their contents.
 | **Module 5** | Test Organization & Execution | [module_5/README.md](module_5/README.md) |
 | **Module 6** | Cross-Browser Testing | [module_6/README.md](module_6/README.md) |
 | **Module 7** | Advanced Topics | [module_7/README.md](module_7/README.md) |
+| **Module 10** | Test Reporting | [module_10/README.md](module_10/README.md) |
+| **Module 11** | 🤖 AI-Assisted with Claude Code | [module_11/README.md](module_11/README.md) |
 
 ---
 
@@ -152,6 +154,39 @@ Quick navigation guide for all workshop modules and their contents.
 
 ---
 
+## 📚 Module 11: Building Frameworks with Claude Code (AI-Assisted)
+
+**Location:** [module_11/](module_11/)
+**Duration:** 3-4 hours | **Level:** Intermediate to Advanced
+
+### Lessons:
+1. [What is Claude Code](module_11/01_what_is_claude_code.md)
+2. [Scaffolding a Framework](module_11/02_scaffolding_framework.md)
+3. [Desktop and Mobile Support](module_11/03_desktop_mobile_support.md)
+4. [Docker Integration](module_11/04_docker_integration.md)
+5. [GitHub Actions CI/CD](module_11/05_github_actions_cicd.md)
+6. [Test Reporting](module_11/06_test_reporting.md)
+7. [Advanced Workflows](module_11/07_advanced_workflows.md)
+
+### You Will Learn:
+- Use AI-powered coding with Claude Code
+- Generate complete frameworks in minutes (10x faster)
+- Build multi-platform test support (desktop + mobile web)
+- Dockerize test frameworks
+- Set up CI/CD pipelines with GitHub Actions
+- Generate comprehensive test reports
+- Leverage AI for debugging and refactoring
+- Implement industry best practices consistently
+
+### Key Benefits:
+- **85-92% time savings** on framework development
+- Consistent code quality and best practices
+- Rapid test case generation from requirements
+- Intelligent debugging assistance
+- Production-ready code with documentation
+
+---
+
 ## 🎯 Recommended Learning Paths
 
 ### Beginner Path (Required)
@@ -180,6 +215,17 @@ Quick navigation guide for all workshop modules and their contents.
 
 **Time:** 14-20 hours
 **Outcome:** Can build enterprise-level test automation
+
+---
+
+### AI-Assisted Development Path (Recommended for Modern Teams)
+1. **Module 2** → Getting Started (basics only)
+2. **Module 11** → Building with Claude Code (AI-powered development)
+3. **Modules 3-6** (as needed for specific features)
+
+**Time:** 6-8 hours
+**Outcome:** Can build complete frameworks 10x faster using AI assistance
+**Best For:** Teams adopting AI-driven development, rapid prototyping, productivity optimization
 
 ---
 

@@ -537,25 +537,6 @@ playwright-project/
 - Never commit to Git - can be recreated with `npm install`
 - Automatically managed by npm
 
-#### CI/CD Integration
-
-**.github/workflows/playwright.yml**
-- GitHub Actions workflow configuration for automated testing
-- Triggers on:
-  - Push to main/master branch
-  - Pull requests to main/master branch
-- Workflow steps:
-  1. Checkout code
-  2. Setup Node.js (LTS version)
-  3. Install dependencies with `npm ci`
-  4. Install Playwright browsers with `npx playwright install --with-deps`
-  5. Run tests with `npx playwright test`
-  6. Upload test reports as artifacts (retained for 30 days)
-- Configured with:
-  - 60-minute timeout
-  - Runs on Ubuntu (latest)
-  - Always uploads reports even if tests fail (`if: !cancelled()`)
-
 ---
 
 ## Install Playwright VS Code Extension (Recommended)
