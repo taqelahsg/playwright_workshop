@@ -1,10 +1,9 @@
-# Module 7: Advanced Topics (Optional)
+# Module 4: Global Setup, CI/CD Integration & Test Reporting (Optional)
 
-**Duration:** 2-3 hours (Full coverage) | 30 minutes (Intensive workshop)
 **Level:** Advanced
-**Prerequisites:** Completed Modules 2-6
+**Prerequisites:** Completed Modules 1-3
 
-> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 30 minutes with overview of global setup/teardown and CI/CD integration concepts.
+> **Note:** This module covers advanced topics including global setup/teardown, CI/CD integration, and test reporting.
 
 ---
 
