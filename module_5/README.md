@@ -1,429 +1,435 @@
-# Module 5: Test Organization and Execution
+# Module 5: Global Setup, CI/CD Integration & Test Reporting
 
-**Duration:** 3-4 hours (Full coverage) | 40 minutes (Intensive workshop)
-**Level:** Intermediate
+**Level:** Advanced
 **Prerequisites:** Completed Modules 2-4
 
-> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 40 minutes focusing on parallel execution concepts and test projects.
+> **Note:** This module covers advanced topics including global setup/teardown, CI/CD integration, and test reporting.
 
 ---
 
 ## 🎯 Learning Objectives
 
 By the end of this module, you will be able to:
-- ✅ Understand how Playwright runs tests in parallel
-- ✅ Configure workers and parallelization strategies
-- ✅ Create and manage test projects for different browsers
-- ✅ Parameterize tests with data-driven approaches
-- ✅ Organize and scale test suites effectively
-- ✅ Use worker isolation for independent test execution
+- ✅ Implement global setup and teardown for test suites
+- ✅ Use advanced CLI features for CI/CD
+- ✅ Implement test sharding for distributed execution
+- ✅ Create worker-scoped resources
+- ✅ Optimize test execution for large suites
+- ✅ Integrate Playwright with CI/CD pipelines
 
 ---
 
 ## 📚 Topics Covered
 
-### 1. Parallel Test Execution (90 minutes)
-**File:** [1_parallel_execution.md](1_parallel_execution.md)
+### 1. Global Setup and Teardown
+**File:** [1_global_setup_teardown.md](1_global_setup_teardown.md)
 
 Learn about:
-- How parallel execution works in Playwright
-- Worker processes and isolation
-- Configuring parallel execution:
-  - `workers` configuration
-  - `fullyParallel` mode
-  - Serial mode for dependent tests
-- Worker indexing and test isolation
-- Test sharding for CI/CD
-- Best practices for parallel testing
+- What is global setup/teardown?
+- When to use global setup
+- Implementing global authentication
+- Sharing state between setup and tests
+- Best practices
+
+**Use cases:**
+- One-time authentication for all tests
+- Starting mock servers
+- Environment configuration
+- Resource cleanup
 
 **Hands-on Lab:**
-- Explore: [playwright-parallel-tests/](playwright-parallel-tests/)
-- Run tests with different worker counts
-- Understand serial vs parallel modes
-- Implement worker-scoped fixtures
+- Explore: [playwright-global-setup-teardown/](playwright-global-setup-teardown/)
+- Implement global authentication
+- Create database setup
+- Share configuration across tests
 
 ---
 
-### 2. Test Projects (90 minutes)
-**File:** [2_test_projects.md](2_test_projects.md)
+### 2. Advanced CLI and Sharding (45 minutes)
+**File:** [2_advanced_cli.md](2_advanced_cli.md)
 
 Learn about:
-- What are test projects?
-- Configuring multiple browser projects
-- Device emulation projects (mobile, tablet)
-- Project dependencies (setup/teardown)
-- Running specific projects
-- Environment-specific projects
-- Filtering tests by project
+- Test sharding for parallel CI
+- Merging shard reports
+- Advanced filtering techniques
+- Test list generation
+- Custom reporters
+- Environment-specific execution
+- CI/CD integration patterns
 
-**Hands-on Lab:**
-- Explore: [playwright-test-projects/](playwright-test-projects/)
-- Configure Chromium, Firefox, WebKit projects
-- Add mobile device projects
-- Set up project dependencies
-- Run tests across all browsers
+**Key topics:**
+- Sharding tests across multiple machines
+- Running failed tests only
+- Generating test reports
+- GitHub Actions integration
+- GitLab CI integration
 
 ---
 
-### 3. Test Parameterization (90 minutes)
-**File:** [3_parameterization.md](3_parameterization.md)
+### 3. Advanced Parallel Execution
+**File:** [3_advanced_parallel.md](3_advanced_parallel.md)
 
 Learn about:
-- What is test parameterization?
-- Test-level parameterization with `forEach`
-- Project-level parameterization with custom options
-- Using environment variables
-- CSV-based test generation
-- Data-driven testing patterns
-
-**Hands-on Lab:**
-- Explore: [playwright-parameterization/](playwright-parameterization/)
-- Parameterize tests with multiple data sets
-- Create data-driven login tests
-- Use CSV files for test data
-- Implement matrix testing
+- Worker isolation strategies
+- Worker-scoped fixtures in depth
+- Test data isolation per worker
+- Port and resource allocation
+- Handling shared resources
+- Troubleshooting parallel issues
 
 ---
 
 ## 🧪 Lab Exercises
 
-### Lab 1: Master Parallel Execution (60 minutes)
+### Global Authentication Setup
 
-**Task 1: Experiment with Workers**
-1. Open `playwright-parallel-tests/`
-2. Run with 1 worker: `npx playwright test --workers=1`
-3. Run with 4 workers: `npx playwright test --workers=4`
-4. Compare execution times
-5. Observe the test output
+**Task:** Implement global authentication that runs once before all tests
 
-**Task 2: Implement Serial Mode**
-Create a test file with dependent tests:
+1. **Create global-setup.ts:**
 ```typescript
-test.describe.configure({ mode: 'serial' });
+import { chromium, FullConfig } from '@playwright/test';
 
-test('step 1: create user', async ({ page }) => {
-  // Create user
-});
+async function globalSetup(config: FullConfig) {
+  console.log('🔐 Performing global authentication...');
 
-test('step 2: login user', async ({ page }) => {
-  // Login with created user
-});
+  const browser = await chromium.launch();
+  const context = await browser.newContext();
+  const page = await context.newPage();
 
-test('step 3: delete user', async ({ page }) => {
-  // Cleanup
-});
+  // Navigate and login
+  await page.goto('https://example.com/login');
+  await page.fill('#username', process.env.TEST_USERNAME!);
+  await page.fill('#password', process.env.TEST_PASSWORD!);
+  await page.click('#submit');
+
+  // Wait for authentication
+  await page.waitForURL('**/dashboard');
+
+  // Save authentication state
+  await context.storageState({ path: 'playwright/.auth/user.json' });
+
+  await browser.close();
+
+  console.log('✅ Authentication completed');
+}
+
+export default globalSetup;
 ```
 
-**Task 3: Worker Isolation**
-Create a worker-scoped fixture for isolated data:
-```typescript
-export const test = base.extend<{}, { workerId: number }>({
-  workerId: [async ({}, use) => {
-    const id = test.info().workerIndex;
-    await use(id);
-  }, { scope: 'worker' }],
-});
-
-test('uses worker-specific data', async ({ workerId }) => {
-  console.log(`Running in worker ${workerId}`);
-});
-```
-
----
-
-### Lab 2: Configure Test Projects (60 minutes)
-
-**Task 1: Multi-Browser Configuration**
-Create a config with all major browsers:
+2. **Configure in playwright.config.ts:**
 ```typescript
 export default defineConfig({
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-  ],
+  globalSetup: require.resolve('./global-setup'),
+  use: {
+    storageState: 'playwright/.auth/user.json',
+  },
 });
 ```
 
-**Task 2: Add Mobile Projects**
+3. **Create tests that use authenticated state:**
 ```typescript
-{
-  name: 'Mobile Chrome',
-  use: { ...devices['Pixel 5'] },
-},
-{
-  name: 'Mobile Safari',
-  use: { ...devices['iPhone 12'] },
-}
+test('access protected page', async ({ page }) => {
+  // Already authenticated!
+  await page.goto('/dashboard');
+  await expect(page.locator('.user-name')).toBeVisible();
+});
 ```
 
-**Task 3: Setup Dependencies**
-```typescript
-{
-  name: 'setup',
-  testMatch: /.*\.setup\.ts/,
-},
-{
-  name: 'chromium',
-  use: { ...devices['Desktop Chrome'] },
-  dependencies: ['setup'],
-}
-```
+---
 
-**Task 4: Run Specific Projects**
+### Test Sharding for CI/CD
+
+1. **Test locally with sharding:**
 ```bash
-# Run only Chromium
-npx playwright test --project=chromium
+# Terminal 1 - Shard 1
+npx playwright test --shard=1/4
 
-# Run Chrome and Firefox
-npx playwright test --project=chromium --project=firefox
+# Terminal 2 - Shard 2
+npx playwright test --shard=2/4
 
-# Run all mobile projects
-npx playwright test --project="Mobile*"
+# Terminal 3 - Shard 3
+npx playwright test --shard=3/4
+
+# Terminal 4 - Shard 4
+npx playwright test --shard=4/4
 ```
-
----
-
-### Lab 3: Data-Driven Testing (60 minutes)
-
-**Task 1: Basic Parameterization**
-Create parameterized login tests:
-```typescript
-const users = [
-  { username: 'admin', password: 'admin123', role: 'Admin' },
-  { username: 'user', password: 'user123', role: 'User' },
-  { username: 'guest', password: 'guest123', role: 'Guest' },
-];
-
-users.forEach(({ username, password, role }) => {
-  test(`login as ${username}`, async ({ page }) => {
-    await page.goto('/login');
-    await page.fill('#username', username);
-    await page.fill('#password', password);
-    await page.click('#submit');
-
-    await expect(page.locator('.role')).toHaveText(role);
-  });
-});
-```
-
-**Task 2: CSV-Based Tests**
-1. Create `test-data/products.csv`:
-```csv
-productId,name,price,inStock
-1,Laptop,999.99,true
-2,Mouse,29.99,true
-3,Keyboard,79.99,false
-```
-
-2. Generate tests from CSV:
-```typescript
-import { parse } from 'csv-parse/sync';
-import * as fs from 'fs';
-
-const products = parse(fs.readFileSync('test-data/products.csv', 'utf-8'), {
-  columns: true,
-  skip_empty_lines: true,
-});
-
-products.forEach((product) => {
-  test(`verify product ${product.name}`, async ({ page }) => {
-    await page.goto(`/product/${product.productId}`);
-    await expect(page.locator('.price')).toHaveText(`$${product.price}`);
-  });
-});
-```
-
-**Task 3: Project-Level Parameterization**
-Create custom options:
-```typescript
-// fixtures/custom-test.ts
-type TestOptions = {
-  environment: 'staging' | 'production';
-};
-
-export const test = base.extend<TestOptions>({
-  environment: ['staging', { option: true }],
-});
-```
-
-```typescript
-// playwright.config.ts
-projects: [
-  {
-    name: 'staging',
-    use: { environment: 'staging' },
-  },
-  {
-    name: 'production',
-    use: { environment: 'production' },
-  },
-]
-```
-
----
-
-### Lab 4: Build a Scalable Test Suite (90 minutes)
-
-**Task:** Organize a complete test suite
-1. Create projects for:
-   - Smoke tests on all browsers
-   - Full regression on Chromium only
-   - Mobile tests on Chrome and Safari
-2. Add parameterization for:
-   - Multiple user roles
-   - Different locales
-3. Configure appropriate parallelization
-4. Add worker-scoped fixtures for isolation
-5. Run the full suite and analyze results
-
-**Expected structure:**
-```
-tests/
-├── smoke/
-│   ├── login.smoke.spec.ts
-│   └── home.smoke.spec.ts
-├── regression/
-│   ├── checkout.spec.ts
-│   └── profile.spec.ts
-├── mobile/
-│   └── navigation.mobile.spec.ts
-└── fixtures/
-    ├── auth.ts
-    └── database.ts
-```
-
 ---
 
 ## ✅ Success Criteria
 
 After completing this module, you should be able to:
-- [x] Explain how parallel execution works
-- [x] Configure workers and parallelization
-- [x] Use serial mode for dependent tests
-- [x] Create browser-specific projects
-- [x] Add mobile device projects
-- [x] Set up project dependencies
-- [x] Run specific projects from CLI
-- [x] Parameterize tests with data
-- [x] Use CSV files for test data
-- [x] Organize large test suites
-- [x] Implement worker isolation
+- [x] Implement global setup and teardown
+- [x] Create authentication setup that runs once
+- [x] Set up and tear down databases
+- [x] Share state between setup and tests
+- [x] Implement worker isolation strategies
+- [x] Configure environment-specific testing
+- [x] Optimize large test suites
 
 ---
 
 ## 🎓 Quick Reference
 
-### Parallel Execution
+### Global Setup
 ```typescript
 // playwright.config.ts
 export default defineConfig({
-  workers: process.env.CI ? 2 : undefined,
-  fullyParallel: true,
+  globalSetup: require.resolve('./global-setup'),
+  globalTeardown: require.resolve('./global-teardown'),
 });
 
-// Serial mode for specific suite
-test.describe.configure({ mode: 'serial' });
+// global-setup.ts
+async function globalSetup(config: FullConfig) {
+  // One-time setup
+}
+export default globalSetup;
 ```
 
-### Test Projects
-```typescript
-projects: [
-  { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-  { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-  { name: 'webkit', use: { ...devices['Desktop Safari'] } },
-  { name: 'mobile', use: { ...devices['iPhone 12'] } },
-]
-```
-
-### Parameterization
-```typescript
-// Test-level
-const testData = [{ value: 1 }, { value: 2 }];
-testData.forEach(({ value }) => {
-  test(`test with ${value}`, async ({ page }) => { });
-});
-
-// Project-level
-type Options = { env: string };
-export const test = base.extend<Options>({
-  env: ['staging', { option: true }],
-});
-```
-
-### CLI Commands
+### Test Sharding
 ```bash
-# Run with specific workers
-npx playwright test --workers=4
-
-# Run specific project
-npx playwright test --project=chromium
-
-# Run with sharding
+# Run shard 1 of 3
 npx playwright test --shard=1/3
+
+# Merge reports
+npx playwright merge-reports --reporter=html ./all-blob-reports
+```
+
+### Worker Fixtures
+```typescript
+export const test = base.extend<{}, WorkerFixtures>({
+  workerResource: [async ({}, use, workerInfo) => {
+    const resource = await createResource(workerInfo.workerIndex);
+    await use(resource);
+    await cleanupResource(resource);
+  }, { scope: 'worker' }],
+});
+```
+
+### CI/CD Commands
+```bash
+# Run only failed tests
+npx playwright test --last-failed
+
+# Generate different report formats
+npx playwright test --reporter=html,json,junit
+
+# Run with specific config
+npx playwright test --config=playwright.ci.config.ts
 ```
 
 ---
 
 ## 💡 Tips for Success
 
-1. **Start with default parallelization** - Optimize later if needed
-2. **Use serial mode sparingly** - Only for truly dependent tests
-3. **Test on primary browser first** - Then expand to others
-4. **Mobile testing is important** - Don't skip it
-5. **Parameterize wisely** - Balance coverage vs maintenance
-6. **Isolate test data per worker** - Avoid race conditions
-7. **Use projects for organization** - Not just browsers
+1. **Use global setup for expensive operations** - Authentication, database setup
+2. **Keep global setup fast** - It runs before every test execution
+3. **Clean up in teardown** - Always clean up resources
+4. **Shard appropriately** - Balance shards based on test count
+5. **Use worker fixtures for isolation** - Prevents test interference
+6. **Monitor CI execution time** - Optimize based on metrics
+7. **Don't over-engineer** - Start simple, add complexity as needed
 
 ---
 
 ## 📖 Additional Resources
 
-- [Parallelization Guide](https://playwright.dev/docs/test-parallel)
-- [Test Projects Documentation](https://playwright.dev/docs/test-projects)
-- [Parameterize Tests](https://playwright.dev/docs/test-parameterize)
-- [Test Configuration](https://playwright.dev/docs/test-configuration)
+- [Global Setup Documentation](https://playwright.dev/docs/test-global-setup-teardown)
 - [Sharding Tests](https://playwright.dev/docs/test-sharding)
+- [CI/CD Integration](https://playwright.dev/docs/ci)
+- [GitHub Actions Example](https://playwright.dev/docs/ci-intro)
+- [GitLab CI Example](https://playwright.dev/docs/ci#gitlab-ci)
+- [Jenkins Integration](https://playwright.dev/docs/ci#jenkins)
 
 ---
 
 ## ❓ Common Issues and Solutions
 
-### Issue: Tests fail in parallel but pass with --workers=1
-**Solution:** Tests have shared state. Use worker-scoped fixtures or unique test data per worker.
+### Issue: Global setup runs multiple times
+**Solution:** Verify `globalSetup` is at config level, not project level.
 
-### Issue: Project dependencies not running
-**Solution:** Verify dependency names match exactly and tests are tagged correctly.
+### Issue: Storage state not found
+**Solution:** Ensure global setup completes before tests run:
+```typescript
+// Check file exists
+if (!fs.existsSync('playwright/.auth/user.json')) {
+  throw new Error('Authentication state not found');
+}
+```
 
-### Issue: Parameterized tests all fail together
-**Solution:** Check if test data is causing failures. Test with single data set first.
+### Issue: Shard reports don't merge
+**Solution:** Use blob reporter in shards:
+```typescript
+reporter: process.env.CI ? 'blob' : 'html',
+```
 
-### Issue: Mobile tests don't behave correctly
-**Solution:** Verify device emulation is configured properly with `isMobile: true` and `hasTouch: true`.
+### Issue: Worker fixtures run too many times
+**Solution:** Verify scope is set to 'worker':
+```typescript
+myFixture: [async ({}, use) => { ... }, { scope: 'worker' }]
+```
 
 ---
 
 ## 🎯 Next Module Preview
 
-In **Module 6: Cross-Browser and Device Testing**, you'll learn:
-- Advanced device emulation
-- Testing with different locales and timezones
-- Permissions and geolocation testing
-- Network emulation
-- Accessibility testing
+In **Module 6: Test Organization & Execution**, you'll learn:
+- Running tests in parallel
+- Creating test projects for different browsers
+- Parameterizing tests with data
+- Organizing large test suites
+- Worker isolation and management
 
 ---
 
-**Ready to start? Open [1_parallel_execution.md](1_parallel_execution.md) to begin!**
+## 📚 Additional Learning Resources
+
+- [Playwright Official Documentation](https://playwright.dev)
+- [Playwright Community](https://playwright.dev/community/welcome)
+- [Playwright Discord](https://aka.ms/playwright/discord)
+- [Playwright GitHub](https://github.com/microsoft/playwright)
+- [Playwright Blog](https://playwright.dev/blog)
+
+---
+
+**Ready to start? Open [1_global_setup_teardown.md](1_global_setup_teardown.md) to begin!**
+
+---
+
+# Test Reporting
+
+## Built-in Reporters
+
+Playwright provides 8 built-in reporters:
+
+| Reporter | Output | Best For |
+|----------|--------|----------|
+| `list` | Console | Local development (default) |
+| `line` | Console | Large test suites |
+| `dot` | Console | CI pipelines |
+| `html` | File | Debugging failures |
+| `json` | File | Automation/analytics |
+| `junit` | File | CI integration |
+| `github` | Annotations | GitHub Actions |
+| `blob` | Binary | Sharded tests |
+
+## Configuration
+
+### Single Reporter
+```typescript
+// playwright.config.ts
+export default defineConfig({
+  reporter: 'html'
+});
+```
+
+### Multiple Reporters
+```typescript
+export default defineConfig({
+  reporter: [
+    ['list'],
+    ['html', { open: 'never' }],
+    ['json', { outputFile: 'results.json' }],
+    ['junit', { outputFile: 'results.xml' }]
+  ]
+});
+```
+
+### Environment-Based
+```typescript
+export default defineConfig({
+  reporter: process.env.CI
+    ? [['dot'], ['html'], ['junit', { outputFile: 'results.xml' }]]
+    : [['list'], ['html', { open: 'on-failure' }]]
+});
+```
+
+## CLI Commands
+
+```bash
+# Run with specific reporter
+npx playwright test --reporter=html
+
+# View HTML report
+npx playwright show-report
+
+# Multiple reporters
+npx playwright test --reporter=list --reporter=html
+```
+
+## HTML Reporter Options
+
+```typescript
+['html', {
+  outputFolder: 'playwright-report',
+  open: 'on-failure'  // 'always' | 'never' | 'on-failure'
+}]
+```
+
+## Blob Reports (Sharding)
+
+For distributed test execution:
+
+```bash
+# Run sharded tests
+npx playwright test --shard=1/3 --reporter=blob
+npx playwright test --shard=2/3 --reporter=blob
+npx playwright test --shard=3/3 --reporter=blob
+
+# Merge reports
+npx playwright merge-reports --reporter html ./blob-report
+```
+
+## CI Integration
+
+### GitHub Actions
+```yaml
+- name: Run tests
+  run: npx playwright test
+- name: Upload report
+  if: always()
+  uses: actions/upload-artifact@v4
+  with:
+    name: playwright-report
+    path: playwright-report/
+```
+
+### Config for CI
+```typescript
+reporter: [
+  ['dot'],
+  ['html'],
+  ['junit', { outputFile: 'results.xml' }]
+]
+```
+
+## Custom Reporters
+
+```typescript
+// reporters/my-reporter.ts
+import type { Reporter, TestCase, TestResult } from '@playwright/test/reporter';
+
+class MyReporter implements Reporter {
+  onTestEnd(test: TestCase, result: TestResult) {
+    console.log(`${test.title}: ${result.status}`);
+  }
+}
+
+export default MyReporter;
+```
+
+Usage:
+```typescript
+reporter: ['./reporters/my-reporter.ts']
+```
+
+## Reporting Lab Exercise
+
+1. Configure HTML + JSON reporters
+2. Run tests and view HTML report
+3. Try environment-based configuration
+
+**Hands-on Lab:**
+- Explore: [lab_exercise_taqelah_cart_dweb_mweb.md](lab_exercise_taqelah_cart_dweb_mweb.md)
 
 ---
 

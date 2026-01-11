@@ -12,9 +12,9 @@ This workshop is organized into progressive modules, each building on the previo
 |--------|-------|-------|--------|
 | **Module 2** | [Getting Started](module_2/) | Beginner | ✅ Required |
 | **Module 3** | [Core Testing Skills](module_3/) | Beginner | ✅ Required |
-| **Module 4** | [Locators, Assertions & Advanced Config](module_4/) | Intermediate | ⚡ Recommended |
-| **Module 5** | [Test Organization & Execution](module_5/) | Intermediate | ⚡ Recommended |
-| **Module 6** | [Debugging & Test Management](module_6/) | Intermediate | ✅ Required |
+| **Module 4** | [Debugging & Test Management](module_4/) | Intermediate | ✅ Required |
+| **Module 5** | [Global Setup, CI/CD Integration & Test Reporting](module_5/) | Advanced | ⚡ Recommended |
+| **Module 6** | [Test Organization & Execution](module_6/) | Intermediate | ⚡ Recommended |
 | **Module 7** | [API Testing](module_7/) | Intermediate | ⚡ Recommended |
 
 ---
@@ -39,11 +39,11 @@ Perfect for teams needing a complete Playwright overview in a single day.
 |------|----------|--------|--------|
 | 9:00 - 9:40 AM | 40 min | **Module 2** | Getting Started, First Test |
 | 9:40 - 10:00 AM | 20 min | **Module 3** | Configuration, Codegen, CLI |
-| 10:00 - 10:20 AM | 20 min | **Module 4** | Locators, Assertions, Emulation |
+| 10:00 - 10:20 AM | 20 min | **Module 4** | Trace Viewer, Fixtures |
 | 10:20 - 10:35 AM | 15 min | ☕ **Break** | |
-| 10:35 - 11:05 AM | 30 min | **Module 4** | Global Setup, Reporting |
-| 11:05 - 11:40 AM | 35 min | **Module 5** | Parallel Tests, Projects |
-| 11:40 - 12:20 PM | 40 min | **Module 6** | Trace Viewer, Fixtures |
+| 10:35 - 11:05 AM | 30 min | **Module 5** | Global Setup, Reporting |
+| 11:05 - 11:40 AM | 35 min | **Module 6** | Parallel Tests, Projects |
+| 11:40 - 12:20 PM | 40 min | **Module 6** | Parameterization |
 | 12:20 - 1:05 PM | 45 min | 🍽️ **Lunch** | |
 | 1:05 - 1:35 PM | 30 min | **Module 7** | API Testing Basics |
 | 1:35 - 2:05 PM | 30 min | **Module 7** | Network Mocking |
@@ -104,28 +104,40 @@ Perfect for teams needing a complete Playwright overview in a single day.
 
 ---
 
-### Module 4: Locators, Assertions & Advanced Config
-**🎯 Goal:** Master element selection, test validation, and advanced configurations
+### Module 4: Debugging & Test Management
+**🎯 Goal:** Debug failures and organize code effectively
 
 **Topics:**
-- Locator strategies and best practices
-- Test assertions (auto-retrying, soft assertions)
-- Device emulation (mobile, tablet)
-- Locale, timezone, and geolocation testing
-- Global setup and teardown
-- Test reporting (HTML, JSON, JUnit, blob reports)
+- Trace Viewer for debugging
+- Playwright fixtures system
+- Page Object Model pattern
+- Custom fixtures
 
 **Hands-on Projects:**
-- `playwright-locators/`
-- `playwright-emulation/`
-- `playwright-global-setup-teardown/`
-- `playwright-report-tests/`
+- `playwright-fixtures/`
 
-**After this module:** You can write resilient tests with robust locators, configure emulation, and generate reports
+**After this module:** You can debug any test failure and organize test code professionally
 
 ---
 
-### Module 5: Test Organization & Execution
+### Module 5: Global Setup, CI/CD Integration & Test Reporting
+**🎯 Goal:** Master advanced configuration and CI/CD integration
+
+**Topics:**
+- Global setup and teardown
+- Test reporting (HTML, JSON, JUnit, blob reports)
+- Test sharding for CI/CD
+- Worker-scoped fixtures
+
+**Hands-on Projects:**
+- `playwright-global-setup-teardown/`
+- `playwright-report-tests/`
+
+**After this module:** You can configure global setup, generate reports, and integrate with CI/CD pipelines
+
+---
+
+### Module 6: Test Organization & Execution
 **🎯 Goal:** Scale your test suite
 
 **Topics:**
@@ -140,22 +152,6 @@ Perfect for teams needing a complete Playwright overview in a single day.
 - `playwright-parameterization/`
 
 **After this module:** You can run tests efficiently across multiple browsers and organize large test suites
-
----
-
-### Module 6: Debugging & Test Management
-**🎯 Goal:** Debug failures and organize code effectively
-
-**Topics:**
-- Trace Viewer for debugging
-- Playwright fixtures system
-- Page Object Model pattern
-- Custom fixtures
-
-**Hands-on Projects:**
-- `playwright-fixtures/`
-
-**After this module:** You can debug any test failure and organize test code professionally
 
 ---
 
@@ -264,9 +260,9 @@ Track your progress through the workshop:
 
 - [ ] **Module 2 Complete** - Can write and run basic tests
 - [ ] **Module 3 Complete** - Can configure projects and record tests
-- [ ] **Module 4 Complete** - Can use locators, assertions, emulation, and generate reports
-- [ ] **Module 5 Complete** - Can organize and scale test suites
-- [ ] **Module 6 Complete** - Can debug failures and use fixtures
+- [ ] **Module 4 Complete** - Can debug failures and use fixtures
+- [ ] **Module 5 Complete** - Can configure global setup and generate reports
+- [ ] **Module 6 Complete** - Can organize and scale test suites
 - [ ] **Module 7 Complete** - Can test APIs and mock network requests
 
 ---
@@ -283,8 +279,8 @@ After completing the one-day intensive workshop, continue your learning:
 
 ### Recommended Practice Schedule
 - **Week 1:** Deep dive into Modules 2-3 (Foundations)
-- **Week 2:** Practice Module 4 (Locators, Assertions, Emulation, Reporting)
-- **Week 3:** Master Modules 5-6 (Test Organization & Debugging)
+- **Week 2:** Practice Module 4 (Debugging & Fixtures)
+- **Week 3:** Master Modules 5-6 (Global Setup, Reporting & Test Organization)
 - **Week 4:** Complete Module 7 (API Testing & Network Mocking)
 
 ### Continuous Learning
@@ -377,21 +373,20 @@ Need help? Here's where to find it:
 - Quick Codegen demo: record a test in 5 minutes
 - Focus on "getting tests running" over theory
 
-**Module 4 (Locators, Assertions & Advanced Config - 50 minutes)**:
-- Focus on 3-4 key locator types with one chaining example
-- Demo device emulation with mobile test
-- Show global setup configuration
-- Show HTML report from earlier test run, explain JUnit for CI
-
-**Module 5 (Test Organization - 35 minutes)**:
-- Run tests in parallel, show before/after timing comparison
-- Demo multi-browser projects configuration
-- Quick overview of parameterization
-
-**Module 6 (Debugging - 40 minutes)**:
+**Module 4 (Debugging & Test Management - 40 minutes)**:
 - Show Trace Viewer on a pre-failed test
 - Demonstrate fixtures with one concrete example
 - Page Object Model overview
+
+**Module 5 (Global Setup & Reporting - 30 minutes)**:
+- Show global setup configuration
+- Show HTML report from earlier test run, explain JUnit for CI
+- Demo test sharding for CI/CD
+
+**Module 6 (Test Organization - 35 minutes)**:
+- Run tests in parallel, show before/after timing comparison
+- Demo multi-browser projects configuration
+- Quick overview of parameterization
 
 **Module 7 (API Testing - 60 minutes)**:
 - Live demo of GET/POST requests with PlayPI
@@ -413,12 +408,11 @@ Need help? Here's where to find it:
 **Must Cover (Core Essentials)**:
 - ✅ Module 2: Getting Started (40 min)
 - ✅ Module 3: Core Testing Skills (20 min)
-- ✅ Module 4: Locators & Assertions (20 min)
-- ✅ Module 6: Trace Viewer only (20 min)
+- ✅ Module 4: Trace Viewer & Fixtures (20 min)
 
 **Abbreviated Coverage**:
-- ⚡ Module 4: Emulation & Reporting overview (10 min)
-- ⚡ Module 5: Parallel execution concept (10 min)
+- ⚡ Module 5: Global Setup & Reporting overview (10 min)
+- ⚡ Module 6: Parallel execution concept (10 min)
 - ⚡ Module 7: API testing demo (10 min)
 
 **Reference Only**:

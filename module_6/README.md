@@ -1,340 +1,429 @@
-# Module 4: Debugging and Test Management
+# Module 6: Test Organization and Execution
 
-**Level:** Beginner to Intermediate
-**Prerequisites:** Completed Modules 2-3
+**Duration:** 3-4 hours (Full coverage) | 40 minutes (Intensive workshop)
+**Level:** Intermediate
+**Prerequisites:** Completed Modules 2-5
+
+> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 40 minutes focusing on parallel execution concepts and test projects.
 
 ---
 
 ## 🎯 Learning Objectives
 
 By the end of this module, you will be able to:
-- ✅ Use Trace Viewer to debug test failures
-- ✅ Understand Playwright fixtures
-- ✅ Create custom fixtures for reusable test setup
-- ✅ Implement Page Object Model pattern
-- ✅ Organize test code effectively
+- ✅ Understand how Playwright runs tests in parallel
+- ✅ Configure workers and parallelization strategies
+- ✅ Create and manage test projects for different browsers
+- ✅ Parameterize tests with data-driven approaches
+- ✅ Organize and scale test suites effectively
+- ✅ Use worker isolation for independent test execution
 
 ---
 
 ## 📚 Topics Covered
 
-### 1. Trace Viewer
-**File:** [1_trace_viewer.md](1_trace_viewer.md)
+### 1. Parallel Test Execution (90 minutes)
+**File:** [1_parallel_execution.md](1_parallel_execution.md)
 
 Learn about:
-- What is Trace Viewer and why use it
-- Enabling traces in tests
-- Recording traces (on, off, on-first-retry, retain-on-failure)
-- Viewing traces with `npx playwright show-trace`
-- Understanding the Trace Viewer interface:
-  - Timeline and screenshots
-  - Actions and events
-  - Network activity
-  - Console logs
-  - DOM snapshots
-- Debugging test failures efficiently
+- How parallel execution works in Playwright
+- Worker processes and isolation
+- Configuring parallel execution:
+  - `workers` configuration
+  - `fullyParallel` mode
+  - Serial mode for dependent tests
+- Worker indexing and test isolation
+- Test sharding for CI/CD
+- Best practices for parallel testing
 
-**Hands-on:**
-- Enable traces in configuration
-- Run a failing test
-- Open and analyze the trace
-- Find the root cause of failure
+**Hands-on Lab:**
+- Explore: [playwright-parallel-tests/](playwright-parallel-tests/)
+- Run tests with different worker counts
+- Understand serial vs parallel modes
+- Implement worker-scoped fixtures
 
 ---
 
-### 2. Playwright Fixtures (90 minutes)
-**File:** [2_fixtures.md](2_fixtures.md)
+### 2. Test Projects (90 minutes)
+**File:** [2_test_projects.md](2_test_projects.md)
 
 Learn about:
-- What are fixtures?
-- Built-in fixtures (`page`, `context`, `browser`)
-- Test fixtures vs worker fixtures
-- Creating custom fixtures
-- Fixture scope (test vs worker)
-- Page Object Model with fixtures
-- Sharing setup between tests
+- What are test projects?
+- Configuring multiple browser projects
+- Device emulation projects (mobile, tablet)
+- Project dependencies (setup/teardown)
+- Running specific projects
+- Environment-specific projects
+- Filtering tests by project
 
 **Hands-on Lab:**
-- Explore: [playwright-fixtures/](playwright-fixtures/)
-- Create custom page fixtures
-- Implement Page Object Model
-- Build reusable authentication fixtures
+- Explore: [playwright-test-projects/](playwright-test-projects/)
+- Configure Chromium, Firefox, WebKit projects
+- Add mobile device projects
+- Set up project dependencies
+- Run tests across all browsers
+
+---
+
+### 3. Test Parameterization (90 minutes)
+**File:** [3_parameterization.md](3_parameterization.md)
+
+Learn about:
+- What is test parameterization?
+- Test-level parameterization with `forEach`
+- Project-level parameterization with custom options
+- Using environment variables
+- CSV-based test generation
+- Data-driven testing patterns
+
+**Hands-on Lab:**
+- Explore: [playwright-parameterization/](playwright-parameterization/)
+- Parameterize tests with multiple data sets
+- Create data-driven login tests
+- Use CSV files for test data
+- Implement matrix testing
 
 ---
 
 ## 🧪 Lab Exercises
 
-### Lab 1: Debug with Trace Viewer (45 minutes)
+### Lab 1: Master Parallel Execution (60 minutes)
 
-**Task 1: Enable and View Traces**
-1. Configure traces in your config:
+**Task 1: Experiment with Workers**
+1. Open `playwright-parallel-tests/`
+2. Run with 1 worker: `npx playwright test --workers=1`
+3. Run with 4 workers: `npx playwright test --workers=4`
+4. Compare execution times
+5. Observe the test output
+
+**Task 2: Implement Serial Mode**
+Create a test file with dependent tests:
 ```typescript
-use: {
-  trace: 'on-first-retry',
-}
+test.describe.configure({ mode: 'serial' });
+
+test('step 1: create user', async ({ page }) => {
+  // Create user
+});
+
+test('step 2: login user', async ({ page }) => {
+  // Login with created user
+});
+
+test('step 3: delete user', async ({ page }) => {
+  // Cleanup
+});
 ```
-2. Create a failing test intentionally
-3. Run the test: `npx playwright test`
-4. Open trace: `npx playwright show-trace trace.zip`
-5. Analyze the failure in Trace Viewer
 
-**Task 2: Explore Trace Features**
-- Navigate through the timeline
-- View screenshots before/after each action
-- Inspect network requests
-- Check console logs
-- Examine DOM snapshots
+**Task 3: Worker Isolation**
+Create a worker-scoped fixture for isolated data:
+```typescript
+export const test = base.extend<{}, { workerId: number }>({
+  workerId: [async ({}, use) => {
+    const id = test.info().workerIndex;
+    await use(id);
+  }, { scope: 'worker' }],
+});
 
-**Expected outcome:** Understand how to use traces for debugging
+test('uses worker-specific data', async ({ workerId }) => {
+  console.log(`Running in worker ${workerId}`);
+});
+```
 
 ---
 
-### Lab 2: Create Custom Fixtures (60 minutes)
+### Lab 2: Configure Test Projects (60 minutes)
 
-**Task:** Create a login fixture
-1. Create `fixtures/auth.ts`:
+**Task 1: Multi-Browser Configuration**
+Create a config with all major browsers:
 ```typescript
-import { test as base } from '@playwright/test';
+export default defineConfig({
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+  ],
+});
+```
 
-type AuthFixtures = {
-  authenticatedPage: Page;
+**Task 2: Add Mobile Projects**
+```typescript
+{
+  name: 'Mobile Chrome',
+  use: { ...devices['Pixel 5'] },
+},
+{
+  name: 'Mobile Safari',
+  use: { ...devices['iPhone 12'] },
+}
+```
+
+**Task 3: Setup Dependencies**
+```typescript
+{
+  name: 'setup',
+  testMatch: /.*\.setup\.ts/,
+},
+{
+  name: 'chromium',
+  use: { ...devices['Desktop Chrome'] },
+  dependencies: ['setup'],
+}
+```
+
+**Task 4: Run Specific Projects**
+```bash
+# Run only Chromium
+npx playwright test --project=chromium
+
+# Run Chrome and Firefox
+npx playwright test --project=chromium --project=firefox
+
+# Run all mobile projects
+npx playwright test --project="Mobile*"
+```
+
+---
+
+### Lab 3: Data-Driven Testing (60 minutes)
+
+**Task 1: Basic Parameterization**
+Create parameterized login tests:
+```typescript
+const users = [
+  { username: 'admin', password: 'admin123', role: 'Admin' },
+  { username: 'user', password: 'user123', role: 'User' },
+  { username: 'guest', password: 'guest123', role: 'Guest' },
+];
+
+users.forEach(({ username, password, role }) => {
+  test(`login as ${username}`, async ({ page }) => {
+    await page.goto('/login');
+    await page.fill('#username', username);
+    await page.fill('#password', password);
+    await page.click('#submit');
+
+    await expect(page.locator('.role')).toHaveText(role);
+  });
+});
+```
+
+**Task 2: CSV-Based Tests**
+1. Create `test-data/products.csv`:
+```csv
+productId,name,price,inStock
+1,Laptop,999.99,true
+2,Mouse,29.99,true
+3,Keyboard,79.99,false
+```
+
+2. Generate tests from CSV:
+```typescript
+import { parse } from 'csv-parse/sync';
+import * as fs from 'fs';
+
+const products = parse(fs.readFileSync('test-data/products.csv', 'utf-8'), {
+  columns: true,
+  skip_empty_lines: true,
+});
+
+products.forEach((product) => {
+  test(`verify product ${product.name}`, async ({ page }) => {
+    await page.goto(`/product/${product.productId}`);
+    await expect(page.locator('.price')).toHaveText(`$${product.price}`);
+  });
+});
+```
+
+**Task 3: Project-Level Parameterization**
+Create custom options:
+```typescript
+// fixtures/custom-test.ts
+type TestOptions = {
+  environment: 'staging' | 'production';
 };
 
-export const test = base.extend<AuthFixtures>({
-  authenticatedPage: async ({ page }, use) => {
-    // Login logic here
-    await page.goto('/login');
-    await page.fill('#username', 'testuser');
-    await page.fill('#password', 'password');
-    await page.click('#submit');
-    await page.waitForURL('/dashboard');
+export const test = base.extend<TestOptions>({
+  environment: ['staging', { option: true }],
+});
+```
 
-    await use(page);
-
-    // Cleanup (logout) here if needed
+```typescript
+// playwright.config.ts
+projects: [
+  {
+    name: 'staging',
+    use: { environment: 'staging' },
   },
-});
-```
-
-2. Use in tests:
-```typescript
-import { test } from './fixtures/auth';
-
-test('dashboard shows user info', async ({ authenticatedPage }) => {
-  await expect(authenticatedPage.getByText('Welcome')).toBeVisible();
-});
+  {
+    name: 'production',
+    use: { environment: 'production' },
+  },
+]
 ```
 
 ---
 
-### Lab 3: Implement Page Object Model (60 minutes)
+### Lab 4: Build a Scalable Test Suite (90 minutes)
 
-**Task:** Create Page Objects for a login flow
+**Task:** Organize a complete test suite
+1. Create projects for:
+   - Smoke tests on all browsers
+   - Full regression on Chromium only
+   - Mobile tests on Chrome and Safari
+2. Add parameterization for:
+   - Multiple user roles
+   - Different locales
+3. Configure appropriate parallelization
+4. Add worker-scoped fixtures for isolation
+5. Run the full suite and analyze results
 
-1. Create `pages/LoginPage.ts`:
-```typescript
-import { Page } from '@playwright/test';
-
-export class LoginPage {
-  constructor(private page: Page) {}
-
-  async goto() {
-    await this.page.goto('/login');
-  }
-
-  async login(username: string, password: string) {
-    await this.page.fill('#username', username);
-    await this.page.fill('#password', password);
-    await this.page.click('button[type="submit"]');
-  }
-
-  async getErrorMessage() {
-    return this.page.locator('.error-message');
-  }
-}
+**Expected structure:**
 ```
-
-2. Create `pages/DashboardPage.ts`:
-```typescript
-export class DashboardPage {
-  constructor(private page: Page) {}
-
-  async isLoaded() {
-    await this.page.waitForURL('/dashboard');
-  }
-
-  async getUserName() {
-    return this.page.locator('.user-name').textContent();
-  }
-}
+tests/
+├── smoke/
+│   ├── login.smoke.spec.ts
+│   └── home.smoke.spec.ts
+├── regression/
+│   ├── checkout.spec.ts
+│   └── profile.spec.ts
+├── mobile/
+│   └── navigation.mobile.spec.ts
+└── fixtures/
+    ├── auth.ts
+    └── database.ts
 ```
-
-3. Use in tests:
-```typescript
-test('login flow', async ({ page }) => {
-  const loginPage = new LoginPage(page);
-  const dashboardPage = new DashboardPage(page);
-
-  await loginPage.goto();
-  await loginPage.login('testuser', 'password');
-  await dashboardPage.isLoaded();
-
-  await expect(await dashboardPage.getUserName()).toBe('testuser');
-});
-```
-
----
-
-### Lab 4: Explore Fixture Examples (45 minutes)
-
-**Task:** Work with the fixtures project
-1. Navigate to `playwright-fixtures/`
-2. Study the examples:
-   - `examples/01-built-in-fixtures.spec.ts`
-   - `examples/02-custom-test-fixture.spec.ts`
-   - `examples/03-page-object-fixture.spec.ts`
-   - `examples/04-worker-fixture.spec.ts`
-3. Run the tests: `npx playwright test`
-4. Modify fixtures to understand behavior
-5. Create your own custom fixture
 
 ---
 
 ## ✅ Success Criteria
 
 After completing this module, you should be able to:
-- [x] Enable and configure trace recording
-- [x] Open and navigate Trace Viewer
-- [x] Use traces to debug test failures
-- [x] Understand Playwright's fixture system
-- [x] Create custom test fixtures
-- [x] Implement Page Object Model
-- [x] Use fixtures for authentication
-- [x] Share setup logic between tests
+- [x] Explain how parallel execution works
+- [x] Configure workers and parallelization
+- [x] Use serial mode for dependent tests
+- [x] Create browser-specific projects
+- [x] Add mobile device projects
+- [x] Set up project dependencies
+- [x] Run specific projects from CLI
+- [x] Parameterize tests with data
+- [x] Use CSV files for test data
+- [x] Organize large test suites
+- [x] Implement worker isolation
 
 ---
 
 ## 🎓 Quick Reference
 
-### Enabling Traces
+### Parallel Execution
 ```typescript
 // playwright.config.ts
 export default defineConfig({
-  use: {
-    trace: 'on-first-retry', // 'on' | 'off' | 'retain-on-failure'
-  },
+  workers: process.env.CI ? 2 : undefined,
+  fullyParallel: true,
+});
+
+// Serial mode for specific suite
+test.describe.configure({ mode: 'serial' });
+```
+
+### Test Projects
+```typescript
+projects: [
+  { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+  { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+  { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+  { name: 'mobile', use: { ...devices['iPhone 12'] } },
+]
+```
+
+### Parameterization
+```typescript
+// Test-level
+const testData = [{ value: 1 }, { value: 2 }];
+testData.forEach(({ value }) => {
+  test(`test with ${value}`, async ({ page }) => { });
+});
+
+// Project-level
+type Options = { env: string };
+export const test = base.extend<Options>({
+  env: ['staging', { option: true }],
 });
 ```
 
-### Viewing Traces
+### CLI Commands
 ```bash
-# View specific trace file
-npx playwright show-trace trace.zip
+# Run with specific workers
+npx playwright test --workers=4
 
-# Traces are in: test-results/[test-name]/trace.zip
-```
+# Run specific project
+npx playwright test --project=chromium
 
-### Custom Fixture Template
-```typescript
-import { test as base } from '@playwright/test';
-
-type MyFixtures = {
-  myFixture: string;
-};
-
-export const test = base.extend<MyFixtures>({
-  myFixture: async ({ page }, use) => {
-    // Setup
-    const value = 'setup value';
-
-    await use(value);
-
-    // Teardown
-  },
-});
-```
-
-### Page Object Pattern
-```typescript
-// pages/BasePage.ts
-export class BasePage {
-  constructor(protected page: Page) {}
-
-  async goto(path: string) {
-    await this.page.goto(path);
-  }
-}
-
-// pages/LoginPage.ts
-export class LoginPage extends BasePage {
-  async login(user: string, pass: string) {
-    await this.page.fill('#username', user);
-    await this.page.fill('#password', pass);
-    await this.page.click('#submit');
-  }
-}
+# Run with sharding
+npx playwright test --shard=1/3
 ```
 
 ---
 
 ## 💡 Tips for Success
 
-1. **Use traces liberally in CI** - Set to `retain-on-failure` for production
-2. **Trace Viewer is your best friend** - Learn to use it effectively
-3. **Start simple with fixtures** - Don't over-engineer early
-4. **Page Objects for common flows** - Login, checkout, navigation
-5. **Worker fixtures for expensive setup** - Database connections, authentication
-6. **Keep Page Objects focused** - One page or component per class
+1. **Start with default parallelization** - Optimize later if needed
+2. **Use serial mode sparingly** - Only for truly dependent tests
+3. **Test on primary browser first** - Then expand to others
+4. **Mobile testing is important** - Don't skip it
+5. **Parameterize wisely** - Balance coverage vs maintenance
+6. **Isolate test data per worker** - Avoid race conditions
+7. **Use projects for organization** - Not just browsers
 
 ---
 
 ## 📖 Additional Resources
 
-- [Trace Viewer Documentation](https://playwright.dev/docs/trace-viewer)
-- [Test Fixtures Guide](https://playwright.dev/docs/test-fixtures)
-- [Page Object Model Guide](https://playwright.dev/docs/pom)
-- [Advanced Fixtures](https://playwright.dev/docs/test-advanced)
+- [Parallelization Guide](https://playwright.dev/docs/test-parallel)
+- [Test Projects Documentation](https://playwright.dev/docs/test-projects)
+- [Parameterize Tests](https://playwright.dev/docs/test-parameterize)
+- [Test Configuration](https://playwright.dev/docs/test-configuration)
+- [Sharding Tests](https://playwright.dev/docs/test-sharding)
 
 ---
 
 ## ❓ Common Issues and Solutions
 
-### Issue: Trace files not generated
-**Solution:** Check trace is enabled in config. Failed tests generate traces with `on-first-retry`
+### Issue: Tests fail in parallel but pass with --workers=1
+**Solution:** Tests have shared state. Use worker-scoped fixtures or unique test data per worker.
 
-### Issue: Trace Viewer won't open
-**Solution:** Make sure trace file path is correct:
-```bash
-npx playwright show-trace test-results/example-test/trace.zip
-```
+### Issue: Project dependencies not running
+**Solution:** Verify dependency names match exactly and tests are tagged correctly.
 
-### Issue: Fixtures not running
-**Solution:** Make sure you're importing the custom `test` function:
-```typescript
-import { test } from './fixtures/my-fixtures'; // ✅
-import { test } from '@playwright/test'; // ❌ (uses base test)
-```
+### Issue: Parameterized tests all fail together
+**Solution:** Check if test data is causing failures. Test with single data set first.
 
-### Issue: Fixture runs multiple times
-**Solution:** Check fixture scope. Use `{ scope: 'worker' }` for one-time setup:
-```typescript
-dbFixture: [async ({}, use) => { ... }, { scope: 'worker' }]
-```
+### Issue: Mobile tests don't behave correctly
+**Solution:** Verify device emulation is configured properly with `isMobile: true` and `hasTouch: true`.
 
 ---
 
 ## 🎯 Next Module Preview
 
-In **Module 5: Test Organization and Execution**, you'll learn:
-- Running tests in parallel
-- Creating test projects for different browsers
-- Parameterizing tests with data
-- Organizing large test suites
-- Worker isolation and management
+In **Module 7: API Testing**, you'll learn:
+- API testing fundamentals
+- HTTP requests (GET, POST, PUT, PATCH, DELETE)
+- Response validation and assertions
+- Network mocking and interception
+- Combining UI and API testing
 
 ---
 
-**Ready to start? Open [1_trace_viewer.md](1_trace_viewer.md) to begin!**
+**Ready to start? Open [1_parallel_execution.md](1_parallel_execution.md) to begin!**
 
 ---
 

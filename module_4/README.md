@@ -1,442 +1,339 @@
-# Module 4: Global Setup, CI/CD Integration & Test Reporting
+# Module 4: Debugging and Test Management
 
-**Level:** Advanced
-**Prerequisites:** Completed Modules 1-3
-
-> **Note:** This module covers advanced topics including global setup/teardown, CI/CD integration, and test reporting.
+**Level:** Beginner to Intermediate
+**Prerequisites:** Completed Module 2-3
 
 ---
 
 ## 🎯 Learning Objectives
 
 By the end of this module, you will be able to:
-- ✅ Implement global setup and teardown for test suites
-- ✅ Use advanced CLI features for CI/CD
-- ✅ Implement test sharding for distributed execution
-- ✅ Create worker-scoped resources
-- ✅ Optimize test execution for large suites
-- ✅ Integrate Playwright with CI/CD pipelines
+- ✅ Use Trace Viewer to debug test failures
+- ✅ Understand Playwright fixtures
+- ✅ Create custom fixtures for reusable test setup
+- ✅ Implement Page Object Model pattern
+- ✅ Organize test code effectively
 
 ---
 
 ## 📚 Topics Covered
 
-### 1. Global Setup and Teardown
-**File:** [1_global_setup_teardown.md](1_global_setup_teardown.md)
+### 1. Trace Viewer
+**File:** [1_trace_viewer.md](1_trace_viewer.md)
 
 Learn about:
-- What is global setup/teardown?
-- When to use global setup
-- Implementing global authentication
-- Sharing state between setup and tests
-- Best practices
+- What is Trace Viewer and why use it
+- Enabling traces in tests
+- Recording traces (on, off, on-first-retry, retain-on-failure)
+- Viewing traces with `npx playwright show-trace`
+- Understanding the Trace Viewer interface:
+  - Timeline and screenshots
+  - Actions and events
+  - Network activity
+  - Console logs
+  - DOM snapshots
+- Debugging test failures efficiently
 
-**Use cases:**
-- One-time authentication for all tests
-- Starting mock servers
-- Environment configuration
-- Resource cleanup
+**Hands-on:**
+- Enable traces in configuration
+- Run a failing test
+- Open and analyze the trace
+- Find the root cause of failure
+
+---
+
+### 2. Playwright Fixtures (90 minutes)
+**File:** [2_fixtures.md](2_fixtures.md)
+
+Learn about:
+- What are fixtures?
+- Built-in fixtures (`page`, `context`, `browser`)
+- Test fixtures vs worker fixtures
+- Creating custom fixtures
+- Fixture scope (test vs worker)
+- Page Object Model with fixtures
+- Sharing setup between tests
 
 **Hands-on Lab:**
-- Explore: [playwright-global-setup-teardown/](playwright-global-setup-teardown/)
-- Implement global authentication
-- Create database setup
-- Share configuration across tests
-
----
-
-### 2. Advanced CLI and Sharding (45 minutes)
-**File:** [2_advanced_cli.md](2_advanced_cli.md)
-
-Learn about:
-- Test sharding for parallel CI
-- Merging shard reports
-- Advanced filtering techniques
-- Test list generation
-- Custom reporters
-- Environment-specific execution
-- CI/CD integration patterns
-
-**Key topics:**
-- Sharding tests across multiple machines
-- Running failed tests only
-- Generating test reports
-- GitHub Actions integration
-- GitLab CI integration
-
----
-
-### 3. Advanced Parallel Execution
-**File:** [3_advanced_parallel.md](3_advanced_parallel.md)
-
-Learn about:
-- Worker isolation strategies
-- Worker-scoped fixtures in depth
-- Test data isolation per worker
-- Port and resource allocation
-- Handling shared resources
-- Troubleshooting parallel issues
+- Explore: [playwright-fixtures/](playwright-fixtures/)
+- Create custom page fixtures
+- Implement Page Object Model
+- Build reusable authentication fixtures
 
 ---
 
 ## 🧪 Lab Exercises
 
-### Global Authentication Setup
+### Lab 1: Debug with Trace Viewer (45 minutes)
 
-**Task:** Implement global authentication that runs once before all tests
-
-1. **Create global-setup.ts:**
+**Task 1: Enable and View Traces**
+1. Configure traces in your config:
 ```typescript
-import { chromium, FullConfig } from '@playwright/test';
-
-async function globalSetup(config: FullConfig) {
-  console.log('🔐 Performing global authentication...');
-
-  const browser = await chromium.launch();
-  const context = await browser.newContext();
-  const page = await context.newPage();
-
-  // Navigate and login
-  await page.goto('https://example.com/login');
-  await page.fill('#username', process.env.TEST_USERNAME!);
-  await page.fill('#password', process.env.TEST_PASSWORD!);
-  await page.click('#submit');
-
-  // Wait for authentication
-  await page.waitForURL('**/dashboard');
-
-  // Save authentication state
-  await context.storageState({ path: 'playwright/.auth/user.json' });
-
-  await browser.close();
-
-  console.log('✅ Authentication completed');
+use: {
+  trace: 'on-first-retry',
 }
-
-export default globalSetup;
 ```
+2. Create a failing test intentionally
+3. Run the test: `npx playwright test`
+4. Open trace: `npx playwright show-trace trace.zip`
+5. Analyze the failure in Trace Viewer
 
-2. **Configure in playwright.config.ts:**
+**Task 2: Explore Trace Features**
+- Navigate through the timeline
+- View screenshots before/after each action
+- Inspect network requests
+- Check console logs
+- Examine DOM snapshots
+
+**Expected outcome:** Understand how to use traces for debugging
+
+---
+
+### Lab 2: Create Custom Fixtures (60 minutes)
+
+**Task:** Create a login fixture
+1. Create `fixtures/auth.ts`:
 ```typescript
-export default defineConfig({
-  globalSetup: require.resolve('./global-setup'),
-  use: {
-    storageState: 'playwright/.auth/user.json',
+import { test as base } from '@playwright/test';
+
+type AuthFixtures = {
+  authenticatedPage: Page;
+};
+
+export const test = base.extend<AuthFixtures>({
+  authenticatedPage: async ({ page }, use) => {
+    // Login logic here
+    await page.goto('/login');
+    await page.fill('#username', 'testuser');
+    await page.fill('#password', 'password');
+    await page.click('#submit');
+    await page.waitForURL('/dashboard');
+
+    await use(page);
+
+    // Cleanup (logout) here if needed
   },
 });
 ```
 
-3. **Create tests that use authenticated state:**
+2. Use in tests:
 ```typescript
-test('access protected page', async ({ page }) => {
-  // Already authenticated!
-  await page.goto('/dashboard');
-  await expect(page.locator('.user-name')).toBeVisible();
+import { test } from './fixtures/auth';
+
+test('dashboard shows user info', async ({ authenticatedPage }) => {
+  await expect(authenticatedPage.getByText('Welcome')).toBeVisible();
 });
 ```
 
 ---
 
-### Test Sharding for CI/CD
+### Lab 3: Implement Page Object Model (60 minutes)
 
-1. **Test locally with sharding:**
-```bash
-# Terminal 1 - Shard 1
-npx playwright test --shard=1/4
+**Task:** Create Page Objects for a login flow
 
-# Terminal 2 - Shard 2
-npx playwright test --shard=2/4
+1. Create `pages/LoginPage.ts`:
+```typescript
+import { Page } from '@playwright/test';
 
-# Terminal 3 - Shard 3
-npx playwright test --shard=3/4
+export class LoginPage {
+  constructor(private page: Page) {}
 
-# Terminal 4 - Shard 4
-npx playwright test --shard=4/4
+  async goto() {
+    await this.page.goto('/login');
+  }
+
+  async login(username: string, password: string) {
+    await this.page.fill('#username', username);
+    await this.page.fill('#password', password);
+    await this.page.click('button[type="submit"]');
+  }
+
+  async getErrorMessage() {
+    return this.page.locator('.error-message');
+  }
+}
 ```
+
+2. Create `pages/DashboardPage.ts`:
+```typescript
+export class DashboardPage {
+  constructor(private page: Page) {}
+
+  async isLoaded() {
+    await this.page.waitForURL('/dashboard');
+  }
+
+  async getUserName() {
+    return this.page.locator('.user-name').textContent();
+  }
+}
+```
+
+3. Use in tests:
+```typescript
+test('login flow', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const dashboardPage = new DashboardPage(page);
+
+  await loginPage.goto();
+  await loginPage.login('testuser', 'password');
+  await dashboardPage.isLoaded();
+
+  await expect(await dashboardPage.getUserName()).toBe('testuser');
+});
+```
+
+---
+
+### Lab 4: Explore Fixture Examples (45 minutes)
+
+**Task:** Work with the fixtures project
+1. Navigate to `playwright-fixtures/`
+2. Study the examples:
+   - `examples/01-built-in-fixtures.spec.ts`
+   - `examples/02-custom-test-fixture.spec.ts`
+   - `examples/03-page-object-fixture.spec.ts`
+   - `examples/04-worker-fixture.spec.ts`
+3. Run the tests: `npx playwright test`
+4. Modify fixtures to understand behavior
+5. Create your own custom fixture
+
 ---
 
 ## ✅ Success Criteria
 
 After completing this module, you should be able to:
-- [x] Implement global setup and teardown
-- [x] Create authentication setup that runs once
-- [x] Set up and tear down databases
-- [x] Share state between setup and tests
-- [x] Implement worker isolation strategies
-- [x] Configure environment-specific testing
-- [x] Optimize large test suites
+- [x] Enable and configure trace recording
+- [x] Open and navigate Trace Viewer
+- [x] Use traces to debug test failures
+- [x] Understand Playwright's fixture system
+- [x] Create custom test fixtures
+- [x] Implement Page Object Model
+- [x] Use fixtures for authentication
+- [x] Share setup logic between tests
 
 ---
 
 ## 🎓 Quick Reference
 
-### Global Setup
+### Enabling Traces
 ```typescript
 // playwright.config.ts
 export default defineConfig({
-  globalSetup: require.resolve('./global-setup'),
-  globalTeardown: require.resolve('./global-teardown'),
+  use: {
+    trace: 'on-first-retry', // 'on' | 'off' | 'retain-on-failure'
+  },
 });
-
-// global-setup.ts
-async function globalSetup(config: FullConfig) {
-  // One-time setup
-}
-export default globalSetup;
 ```
 
-### Test Sharding
+### Viewing Traces
 ```bash
-# Run shard 1 of 3
-npx playwright test --shard=1/3
+# View specific trace file
+npx playwright show-trace trace.zip
 
-# Merge reports
-npx playwright merge-reports --reporter=html ./all-blob-reports
+# Traces are in: test-results/[test-name]/trace.zip
 ```
 
-### Worker Fixtures
+### Custom Fixture Template
 ```typescript
-export const test = base.extend<{}, WorkerFixtures>({
-  workerResource: [async ({}, use, workerInfo) => {
-    const resource = await createResource(workerInfo.workerIndex);
-    await use(resource);
-    await cleanupResource(resource);
-  }, { scope: 'worker' }],
+import { test as base } from '@playwright/test';
+
+type MyFixtures = {
+  myFixture: string;
+};
+
+export const test = base.extend<MyFixtures>({
+  myFixture: async ({ page }, use) => {
+    // Setup
+    const value = 'setup value';
+
+    await use(value);
+
+    // Teardown
+  },
 });
 ```
 
-### CI/CD Commands
-```bash
-# Run only failed tests
-npx playwright test --last-failed
+### Page Object Pattern
+```typescript
+// pages/BasePage.ts
+export class BasePage {
+  constructor(protected page: Page) {}
 
-# Generate different report formats
-npx playwright test --reporter=html,json,junit
+  async goto(path: string) {
+    await this.page.goto(path);
+  }
+}
 
-# Run with specific config
-npx playwright test --config=playwright.ci.config.ts
+// pages/LoginPage.ts
+export class LoginPage extends BasePage {
+  async login(user: string, pass: string) {
+    await this.page.fill('#username', user);
+    await this.page.fill('#password', pass);
+    await this.page.click('#submit');
+  }
+}
 ```
 
 ---
 
 ## 💡 Tips for Success
 
-1. **Use global setup for expensive operations** - Authentication, database setup
-2. **Keep global setup fast** - It runs before every test execution
-3. **Clean up in teardown** - Always clean up resources
-4. **Shard appropriately** - Balance shards based on test count
-5. **Use worker fixtures for isolation** - Prevents test interference
-6. **Monitor CI execution time** - Optimize based on metrics
-7. **Don't over-engineer** - Start simple, add complexity as needed
+1. **Use traces liberally in CI** - Set to `retain-on-failure` for production
+2. **Trace Viewer is your best friend** - Learn to use it effectively
+3. **Start simple with fixtures** - Don't over-engineer early
+4. **Page Objects for common flows** - Login, checkout, navigation
+5. **Worker fixtures for expensive setup** - Database connections, authentication
+6. **Keep Page Objects focused** - One page or component per class
 
 ---
 
 ## 📖 Additional Resources
 
-- [Global Setup Documentation](https://playwright.dev/docs/test-global-setup-teardown)
-- [Sharding Tests](https://playwright.dev/docs/test-sharding)
-- [CI/CD Integration](https://playwright.dev/docs/ci)
-- [GitHub Actions Example](https://playwright.dev/docs/ci-intro)
-- [GitLab CI Example](https://playwright.dev/docs/ci#gitlab-ci)
-- [Jenkins Integration](https://playwright.dev/docs/ci#jenkins)
+- [Trace Viewer Documentation](https://playwright.dev/docs/trace-viewer)
+- [Test Fixtures Guide](https://playwright.dev/docs/test-fixtures)
+- [Page Object Model Guide](https://playwright.dev/docs/pom)
+- [Advanced Fixtures](https://playwright.dev/docs/test-advanced)
 
 ---
 
 ## ❓ Common Issues and Solutions
 
-### Issue: Global setup runs multiple times
-**Solution:** Verify `globalSetup` is at config level, not project level.
+### Issue: Trace files not generated
+**Solution:** Check trace is enabled in config. Failed tests generate traces with `on-first-retry`
 
-### Issue: Storage state not found
-**Solution:** Ensure global setup completes before tests run:
-```typescript
-// Check file exists
-if (!fs.existsSync('playwright/.auth/user.json')) {
-  throw new Error('Authentication state not found');
-}
-```
-
-### Issue: Shard reports don't merge
-**Solution:** Use blob reporter in shards:
-```typescript
-reporter: process.env.CI ? 'blob' : 'html',
-```
-
-### Issue: Worker fixtures run too many times
-**Solution:** Verify scope is set to 'worker':
-```typescript
-myFixture: [async ({}, use) => { ... }, { scope: 'worker' }]
-```
-
----
-
-## 🎉 Congratulations!
-
-You've completed all modules of the Playwright Workshop! You now have comprehensive knowledge of:
-- Writing and organizing tests
-- Debugging and fixing test failures
-- Running tests in parallel across browsers and devices
-- Setting up CI/CD pipelines
-- Managing enterprise-level test suites
-
-## 🚀 Next Steps
-
-1. **Practice** - Apply what you learned to your projects
-2. **Explore** - Check out Playwright's advanced features
-3. **Contribute** - Share your knowledge with the community
-4. **Stay Updated** - Follow Playwright releases for new features
-
----
-
-## 📚 Additional Learning Resources
-
-- [Playwright Official Documentation](https://playwright.dev)
-- [Playwright Community](https://playwright.dev/community/welcome)
-- [Playwright Discord](https://aka.ms/playwright/discord)
-- [Playwright GitHub](https://github.com/microsoft/playwright)
-- [Playwright Blog](https://playwright.dev/blog)
-
----
-
-**Ready to start? Open [1_global_setup_teardown.md](1_global_setup_teardown.md) to begin!**
-
----
-
-# Test Reporting
-
-## Built-in Reporters
-
-Playwright provides 8 built-in reporters:
-
-| Reporter | Output | Best For |
-|----------|--------|----------|
-| `list` | Console | Local development (default) |
-| `line` | Console | Large test suites |
-| `dot` | Console | CI pipelines |
-| `html` | File | Debugging failures |
-| `json` | File | Automation/analytics |
-| `junit` | File | CI integration |
-| `github` | Annotations | GitHub Actions |
-| `blob` | Binary | Sharded tests |
-
-## Configuration
-
-### Single Reporter
-```typescript
-// playwright.config.ts
-export default defineConfig({
-  reporter: 'html'
-});
-```
-
-### Multiple Reporters
-```typescript
-export default defineConfig({
-  reporter: [
-    ['list'],
-    ['html', { open: 'never' }],
-    ['json', { outputFile: 'results.json' }],
-    ['junit', { outputFile: 'results.xml' }]
-  ]
-});
-```
-
-### Environment-Based
-```typescript
-export default defineConfig({
-  reporter: process.env.CI
-    ? [['dot'], ['html'], ['junit', { outputFile: 'results.xml' }]]
-    : [['list'], ['html', { open: 'on-failure' }]]
-});
-```
-
-## CLI Commands
-
+### Issue: Trace Viewer won't open
+**Solution:** Make sure trace file path is correct:
 ```bash
-# Run with specific reporter
-npx playwright test --reporter=html
-
-# View HTML report
-npx playwright show-report
-
-# Multiple reporters
-npx playwright test --reporter=list --reporter=html
+npx playwright show-trace test-results/example-test/trace.zip
 ```
 
-## HTML Reporter Options
-
+### Issue: Fixtures not running
+**Solution:** Make sure you're importing the custom `test` function:
 ```typescript
-['html', {
-  outputFolder: 'playwright-report',
-  open: 'on-failure'  // 'always' | 'never' | 'on-failure'
-}]
+import { test } from './fixtures/my-fixtures'; // ✅
+import { test } from '@playwright/test'; // ❌ (uses base test)
 ```
 
-## Blob Reports (Sharding)
-
-For distributed test execution:
-
-```bash
-# Run sharded tests
-npx playwright test --shard=1/3 --reporter=blob
-npx playwright test --shard=2/3 --reporter=blob
-npx playwright test --shard=3/3 --reporter=blob
-
-# Merge reports
-npx playwright merge-reports --reporter html ./blob-report
-```
-
-## CI Integration
-
-### GitHub Actions
-```yaml
-- name: Run tests
-  run: npx playwright test
-- name: Upload report
-  if: always()
-  uses: actions/upload-artifact@v4
-  with:
-    name: playwright-report
-    path: playwright-report/
-```
-
-### Config for CI
+### Issue: Fixture runs multiple times
+**Solution:** Check fixture scope. Use `{ scope: 'worker' }` for one-time setup:
 ```typescript
-reporter: [
-  ['dot'],
-  ['html'],
-  ['junit', { outputFile: 'results.xml' }]
-]
+dbFixture: [async ({}, use) => { ... }, { scope: 'worker' }]
 ```
 
-## Custom Reporters
+---
 
-```typescript
-// reporters/my-reporter.ts
-import type { Reporter, TestCase, TestResult } from '@playwright/test/reporter';
+## 🎯 Next Module Preview
 
-class MyReporter implements Reporter {
-  onTestEnd(test: TestCase, result: TestResult) {
-    console.log(`${test.title}: ${result.status}`);
-  }
-}
+In **Module 5: Global Setup, CI/CD Integration & Test Reporting**, you'll learn:
+- Implementing global setup and teardown
+- Configuring test reporters
+- Test sharding for CI/CD
+- Worker-scoped fixtures
 
-export default MyReporter;
-```
+---
 
-Usage:
-```typescript
-reporter: ['./reporters/my-reporter.ts']
-```
-
-## Reporting Lab Exercise
-
-1. Configure HTML + JSON reporters
-2. Run tests and view HTML report
-3. Try environment-based configuration
-
-**Hands-on Lab:**
-- Explore: [lab_exercise_taqelah_cart_dweb_mweb.md](lab_exercise_taqelah_cart_dweb_mweb.md)
+**Ready to start? Open [1_trace_viewer.md](1_trace_viewer.md) to begin!**
 
 ---
 
