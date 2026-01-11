@@ -53,15 +53,15 @@ Content split into logical learning modules:
 
 ---
 
-### Module 4: Debugging & Test Management
+### Module 4: Locators & Assertions
 **Moved from Module 2:**
-- ✅ `7_trace_viewer.md` → `module_4/1_trace_viewer.md`
-- ✅ `5_playwright_fixtures.md` → `module_4/2_fixtures.md`
+- ✅ `locator_strategies.md` → `module_4/01_locator_strategies.md`
+- ✅ `test_assertions.md` → `module_4/02_test_assertions.md`
 
 **Playwright Projects:**
-- ✅ `playwright-fixtures/` → `module_4/`
+- ✅ `playwright-locators/` → `module_4/`
 
-**Why:** Debugging and code organization are next critical skills
+**Why:** Mastering locators and assertions is essential for writing reliable tests
 
 ---
 
@@ -104,18 +104,31 @@ Content split into logical learning modules:
 
 ---
 
+### Module 8: Debugging & Test Management
+**Moved from Module 2:**
+- ✅ `7_trace_viewer.md` → `module_8/1_trace_viewer.md`
+- ✅ `5_playwright_fixtures.md` → `module_8/2_fixtures.md`
+
+**Playwright Projects:**
+- ✅ `playwright-fixtures/` → `module_8/`
+
+**Why:** Debugging and code organization are critical intermediate skills
+
+---
+
 ## 📊 Content Distribution
 
 | Module | Topics | Projects | Duration | Level |
 |--------|--------|----------|----------|-------|
 | **2** | 3 topics | 1 project | 2-3h | Beginner |
 | **3** | 5 topics | 2 projects | 3-4h | Beginner |
-| **4** | 2 topics | 1 project | 2-3h | Intermediate |
+| **4** | 2 topics | 1 project | 2-3h | Beginner-Intermediate |
 | **5** | 3 topics | 3 projects | 3-4h | Intermediate |
 | **6** | 2 topics | 1 project | 2-3h | Intermediate |
 | **7** | 3 topics | 1 project | 2-3h | Advanced |
+| **8** | 2 topics | 1 project | 2-3h | Intermediate |
 
-**Total:** 18 topics, 9 projects, 14-20 hours
+**Total:** 20 topics, 10 projects, 16-23 hours
 
 ---
 
@@ -176,10 +189,11 @@ Created `/README.md` with:
 ### Module README Files:
 - ✅ `module_2/README.md` - Getting Started guide
 - ✅ `module_3/README.md` - Core Testing Skills guide
-- ✅ `module_4/README.md` - Debugging & Test Management guide
+- ✅ `module_4/README.md` - Locators & Assertions guide
 - ✅ `module_5/README.md` - Test Organization guide
 - ✅ `module_6/README.md` - Cross-Browser Testing guide
 - ✅ `module_7/README.md` - Advanced Topics guide
+- ✅ `module_8/README.md` - Debugging & Test Management guide
 
 ### Overview Documents:
 - ✅ `WORKSHOP_STRUCTURE.md` - Complete workshop overview

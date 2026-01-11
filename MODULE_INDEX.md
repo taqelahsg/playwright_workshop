@@ -10,10 +10,11 @@ Quick navigation guide for all workshop modules and their contents.
 |--------|-------|------------|
 | **Module 2** | Getting Started | [module_2/README.md](module_2/README.md) |
 | **Module 3** | Core Testing Skills | [module_3/README.md](module_3/README.md) |
-| **Module 4** | Debugging & Test Management | [module_4/README.md](module_4/README.md) |
+| **Module 4** | Locators & Assertions | [module_4/README.md](module_4/README.md) |
 | **Module 5** | Test Organization & Execution | [module_5/README.md](module_5/README.md) |
 | **Module 6** | Cross-Browser Testing | [module_6/README.md](module_6/README.md) |
 | **Module 7** | Advanced Topics | [module_7/README.md](module_7/README.md) |
+| **Module 8** | Debugging & Test Management | [module_8/README.md](module_8/README.md) |
 | **Module 10** | Test Reporting | [module_10/README.md](module_10/README.md) |
 | **Module 11** | 🤖 AI-Assisted with Claude Code | [module_11/README.md](module_11/README.md) |
 
@@ -65,24 +66,24 @@ Quick navigation guide for all workshop modules and their contents.
 
 ---
 
-## 📚 Module 4: Debugging & Test Management
+## 📚 Module 4: Locators & Assertions
 
 **Location:** [module_4/](module_4/)
-**Duration:** 2-3 hours | **Level:** Intermediate
+**Duration:** 2-3 hours | **Level:** Beginner to Intermediate
 
 ### Lessons:
-1. [Trace Viewer](module_4/1_trace_viewer.md)
-2. [Playwright Fixtures](module_4/2_fixtures.md)
+1. [Locator Strategies](module_4/01_locator_strategies.md)
+2. [Test Assertions](module_4/02_test_assertions.md)
 
 ### Projects:
-- `playwright-fixtures/`
+- `playwright-locators/`
 
 ### You Will Learn:
-- Debug test failures with Trace Viewer
-- Use Playwright fixtures
-- Implement Page Object Model
-- Create custom fixtures
-- Organize test code professionally
+- Master different locator strategies
+- Use best practices for element selection
+- Write effective test assertions
+- Handle dynamic elements
+- Create reliable, maintainable selectors
 
 ---
 
@@ -154,6 +155,27 @@ Quick navigation guide for all workshop modules and their contents.
 
 ---
 
+## 📚 Module 8: Debugging & Test Management
+
+**Location:** [module_8/](module_8/)
+**Duration:** 2-3 hours | **Level:** Intermediate
+
+### Lessons:
+1. [Trace Viewer](module_8/1_trace_viewer.md)
+2. [Playwright Fixtures](module_8/2_fixtures.md)
+
+### Projects:
+- `playwright-fixtures/`
+
+### You Will Learn:
+- Debug test failures with Trace Viewer
+- Use Playwright fixtures
+- Implement Page Object Model
+- Create custom fixtures
+- Organize test code professionally
+
+---
+
 ## 📚 Module 11: Building Frameworks with Claude Code (AI-Assisted)
 
 **Location:** [module_11/](module_11/)
@@ -192,10 +214,10 @@ Quick navigation guide for all workshop modules and their contents.
 ### Beginner Path (Required)
 1. **Module 2** → Getting Started
 2. **Module 3** → Core Testing Skills
-3. **Module 4** → Debugging & Test Management
+3. **Module 4** → Locators & Assertions
 
 **Time:** 7-10 hours
-**Outcome:** Can write, debug, and organize Playwright tests
+**Outcome:** Can write, locate elements, and assert test conditions
 
 ---
 
@@ -282,10 +304,10 @@ Track your progress through the workshop:
   - [ ] Lesson 5: Retries & Timeouts
   - [ ] Labs: Complete all exercises
 
-- [ ] Module 4: Debugging & Test Management
-  - [ ] Lesson 1: Trace Viewer
-  - [ ] Lesson 2: Fixtures
-  - [ ] Labs: Debug failures, create fixtures
+- [ ] Module 4: Locators & Assertions
+  - [ ] Lesson 1: Locator Strategies
+  - [ ] Lesson 2: Test Assertions
+  - [ ] Labs: Practice locators and assertions
 
 - [ ] Module 5: Test Organization & Execution
   - [ ] Lesson 1: Parallel Execution
@@ -300,6 +322,11 @@ Track your progress through the workshop:
 - [ ] Module 7: Advanced Topics (Optional)
   - [ ] Lesson 1: Global Setup
   - [ ] Labs: CI/CD integration
+
+- [ ] Module 8: Debugging & Test Management
+  - [ ] Lesson 1: Trace Viewer
+  - [ ] Lesson 2: Fixtures
+  - [ ] Labs: Debug failures, create fixtures
 
 ---
 
@@ -333,10 +360,11 @@ After completing modules, you will know:
 
 ✅ **After Module 2:** Write basic Playwright tests
 ✅ **After Module 3:** Configure and organize tests effectively
-✅ **After Module 4:** Debug failures and use advanced patterns
+✅ **After Module 4:** Master locators and assertions
 ✅ **After Module 5:** Build scalable test suites
 ✅ **After Module 6:** Test across browsers and devices
 ✅ **After Module 7:** Enterprise-level test automation
+✅ **After Module 8:** Debug failures and use advanced patterns
 
 ---
 

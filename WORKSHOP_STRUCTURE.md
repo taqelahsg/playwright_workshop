@@ -184,10 +184,10 @@ playwright_workshop/
 │   ├── 4_test_annotations.md
 │   ├── playwright-annotations/
 │   └── playwright-retries-timeouts/
-├── module_4/          # Debugging & Test Management
-│   ├── 1_trace_viewer.md
-│   ├── 2_fixtures.md
-│   └── playwright-fixtures/
+├── module_4/          # Locators & Assertions
+│   ├── 01_locator_strategies.md
+│   ├── 02_test_assertions.md
+│   └── playwright-locators/
 ├── module_5/          # Test Organization
 │   ├── 1_parallel_execution.md
 │   ├── 2_test_projects.md
@@ -199,11 +199,15 @@ playwright_workshop/
 │   ├── 1_emulation.md
 │   ├── 2_advanced_configuration.md
 │   └── playwright-emulation/
-└── module_7/          # Advanced Topics
-    ├── 1_global_setup_teardown.md
-    ├── 2_advanced_cli.md
-    ├── 3_advanced_parallel.md
-    └── playwright-global-setup-teardown/
+├── module_7/          # Advanced Topics
+│   ├── 1_global_setup_teardown.md
+│   ├── 2_advanced_cli.md
+│   ├── 3_advanced_parallel.md
+│   └── playwright-global-setup-teardown/
+└── module_8/          # Debugging & Test Management
+    ├── 1_trace_viewer.md
+    ├── 2_fixtures.md
+    └── playwright-fixtures/
 ```
 
 ---
