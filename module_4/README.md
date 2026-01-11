@@ -1,4 +1,4 @@
-# Module 4: Global Setup, CI/CD Integration & Test Reporting (Optional)
+# Module 4: Global Setup, CI/CD Integration & Test Reporting
 
 **Level:** Advanced
 **Prerequisites:** Completed Modules 1-3
