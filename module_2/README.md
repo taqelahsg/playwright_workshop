@@ -163,3 +163,7 @@ In **Module 3: Core Testing Skills**, you'll learn:
 ---
 
 **Ready to start? Open [1_introduction_to_playwright.md](1_introduction_to_playwright.md) to begin!**
+
+---
+
+> **Note:** All contents of this workshop are proprietary and belong to **Taqelah**. Do not share or distribute without permission.

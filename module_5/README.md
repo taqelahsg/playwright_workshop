@@ -424,3 +424,7 @@ In **Module 6: Cross-Browser and Device Testing**, you'll learn:
 ---
 
 **Ready to start? Open [1_parallel_execution.md](1_parallel_execution.md) to begin!**
+
+---
+
+> **Note:** All contents of this workshop are proprietary and belong to **Taqelah**. Do not share or distribute without permission.

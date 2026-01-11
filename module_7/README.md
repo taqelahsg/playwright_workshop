@@ -1,384 +1,388 @@
-# Module 7: Advanced Topics (Optional)
+# Module 9: API Testing with Playwright
 
-**Duration:** 2-3 hours (Full coverage) | 30 minutes (Intensive workshop)
-**Level:** Advanced
-**Prerequisites:** Completed Modules 2-6
+**Duration:** 3-4 hours (Full coverage) | 20 minutes (Intensive workshop)
+**Level:** Intermediate
+**Prerequisites:** Completed Modules 1-3
 
-> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 30 minutes with overview of global setup/teardown and CI/CD integration concepts.
+> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 20 minutes with live demo of GET/POST requests and response validation basics.
 
 ---
 
 ## 🎯 Learning Objectives
 
 By the end of this module, you will be able to:
-- ✅ Implement global setup and teardown for test suites
-- ✅ Use advanced CLI features for CI/CD
-- ✅ Implement test sharding for distributed execution
-- ✅ Create worker-scoped resources
-- ✅ Optimize test execution for large suites
-- ✅ Integrate Playwright with CI/CD pipelines
+- ✅ Understand Playwright's API testing capabilities
+- ✅ Set up and use PlayPI for local API testing
+- ✅ Make HTTP requests (GET, POST, PUT, PATCH, DELETE)
+- ✅ Validate API responses with assertions
+- ✅ Work with request and response headers
+- ✅ Handle authentication and authorization
+- ✅ Test RESTful APIs effectively
+- ✅ Combine UI and API testing in workflows
+- ✅ Debug and trace API requests
 
 ---
 
 ## 📚 Topics Covered
 
-### 1. Global Setup and Teardown (90 minutes)
-**File:** [1_global_setup_teardown.md](1_global_setup_teardown.md)
+### 1. Introduction to API Testing (30-45 minutes)
+**File:** [01_api_testing_basics.md](01_api_testing_basics.md)
 
 Learn about:
-- What is global setup/teardown?
-- When to use global setup
-- Implementing global authentication
-- Starting/stopping services
-- Database setup and cleanup
-- Sharing state between setup and tests
-- Best practices
+- What is API testing and why it matters
+- API testing vs UI testing
+- REST API fundamentals (HTTP methods, status codes)
+- Playwright's APIRequestContext
+- Benefits of API testing with Playwright
 
-**Use cases:**
-- One-time authentication for all tests
-- Starting mock servers
-- Database seeding
-- Environment configuration
-- Resource cleanup
+**Key concepts:**
+- HTTP methods (GET, POST, PUT, PATCH, DELETE)
+- Status codes (200, 201, 400, 404, 500)
+- Request/Response structure
+- Headers and body
+- JSON data format
+
+### 2. Setting Up PlayPI (20-30 minutes)
+**File:** [02_playpi_setup.md](02_playpi_setup.md)
+
+Learn about:
+- What is PlayPI
+- Installing Docker (prerequisite)
+- Pulling and running PlayPI container
+- Understanding available services
+- Accessing the PlayPI dashboard
+- Port configuration
+
+**Available PlayPI services:**
+- RESTful Inventory API (Port 8080)
+- RESTful Task Management API (Port 8085)
+- GraphQL Inventory API (Port 8081)
+- gRPC services (Ports 8082, 8084)
+- WebSocket Chat API (Port 8086)
+
+### 3. Network Mocking and Interception (45-60 minutes)
+**File:** [03_network_mocking.md](03_network_mocking.md)
+
+Learn about:
+- What is network mocking and why use it
+- Blocking unwanted requests (images, CSS, tracking)
+- Mocking API responses with custom data
+- Simulating errors and edge cases
+- Modifying requests (headers, methods, body)
+- Modifying responses (body, headers, delays)
+- Monitoring network traffic
+- WebSocket mocking
+- Authentication handling
+
+**Hands-on Project:**
+- [playwright-network-mocking](playwright-network-mocking/) - 60+ examples across 7 test suites
+- Practical examples for all mocking scenarios
+- Quick reference guide included
+
+### 4. Making API Requests (60-90 minutes)
+**File:** [03_api_requests.md](03_api_requests.md)
+
+Learn about:
+- Creating APIRequestContext
+- GET requests - fetching data
+- POST requests - creating resources
+- PUT/PATCH requests - updating resources
+- DELETE requests - removing resources
+- Request headers and query parameters
+- Request body (JSON, form data)
+- Response handling
 
 **Hands-on Lab:**
-- Explore: [playwright-global-setup-teardown/](playwright-global-setup-teardown/)
-- Implement global authentication
-- Create database setup
-- Share configuration across tests
+- Practice all HTTP methods with PlayPI
+- Work with Inventory API
+- Work with Task Management API
 
----
-
-### 2. Advanced CLI and Sharding (45 minutes)
-**File:** [2_advanced_cli.md](2_advanced_cli.md)
+### 5. API Response Validation (60-75 minutes)
+**File:** [04_api_assertions.md](04_api_assertions.md)
 
 Learn about:
-- Test sharding for parallel CI
-- Merging shard reports
-- Advanced filtering techniques
-- Test list generation
-- Custom reporters
-- Environment-specific execution
-- CI/CD integration patterns
+- Status code assertions
+- Response body validation
+- JSON structure verification
+- Header validation
+- Array and object assertions
+- Schema validation
+- Error response handling
 
-**Key topics:**
-- Sharding tests across multiple machines
-- Running failed tests only
-- Generating test reports
-- GitHub Actions integration
-- GitLab CI integration
+**Advanced validation:**
+- Partial JSON matching
+- Dynamic data validation
+- Date/time validation
+- Nested object assertions
 
----
-
-### 3. Advanced Parallel Execution (30 minutes)
-**File:** [3_advanced_parallel.md](3_advanced_parallel.md)
+### 6. Advanced API Testing (45-60 minutes)
+**File:** [05_advanced_api_testing.md](05_advanced_api_testing.md)
 
 Learn about:
-- Worker isolation strategies
-- Worker-scoped fixtures in depth
-- Test data isolation per worker
-- Port and resource allocation
-- Handling shared resources
-- Troubleshooting parallel issues
+- Authentication (Bearer tokens, API keys, Basic auth)
+- Request/Response interception
+- Fixtures for test data
+- Chaining API requests
+- Parameterized tests
+- Data-driven testing
+- Performance testing basics
+
+### 7. Combining UI and API Testing (30-45 minutes)
+**File:** [06_ui_api_integration.md](06_ui_api_integration.md)
+
+Learn about:
+- When to use UI vs API testing
+- Setting up test state via API
+- Validating UI changes with API
+- Hybrid testing workflows
+- Best practices for combined testing
 
 ---
 
-## 🧪 Lab Exercises
+## 🧪 Implemented Projects
 
-### Lab 1: Global Authentication Setup (45 minutes)
+### Project 1: API Testing with PlayPI
+**Directory:** [playwright-inventory-api-tests](playwright-inventory-api-tests/)
 
-**Task:** Implement global authentication that runs once before all tests
+Comprehensive API testing examples using the PlayPI local API testing service.
 
-1. **Create global-setup.ts:**
-```typescript
-import { chromium, FullConfig } from '@playwright/test';
+### Project 2: Network Mocking Examples
+**Directory:** [playwright-network-mocking](playwright-network-mocking/)
 
-async function globalSetup(config: FullConfig) {
-  console.log('🔐 Performing global authentication...');
+Complete examples demonstrating Playwright's network mocking and interception capabilities.
 
-  const browser = await chromium.launch();
-  const context = await browser.newContext();
-  const page = await context.newPage();
+**What's included:**
+- ✅ **Blocking requests** - Speed up tests by blocking images, CSS, tracking
+- ✅ **Mocking API responses** - Return custom data without backend dependencies
+- ✅ **Modifying requests** - Add headers, change methods, modify bodies
+- ✅ **Modifying responses** - Transform real API responses on the fly
+- ✅ **Monitoring network** - Track requests, measure performance
+- ✅ **Real-world scenarios** - Login flows, error handling, loading states
+- ✅ **Advanced patterns** - Stateful mocks, conditional mocking, performance testing
 
-  // Navigate and login
-  await page.goto('https://example.com/login');
-  await page.fill('#username', process.env.TEST_USERNAME!);
-  await page.fill('#password', process.env.TEST_PASSWORD!);
-  await page.click('#submit');
+**7 comprehensive test suites with 60+ examples:**
+1. [Blocking Requests](playwright-network-mocking/tests/01-blocking-requests.spec.ts) - Block images, CSS, tracking
+2. [Mocking API Responses](playwright-network-mocking/tests/02-mocking-api-responses.spec.ts) - Custom data, errors, pagination
+3. [Modifying Requests](playwright-network-mocking/tests/03-modifying-requests.spec.ts) - Headers, auth, body modifications
+4. [Modifying Responses](playwright-network-mocking/tests/04-modifying-responses.spec.ts) - Transform responses, add delays
+5. [Monitoring Network](playwright-network-mocking/tests/05-monitoring-network.spec.ts) - Track calls, measure performance
+6. [Real-World Scenarios](playwright-network-mocking/tests/06-real-world-scenarios.spec.ts) - Login, errors, pagination
+7. [Advanced Patterns](playwright-network-mocking/tests/07-advanced-patterns.spec.ts) - Stateful mocks, chaos testing
 
-  // Wait for authentication
-  await page.waitForURL('**/dashboard');
-
-  // Save authentication state
-  await context.storageState({ path: 'playwright/.auth/user.json' });
-
-  await browser.close();
-
-  console.log('✅ Authentication completed');
-}
-
-export default globalSetup;
-```
-
-2. **Configure in playwright.config.ts:**
-```typescript
-export default defineConfig({
-  globalSetup: require.resolve('./global-setup'),
-  use: {
-    storageState: 'playwright/.auth/user.json',
-  },
-});
-```
-
-3. **Create tests that use authenticated state:**
-```typescript
-test('access protected page', async ({ page }) => {
-  // Already authenticated!
-  await page.goto('/dashboard');
-  await expect(page.locator('.user-name')).toBeVisible();
-});
-```
-
----
-
-### Lab 2: Database Setup and Teardown (45 minutes)
-
-**Task:** Set up and tear down test database
-
-1. **Create global-setup.ts:**
-```typescript
-import { FullConfig } from '@playwright/test';
-
-async function globalSetup(config: FullConfig) {
-  console.log('🗄️ Setting up test database...');
-
-  // Example: MongoDB setup
-  const client = await MongoClient.connect('mongodb://localhost:27017');
-  const db = client.db('test_db');
-
-  // Create collections
-  await db.createCollection('users');
-  await db.createCollection('products');
-
-  // Seed initial data
-  await db.collection('users').insertMany([
-    { username: 'testuser1', email: 'test1@example.com' },
-    { username: 'testuser2', email: 'test2@example.com' },
-  ]);
-
-  await client.close();
-
-  console.log('✅ Database setup completed');
-}
-
-export default globalSetup;
-```
-
-2. **Create global-teardown.ts:**
-```typescript
-import { FullConfig } from '@playwright/test';
-
-async function globalTeardown(config: FullConfig) {
-  console.log('🧹 Cleaning up test database...');
-
-  const client = await MongoClient.connect('mongodb://localhost:27017');
-  const db = client.db('test_db');
-
-  // Drop test database
-  await db.dropDatabase();
-
-  await client.close();
-
-  console.log('✅ Cleanup completed');
-}
-
-export default globalTeardown;
-```
-
----
-
-### Lab 3: Test Sharding for CI/CD (45 minutes)
-
-**Task:** Configure test sharding for parallel CI execution
-
-1. **Create GitHub Actions workflow:**
-```yaml
-# .github/workflows/playwright.yml
-name: Playwright Tests
-
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        shardIndex: [1, 2, 3, 4]
-        shardTotal: [4]
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Run Playwright tests
-        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-
-      - name: Upload blob report to GitHub Actions Artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: blob-report-${{ matrix.shardIndex }}
-          path: blob-report
-          retention-days: 1
-
-  merge-reports:
-    if: always()
-    needs: [test]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-
-      - name: Download blob reports from GitHub Actions Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: all-blob-reports
-          pattern: blob-report-*
-          merge-multiple: true
-
-      - name: Merge into HTML Report
-        run: npx playwright merge-reports --reporter html ./all-blob-reports
-
-      - name: Upload HTML report
-        uses: actions/upload-artifact@v4
-        with:
-          name: html-report--attempt-${{ github.run_attempt }}
-          path: playwright-report
-          retention-days: 14
-```
-
-2. **Test locally with sharding:**
+**Quick start:**
 ```bash
-# Terminal 1 - Shard 1
-npx playwright test --shard=1/4
+cd playwright-network-mocking
+npm install
+npm test
+```
 
-# Terminal 2 - Shard 2
-npx playwright test --shard=2/4
+See the [Network Mocking README](playwright-network-mocking/README.md) for full documentation.
 
-# Terminal 3 - Shard 3
-npx playwright test --shard=3/4
+---
 
-# Terminal 4 - Shard 4
-npx playwright test --shard=4/4
+## 🧪 API Testing Test Suites (PlayPI Project)
+
+The following test suites are fully implemented in the `playwright-inventory-api-tests` project.
+
+### Test Suite 1: GET /items - Fetch All Items
+**File:** [get-items.spec.ts](playwright-inventory-api-tests/tests/get-items.spec.ts)
+
+**Tests implemented:**
+- ✅ Validates 200 status code response
+- ✅ Verifies JSON content type in response headers
+- ✅ Confirms response is an array with items
+- ✅ Validates item structure (id, name, description, price, quantity)
+- ✅ Verifies correct data types (number for id/price/quantity, string for name/description)
+- ✅ Validates item data values (positive IDs, non-empty names, non-negative prices/quantities)
+- ✅ Measures response time (should be under 1000ms)
+
+**Key validations:**
+```typescript
+// Status and content type
+expect(response.status()).toBe(200);
+expect(response.headers()['content-type']).toContain('application/json');
+
+// Array and structure validation
+expect(Array.isArray(items)).toBeTruthy();
+expect(firstItem).toHaveProperty('id');
+expect(typeof firstItem.price).toBe('number');
 ```
 
 ---
 
-### Lab 4: Worker Isolation (30 minutes)
+### Test Suite 2: POST /items - Create New Items
+**File:** [post-items.spec.ts](playwright-inventory-api-tests/tests/post-items.spec.ts)
 
-**Task:** Create isolated resources per worker
+**Tests implemented:**
+- ✅ Creates new item with valid data and validates 201 status
+- ✅ Verifies JSON content type in response
+- ✅ Creates item with minimum required fields
+- ✅ Handles decimal prices correctly (99.99)
+- ✅ Handles zero quantity items
+- ✅ Handles large quantities (10000)
+- ✅ Handles special characters in item names and descriptions
 
+**Key test scenarios:**
 ```typescript
-// fixtures/worker-database.ts
-import { test as base } from '@playwright/test';
-
-type WorkerFixtures = {
-  workerDatabase: string;
+// Standard creation
+const newItem = {
+  name: 'Test Laptop',
+  description: 'High-end gaming laptop',
+  price: 2499.99,
+  quantity: 5
 };
 
-export const test = base.extend<{}, WorkerFixtures>({
-  workerDatabase: [async ({}, use, workerInfo) => {
-    const dbName = `test_db_${workerInfo.workerIndex}`;
-
-    // Setup: Create database for this worker
-    console.log(`Creating database: ${dbName}`);
-    await createDatabase(dbName);
-
-    await use(dbName);
-
-    // Teardown: Cleanup database for this worker
-    console.log(`Cleaning up database: ${dbName}`);
-    await dropDatabase(dbName);
-  }, { scope: 'worker' }],
-});
-
-// Use in tests
-test('test with isolated database', async ({ workerDatabase }) => {
-  console.log(`Using database: ${workerDatabase}`);
-  // Each worker has its own database
-});
+// Edge cases tested
+- Zero quantity items (out of stock)
+- Large quantities (bulk items)
+- Special characters: @#$%&()
+- Decimal price precision
 ```
 
 ---
 
-### Lab 5: Advanced CI/CD Integration (60 minutes)
+### Test Suite 3: PUT /items/{id} - Full Update
+**File:** [put-items.spec.ts](playwright-inventory-api-tests/tests/put-items.spec.ts)
 
-**Task:** Build a complete CI/CD pipeline
+**Tests implemented:**
+- ✅ Fully updates all fields of an existing item
+- ✅ Verifies JSON content type
+- ✅ Updates all fields at once
+- ✅ Handles zero price updates
+- ✅ Handles zero quantity updates
+- ✅ Preserves item ID after update
+- ✅ Handles long descriptions (200+ characters)
 
-1. **Create multiple environment configs:**
+**Key features:**
 ```typescript
-// playwright.staging.config.ts
-export default defineConfig({
-  use: {
-    baseURL: 'https://staging.example.com',
-  },
+// Uses beforeEach to create test item
+test.beforeEach(async ({ request }) => {
+  const response = await request.post('/items', { data: newItem });
+  testItemId = (await response.json()).id;
 });
 
-// playwright.production.config.ts
-export default defineConfig({
-  use: {
-    baseURL: 'https://example.com',
-  },
-  retries: 0, // No retries in production
-});
+// Full replacement of all fields
+const updatedData = {
+  name: 'Updated Item Name',
+  description: 'Updated description',
+  price: 150.0,
+  quantity: 20
+};
 ```
 
-2. **Create npm scripts:**
-```json
-{
-  "scripts": {
-    "test": "playwright test",
-    "test:staging": "playwright test --config=playwright.staging.config.ts",
-    "test:production": "playwright test --config=playwright.production.config.ts",
-    "test:smoke": "playwright test --grep @smoke",
-    "test:headed": "playwright test --headed",
-    "test:debug": "playwright test --debug"
-  }
-}
+---
+
+### Test Suite 4: PATCH /items/{id} - Partial Update
+**File:** [patch-items.spec.ts](playwright-inventory-api-tests/tests/patch-items.spec.ts)
+
+**Tests implemented:**
+- ✅ Updates only the name field
+- ✅ Updates only the price field
+- ✅ Updates only the quantity field
+- ✅ Updates only the description field
+- ✅ Updates multiple fields but not all
+- ✅ Returns JSON content type
+- ✅ Returns 400 error for non-existent item with error message
+- ✅ Handles setting quantity to zero
+- ✅ Preserves item ID after partial update
+
+**Key validation:**
+```typescript
+// Verifies only updated fields changed
+expect(updatedItem.name).toBe(patchData.name);
+expect(updatedItem.description).toBe(originalItemData.description); // Unchanged
+expect(updatedItem.price).toBe(originalItemData.price); // Unchanged
+
+// Error handling
+expect(response.status()).toBe(400);
+expect(error.error).toBe('item not found');
 ```
 
-3. **Create CI configuration for multiple environments:**
-```yaml
-# .gitlab-ci.yml
-stages:
-  - test
+---
 
-test:staging:
-  stage: test
-  script:
-    - npm ci
-    - npx playwright install --with-deps
-    - npm run test:staging
-  only:
-    - develop
+### Test Suite 5: DELETE /items/{id} - Delete Item
+**File:** [delete-items.spec.ts](playwright-inventory-api-tests/tests/delete-items.spec.ts)
 
-test:production:
-  stage: test
-  script:
-    - npm ci
-    - npx playwright install --with-deps
-    - npm run test:smoke -- --config=playwright.production.config.ts
-  only:
-    - main
+**Tests implemented:**
+- ✅ Deletes an existing item with 200 status
+- ✅ Returns success message: `{message: 'item deleted'}`
+- ✅ Verifies item no longer exists after deletion (404 on GET)
+- ✅ Returns 404 when deleting non-existent item
+- ✅ Returns 404 when deleting already deleted item
+- ✅ Verifies other items remain unaffected
+- ✅ Handles deletion of items with zero quantity
+- ✅ Handles deletion of items with zero price
+- ✅ Measures deletion response time (should be under 500ms)
+
+**Key test patterns:**
+```typescript
+// Deletion verification
+const deleteResponse = await request.delete(`/items/${testItemId}`);
+expect(deleteResponse.status()).toBe(200);
+
+const responseData = await deleteResponse.json();
+expect(responseData.message).toBe('item deleted');
+
+// Verify deletion
+const getResponse = await request.get(`/items/${testItemId}`);
+expect(getResponse.status()).toBe(404);
+```
+
+---
+
+### Test Suite 6: GET /items/{id} - Get Item by ID
+**File:** [get-item-by-id.spec.ts](playwright-inventory-api-tests/tests/get-item-by-id.spec.ts)
+
+**Tests implemented:**
+- ⚠️ Documents that endpoint returns 404 for all items in this PlayPI instance
+- ✅ Tests 404 response for non-existent item IDs
+
+**Note:** This endpoint appears to have an issue in the PlayPI instance where it returns 404 for all item IDs, even valid ones. Tests document this behavior.
+
+---
+
+## 📊 Test Coverage Summary
+
+**Total Test Suites:** 6
+**Total Tests:** 42+
+
+**Coverage by HTTP Method:**
+- GET /items: 6 tests
+- GET /items/{id}: 2 tests (endpoint issue noted)
+- POST /items: 7 tests
+- PUT /items/{id}: 7 tests
+- PATCH /items/{id}: 9 tests
+- DELETE /items/{id}: 9 tests
+
+**Test Categories:**
+- ✅ Happy path scenarios
+- ✅ Status code validation
+- ✅ Response header validation
+- ✅ JSON structure validation
+- ✅ Data type validation
+- ✅ Edge cases (zero values, large numbers, special characters)
+- ✅ Error handling (404, 400 errors)
+- ✅ Performance testing (response time)
+- ✅ State verification (deletion, updates)
+
+---
+
+## 🎯 Running the Tests
+
+```bash
+cd module_9/playwright-inventory-api-tests
+
+# Run all tests
+npx playwright test
+
+# Run specific test file
+npx playwright test tests/get-items.spec.ts
+
+# Run tests in UI mode
+npx playwright test --ui
+
+# Run tests with HTML report
+npx playwright test --reporter=html
 ```
 
 ---
@@ -386,147 +390,269 @@ test:production:
 ## ✅ Success Criteria
 
 After completing this module, you should be able to:
-- [x] Implement global setup and teardown
-- [x] Create authentication setup that runs once
-- [x] Set up and tear down databases
-- [x] Share state between setup and tests
-- [x] Shard tests across multiple machines
-- [x] Merge shard reports
-- [x] Create CI/CD pipelines with Playwright
-- [x] Implement worker isolation strategies
-- [x] Configure environment-specific testing
-- [x] Optimize large test suites
+
+**API Testing Fundamentals:**
+- [x] Understand REST API concepts and HTTP methods
+- [x] Create and configure APIRequestContext
+- [x] Make GET, POST, PUT, PATCH, DELETE requests
+- [x] Handle request headers and query parameters
+- [x] Work with JSON request/response bodies
+
+**Response Validation:**
+- [x] Assert status codes correctly
+- [x] Validate JSON response structure
+- [x] Test arrays and nested objects
+- [x] Verify response headers
+- [x] Handle error responses
+
+**Advanced Techniques:**
+- [x] Set up PlayPI for local API testing
+- [x] Create reusable API fixtures
+- [x] Chain multiple API requests
+- [x] Combine UI and API testing
+- [x] Debug API requests with traces
 
 ---
 
 ## 🎓 Quick Reference
 
-### Global Setup
+### Making API Requests
+
 ```typescript
-// playwright.config.ts
-export default defineConfig({
-  globalSetup: require.resolve('./global-setup'),
-  globalTeardown: require.resolve('./global-teardown'),
+import { test, expect, request } from '@playwright/test';
+
+// GET request
+const response = await request.get('http://localhost:8080/items');
+
+// POST request
+const response = await request.post('http://localhost:8080/items', {
+  data: { name: 'Item', price: 99.99, quantity: 10 }
 });
 
-// global-setup.ts
-async function globalSetup(config: FullConfig) {
-  // One-time setup
-}
-export default globalSetup;
-```
+// PUT request
+const response = await request.put('http://localhost:8080/items/123', {
+  data: { name: 'Updated Item', price: 109.99, quantity: 5 }
+});
 
-### Test Sharding
-```bash
-# Run shard 1 of 3
-npx playwright test --shard=1/3
+// PATCH request
+const response = await request.patch('http://localhost:8080/items/123', {
+  data: { quantity: 15 }
+});
 
-# Merge reports
-npx playwright merge-reports --reporter=html ./all-blob-reports
-```
+// DELETE request
+const response = await request.delete('http://localhost:8080/items/123');
 
-### Worker Fixtures
-```typescript
-export const test = base.extend<{}, WorkerFixtures>({
-  workerResource: [async ({}, use, workerInfo) => {
-    const resource = await createResource(workerInfo.workerIndex);
-    await use(resource);
-    await cleanupResource(resource);
-  }, { scope: 'worker' }],
+// With headers
+const response = await request.get('http://localhost:8080/items', {
+  headers: {
+    'Authorization': 'Bearer token',
+    'Content-Type': 'application/json'
+  }
+});
+
+// With query parameters
+const response = await request.get('http://localhost:8080/items', {
+  params: {
+    page: 1,
+    limit: 10,
+    sort: 'price'
+  }
 });
 ```
 
-### CI/CD Commands
-```bash
-# Run only failed tests
-npx playwright test --last-failed
+### Common Assertions
 
-# Generate different report formats
-npx playwright test --reporter=html,json,junit
+```typescript
+// Status code
+expect(response.status()).toBe(200);
+expect(response.ok()).toBeTruthy();
 
-# Run with specific config
-npx playwright test --config=playwright.ci.config.ts
+// Response body (JSON)
+const data = await response.json();
+expect(data).toHaveProperty('id');
+expect(data.name).toBe('Expected Name');
+
+// Response body (text)
+const text = await response.text();
+expect(text).toContain('success');
+
+// Headers
+const headers = response.headers();
+expect(headers['content-type']).toContain('application/json');
+
+// Arrays
+expect(Array.isArray(data)).toBeTruthy();
+expect(data.length).toBeGreaterThan(0);
+expect(data).toHaveLength(5);
+
+// Nested objects
+expect(data.user.email).toBe('test@example.com');
+expect(data.metadata).toHaveProperty('created_at');
+```
+
+### PlayPI Services
+
+```typescript
+// Inventory API (RESTful)
+const baseURL = 'http://localhost:8080';
+GET    ${baseURL}/items
+GET    ${baseURL}/items/:id
+POST   ${baseURL}/items
+PUT    ${baseURL}/items/:id
+PATCH  ${baseURL}/items/:id
+DELETE ${baseURL}/items/:id
+
+// Task Management API (RESTful)
+const baseURL = 'http://localhost:8085';
+GET    ${baseURL}/tasks
+GET    ${baseURL}/tasks/:id
+POST   ${baseURL}/tasks
+PUT    ${baseURL}/tasks/:id
+PATCH  ${baseURL}/tasks/:id
+DELETE ${baseURL}/tasks/:id
 ```
 
 ---
 
 ## 💡 Tips for Success
 
-1. **Use global setup for expensive operations** - Authentication, database setup
-2. **Keep global setup fast** - It runs before every test execution
-3. **Clean up in teardown** - Always clean up resources
-4. **Shard appropriately** - Balance shards based on test count
-5. **Use worker fixtures for isolation** - Prevents test interference
-6. **Monitor CI execution time** - Optimize based on metrics
-7. **Don't over-engineer** - Start simple, add complexity as needed
+**API Testing Best Practices:**
+1. **Use descriptive test names** - Clearly state what you're testing
+2. **Test positive and negative cases** - Both success and error scenarios
+3. **Validate status codes first** - Before checking response body
+4. **Use fixtures for reusable code** - Create helper functions for common operations
+5. **Clean up test data** - Delete created resources after tests
+6. **Test edge cases** - Empty arrays, null values, boundary conditions
+7. **Validate response types** - Check data types, not just values
+8. **Use meaningful assertions** - Test what matters for your API contract
+9. **Keep tests independent** - Each test should work in isolation
+10. **Use API tests for setup** - Faster than UI for creating test data
+
+**Playwright-Specific Tips:**
+1. **Leverage request context** - Reuse context across multiple requests
+2. **Use parallel execution** - API tests are fast and can run in parallel
+3. **Enable tracing for debugging** - See full request/response details
+4. **Combine with UI tests** - Setup via API, verify via UI (or vice versa)
+5. **Use TypeScript** - Get type safety for request/response objects
 
 ---
 
 ## 📖 Additional Resources
 
-- [Global Setup Documentation](https://playwright.dev/docs/test-global-setup-teardown)
-- [Sharding Tests](https://playwright.dev/docs/test-sharding)
-- [CI/CD Integration](https://playwright.dev/docs/ci)
-- [GitHub Actions Example](https://playwright.dev/docs/ci-intro)
-- [GitLab CI Example](https://playwright.dev/docs/ci#gitlab-ci)
-- [Jenkins Integration](https://playwright.dev/docs/ci#jenkins)
+**Playwright Documentation:**
+- [API Testing Guide](https://playwright.dev/docs/api-testing)
+- [APIRequestContext](https://playwright.dev/docs/api/class-apirequestcontext)
+- [Test Fixtures](https://playwright.dev/docs/test-fixtures)
+
+**PlayPI Resources:**
+- [PlayPI Blog Post](https://taqelah.sg/blog/playpi-local-api-testing-playground.html)
+- [PlayPI GitHub](https://github.com/taqelah/playpi)
+- [PlayPI Docker Hub](https://hub.docker.com/r/taqelah/playpi)
+
+**General API Testing:**
+- [REST API Tutorial](https://restfulapi.net/)
+- [HTTP Status Codes](https://httpstatuses.com/)
+- [JSON Schema Validation](https://json-schema.org/)
+
+**Additional Tutorials:**
+- [Playwright API Testing - BrowserStack](https://www.browserstack.com/guide/playwright-api-test)
+- [Playwright API Testing - LambdaTest](https://www.lambdatest.com/learning-hub/playwright-api-testing)
+- [Master API Testing with Playwright](https://dzone.com/articles/playwright-api-testing-guide)
 
 ---
 
 ## ❓ Common Issues and Solutions
 
-### Issue: Global setup runs multiple times
-**Solution:** Verify `globalSetup` is at config level, not project level.
+### Issue: PlayPI container not starting
+**Solution:** Ensure Docker is running and ports are not in use:
+```bash
+# Check if Docker is running
+docker ps
 
-### Issue: Storage state not found
-**Solution:** Ensure global setup completes before tests run:
+# Stop any conflicting containers
+docker stop $(docker ps -q)
+
+# Run PlayPI with port mapping
+docker run -p 8000:8000 -p 8080:8080 -p 8081:8081 \
+  -p 8082:8082 -p 8084:8084 -p 8085:8085 -p 8086:8086 \
+  taqelah/playpi:latest
+```
+
+### Issue: Connection refused errors
+**Solution:** Verify PlayPI is running and accessible:
 ```typescript
-// Check file exists
-if (!fs.existsSync('playwright/.auth/user.json')) {
-  throw new Error('Authentication state not found');
+// Check if service is up
+test('Verify PlayPI is accessible', async ({ request }) => {
+  const response = await request.get('http://localhost:8000');
+  expect(response.status()).toBe(200);
+});
+```
+
+### Issue: Response parsing errors
+**Solution:** Check Content-Type and parse accordingly:
+```typescript
+const contentType = response.headers()['content-type'];
+
+if (contentType.includes('application/json')) {
+  const data = await response.json();
+} else {
+  const text = await response.text();
 }
 ```
 
-### Issue: Shard reports don't merge
-**Solution:** Use blob reporter in shards:
+### Issue: Tests failing inconsistently
+**Solution:** Ensure test data cleanup and independence:
 ```typescript
-reporter: process.env.CI ? 'blob' : 'html',
-```
+test.afterEach(async ({ request }) => {
+  // Clean up created items
+  const response = await request.get('http://localhost:8080/items');
+  const items = await response.json();
 
-### Issue: Worker fixtures run too many times
-**Solution:** Verify scope is set to 'worker':
-```typescript
-myFixture: [async ({}, use) => { ... }, { scope: 'worker' }]
+  for (const item of items) {
+    if (item.name.startsWith('Test')) {
+      await request.delete(`http://localhost:8080/items/${item.id}`);
+    }
+  }
+});
 ```
 
 ---
 
-## 🎉 Congratulations!
+## 🎉 Module Complete!
 
-You've completed all modules of the Playwright Workshop! You now have comprehensive knowledge of:
-- Writing and organizing tests
-- Debugging and fixing test failures
-- Running tests in parallel across browsers and devices
-- Setting up CI/CD pipelines
-- Managing enterprise-level test suites
+You now have a solid understanding of API testing with Playwright! You've learned:
+
+**Core Skills:**
+- How to make all types of HTTP requests (GET, POST, PUT, PATCH, DELETE)
+- Validating API responses with comprehensive assertions
+- Setting up and using PlayPI for local API testing
+- Working with headers, query parameters, and request bodies
+
+**Advanced Techniques:**
+- Creating reusable API fixtures
+- Combining UI and API testing workflows
+- Error handling and edge case testing
+- Data-driven API testing
 
 ## 🚀 Next Steps
 
-1. **Practice** - Apply what you learned to your projects
-2. **Explore** - Check out Playwright's advanced features
-3. **Contribute** - Share your knowledge with the community
-4. **Stay Updated** - Follow Playwright releases for new features
+1. **Practice** - Work through all lab exercises with PlayPI
+2. **Experiment** - Try the GraphQL and WebSocket APIs in PlayPI
+3. **Integrate** - Add API tests to your existing test suites
+4. **Optimize** - Use API tests for faster test data setup
+5. **Explore** - Try testing real-world APIs with authentication
+6. **Share** - Teach your team about API testing benefits
 
 ---
 
-## 📚 Additional Learning Resources
+**Ready to start?**
+1. First: [Setup PlayPI](02_playpi_setup.md)
+2. Then: [Learn API basics](01_api_testing_basics.md)
+3. Practice: [Making requests](03_api_requests.md)
+4. Master: [Response validation](04_api_assertions.md)
 
-- [Playwright Official Documentation](https://playwright.dev)
-- [Playwright Community](https://playwright.dev/community/welcome)
-- [Playwright Discord](https://aka.ms/playwright/discord)
-- [Playwright GitHub](https://github.com/microsoft/playwright)
-- [Playwright Blog](https://playwright.dev/blog)
+**Happy API Testing! 🚀**
 
 ---
 
-**Ready to start? Open [1_global_setup_teardown.md](1_global_setup_teardown.md) to begin!**
+> **Note:** All contents of this workshop are proprietary and belong to **Taqelah**. Do not share or distribute without permission.

@@ -1,516 +1,341 @@
-# Module 6: Cross-Browser and Device Testing
+# Module 4: Debugging and Test Management
 
-**Duration:** 2-3 hours (Full coverage) | 30 minutes (Intensive workshop)
-**Level:** Intermediate
-**Prerequisites:** Completed Modules 2-5
-
-> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 30 minutes with a quick demo of device emulation and mobile testing.
+**Level:** Beginner to Intermediate
+**Prerequisites:** Completed Modules 2-3
 
 ---
 
 ## 🎯 Learning Objectives
 
 By the end of this module, you will be able to:
-- ✅ Test applications across different devices (mobile, tablet, desktop)
-- ✅ Configure viewport sizes and device emulation
-- ✅ Test with different locales and timezones
-- ✅ Emulate geolocation for location-based features
-- ✅ Test dark mode and color schemes
-- ✅ Simulate network conditions
-- ✅ Test with different permissions
+- ✅ Use Trace Viewer to debug test failures
+- ✅ Understand Playwright fixtures
+- ✅ Create custom fixtures for reusable test setup
+- ✅ Implement Page Object Model pattern
+- ✅ Organize test code effectively
 
 ---
 
 ## 📚 Topics Covered
 
-### 1. Browser and Device Emulation (90 minutes)
-**File:** [1_emulation.md](1_emulation.md)
+### 1. Trace Viewer
+**File:** [1_trace_viewer.md](1_trace_viewer.md)
 
 Learn about:
-- Device emulation with preset devices
-- Custom viewport configuration
-- Mobile vs desktop testing
-- User agent and mobile detection
-- Device scale factor (Retina displays)
-- Touch support emulation
+- What is Trace Viewer and why use it
+- Enabling traces in tests
+- Recording traces (on, off, on-first-retry, retain-on-failure)
+- Viewing traces with `npx playwright show-trace`
+- Understanding the Trace Viewer interface:
+  - Timeline and screenshots
+  - Actions and events
+  - Network activity
+  - Console logs
+  - DOM snapshots
+- Debugging test failures efficiently
 
-**Key concepts:**
-- Using `devices` registry for popular devices
-- iPhone, iPad, Pixel, Galaxy emulation
-- Custom device configurations
-- Testing responsive design
+**Hands-on:**
+- Enable traces in configuration
+- Run a failing test
+- Open and analyze the trace
+- Find the root cause of failure
 
 ---
 
-### 2. Advanced Configuration (60 minutes)
-**File:** [2_advanced_configuration.md](2_advanced_configuration.md)
+### 2. Playwright Fixtures (90 minutes)
+**File:** [2_fixtures.md](2_fixtures.md)
 
 Learn about:
-- Locale and timezone configuration
-- Geolocation testing
-- Permissions (camera, microphone, notifications)
-- Color scheme emulation (dark/light mode)
-- Media features (print, reduced motion)
-- Network conditions (offline mode)
-- JavaScript disabled testing
+- What are fixtures?
+- Built-in fixtures (`page`, `context`, `browser`)
+- Test fixtures vs worker fixtures
+- Creating custom fixtures
+- Fixture scope (test vs worker)
+- Page Object Model with fixtures
+- Sharing setup between tests
 
 **Hands-on Lab:**
-- Explore: [playwright-emulation/](playwright-emulation/)
-- Test with different devices
-- Configure locale and timezone
-- Test geolocation features
-- Emulate dark mode
-- Test offline functionality
+- Explore: [playwright-fixtures/](playwright-fixtures/)
+- Create custom page fixtures
+- Implement Page Object Model
+- Build reusable authentication fixtures
 
 ---
 
 ## 🧪 Lab Exercises
 
-### Lab 1: Device Emulation (45 minutes)
+### Lab 1: Debug with Trace Viewer (45 minutes)
 
-**Task 1: Test on Mobile Devices**
-Configure mobile device testing:
+**Task 1: Enable and View Traces**
+1. Configure traces in your config:
 ```typescript
-import { test, devices } from '@playwright/test';
+use: {
+  trace: 'on-first-retry',
+}
+```
+2. Create a failing test intentionally
+3. Run the test: `npx playwright test`
+4. Open trace: `npx playwright show-trace trace.zip`
+5. Analyze the failure in Trace Viewer
 
-test.use({ ...devices['iPhone 12'] });
+**Task 2: Explore Trace Features**
+- Navigate through the timeline
+- View screenshots before/after each action
+- Inspect network requests
+- Check console logs
+- Examine DOM snapshots
 
-test('mobile navigation', async ({ page }) => {
-  await page.goto('https://example.com');
-  // Test mobile-specific features
-  await page.locator('.mobile-menu').click();
+**Expected outcome:** Understand how to use traces for debugging
+
+---
+
+### Lab 2: Create Custom Fixtures (60 minutes)
+
+**Task:** Create a login fixture
+1. Create `fixtures/auth.ts`:
+```typescript
+import { test as base } from '@playwright/test';
+
+type AuthFixtures = {
+  authenticatedPage: Page;
+};
+
+export const test = base.extend<AuthFixtures>({
+  authenticatedPage: async ({ page }, use) => {
+    // Login logic here
+    await page.goto('/login');
+    await page.fill('#username', 'testuser');
+    await page.fill('#password', 'password');
+    await page.click('#submit');
+    await page.waitForURL('/dashboard');
+
+    await use(page);
+
+    // Cleanup (logout) here if needed
+  },
 });
 ```
 
-**Task 2: Test Multiple Devices**
+2. Use in tests:
 ```typescript
-const deviceList = [
-  'iPhone 12',
-  'iPhone 12 Pro Max',
-  'Pixel 5',
-  'iPad Pro',
-  'Desktop Chrome',
-];
+import { test } from './fixtures/auth';
 
-deviceList.forEach((deviceName) => {
-  test.describe(deviceName, () => {
-    test.use({ ...devices[deviceName] });
-
-    test('homepage loads', async ({ page }) => {
-      await page.goto('https://example.com');
-      await expect(page).toHaveTitle(/Example/);
-    });
-  });
-});
-```
-
-**Task 3: Custom Viewport**
-```typescript
-test('custom viewport', async ({ page }) => {
-  await page.setViewportSize({ width: 1920, height: 1080 });
-  await page.goto('https://example.com');
-
-  // Test desktop layout
-  await expect(page.locator('.desktop-nav')).toBeVisible();
-
-  await page.setViewportSize({ width: 375, height: 667 });
-
-  // Test mobile layout
-  await expect(page.locator('.mobile-nav')).toBeVisible();
+test('dashboard shows user info', async ({ authenticatedPage }) => {
+  await expect(authenticatedPage.getByText('Welcome')).toBeVisible();
 });
 ```
 
 ---
 
-### Lab 2: Locale and Timezone (30 minutes)
+### Lab 3: Implement Page Object Model (60 minutes)
 
-**Task 1: Test Different Locales**
+**Task:** Create Page Objects for a login flow
+
+1. Create `pages/LoginPage.ts`:
 ```typescript
-test.use({
-  locale: 'fr-FR',
-  timezoneId: 'Europe/Paris',
-});
+import { Page } from '@playwright/test';
 
-test('french locale', async ({ page }) => {
-  await page.goto('https://example.com');
+export class LoginPage {
+  constructor(private page: Page) {}
 
-  const locale = await page.evaluate(() => navigator.language);
-  expect(locale).toBe('fr-FR');
+  async goto() {
+    await this.page.goto('/login');
+  }
 
-  // Verify French date format
-  const date = await page.evaluate(() => {
-    return new Date('2024-01-15').toLocaleDateString();
-  });
-  expect(date).toContain('15/01/2024'); // French format
-});
+  async login(username: string, password: string) {
+    await this.page.fill('#username', username);
+    await this.page.fill('#password', password);
+    await this.page.click('button[type="submit"]');
+  }
+
+  async getErrorMessage() {
+    return this.page.locator('.error-message');
+  }
+}
 ```
 
-**Task 2: Multiple Locales**
+2. Create `pages/DashboardPage.ts`:
 ```typescript
-const locales = [
-  { locale: 'en-US', timezone: 'America/New_York' },
-  { locale: 'ja-JP', timezone: 'Asia/Tokyo' },
-  { locale: 'de-DE', timezone: 'Europe/Berlin' },
-];
+export class DashboardPage {
+  constructor(private page: Page) {}
 
-locales.forEach(({ locale, timezone }) => {
-  test.describe(`${locale} locale`, () => {
-    test.use({ locale, timezoneId: timezone });
+  async isLoaded() {
+    await this.page.waitForURL('/dashboard');
+  }
 
-    test('displays correct format', async ({ page }) => {
-      await page.goto('https://example.com');
-      // Verify locale-specific formatting
-    });
-  });
+  async getUserName() {
+    return this.page.locator('.user-name').textContent();
+  }
+}
+```
+
+3. Use in tests:
+```typescript
+test('login flow', async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  const dashboardPage = new DashboardPage(page);
+
+  await loginPage.goto();
+  await loginPage.login('testuser', 'password');
+  await dashboardPage.isLoaded();
+
+  await expect(await dashboardPage.getUserName()).toBe('testuser');
 });
 ```
 
 ---
 
-### Lab 3: Geolocation Testing (30 minutes)
+### Lab 4: Explore Fixture Examples (45 minutes)
 
-**Task 1: Set Geolocation**
-```typescript
-test.use({
-  geolocation: { longitude: -122.4194, latitude: 37.7749 }, // San Francisco
-  permissions: ['geolocation'],
-});
-
-test('location-based feature', async ({ page }) => {
-  await page.goto('https://example.com/map');
-
-  // Verify location is San Francisco
-  await expect(page.locator('.location')).toContainText('San Francisco');
-});
-```
-
-**Task 2: Change Geolocation During Test**
-```typescript
-test('dynamic geolocation', async ({ page, context }) => {
-  // Start in New York
-  await context.setGeolocation({
-    longitude: -74.0060,
-    latitude: 40.7128
-  });
-
-  await page.goto('https://example.com/weather');
-  await expect(page.locator('.city')).toHaveText('New York');
-
-  // Move to Tokyo
-  await context.setGeolocation({
-    longitude: 139.6917,
-    latitude: 35.6895
-  });
-
-  await page.reload();
-  await expect(page.locator('.city')).toHaveText('Tokyo');
-});
-```
-
----
-
-### Lab 4: Color Scheme and Accessibility (30 minutes)
-
-**Task 1: Test Dark Mode**
-```typescript
-test.use({
-  colorScheme: 'dark',
-});
-
-test('dark mode theme', async ({ page }) => {
-  await page.goto('https://example.com');
-
-  const isDarkMode = await page.evaluate(() => {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
-  expect(isDarkMode).toBe(true);
-
-  // Verify dark mode styles
-  const bgColor = await page.locator('body').evaluate((el) => {
-    return window.getComputedStyle(el).backgroundColor;
-  });
-  // Dark backgrounds should be dark colors
-});
-```
-
-**Task 2: Toggle Color Schemes**
-```typescript
-test('toggle between themes', async ({ page }) => {
-  // Start with light mode
-  await page.emulateMedia({ colorScheme: 'light' });
-  await page.goto('https://example.com');
-  // Verify light mode
-
-  // Switch to dark mode
-  await page.emulateMedia({ colorScheme: 'dark' });
-  await page.reload();
-  // Verify dark mode
-});
-```
-
-**Task 3: Reduced Motion**
-```typescript
-test.use({
-  reducedMotion: 'reduce',
-});
-
-test('reduced motion preference', async ({ page }) => {
-  await page.goto('https://example.com');
-
-  const prefersReducedMotion = await page.evaluate(() => {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  });
-  expect(prefersReducedMotion).toBe(true);
-
-  // Verify animations are disabled/reduced
-});
-```
-
----
-
-### Lab 5: Network and Permissions (30 minutes)
-
-**Task 1: Test Offline Mode**
-```typescript
-test('offline functionality', async ({ page, context }) => {
-  await page.goto('https://example.com');
-
-  // Go offline
-  await context.setOffline(true);
-
-  await page.click('a[href="/about"]');
-
-  // Verify offline page or cached content loads
-  await expect(page.locator('.offline-message')).toBeVisible();
-
-  // Go back online
-  await context.setOffline(false);
-});
-```
-
-**Task 2: Grant Permissions**
-```typescript
-test.use({
-  permissions: ['notifications', 'geolocation'],
-});
-
-test('notification permission', async ({ page, context }) => {
-  await page.goto('https://example.com');
-
-  // Notifications are already granted
-  await page.click('#enable-notifications');
-
-  // No permission prompt should appear
-  await expect(page.locator('.notifications-enabled')).toBeVisible();
-});
-```
-
-**Task 3: Test Without JavaScript**
-```typescript
-test.use({
-  javaScriptEnabled: false,
-});
-
-test('works without javascript', async ({ page }) => {
-  await page.goto('https://example.com');
-
-  // Verify core functionality works without JS
-  await expect(page.locator('h1')).toBeVisible();
-});
-```
-
----
-
-### Lab 6: Complete Emulation Project (60 minutes)
-
-**Task:** Build a comprehensive cross-browser/device test suite
-
-1. **Configure Projects:**
-```typescript
-export default defineConfig({
-  projects: [
-    // Desktop browsers
-    { name: 'Desktop Chrome', use: { ...devices['Desktop Chrome'] } },
-    { name: 'Desktop Firefox', use: { ...devices['Desktop Firefox'] } },
-    { name: 'Desktop Safari', use: { ...devices['Desktop Safari'] } },
-
-    // Mobile devices
-    { name: 'iPhone 12', use: { ...devices['iPhone 12'] } },
-    { name: 'Pixel 5', use: { ...devices['Pixel 5'] } },
-
-    // Tablets
-    { name: 'iPad Pro', use: { ...devices['iPad Pro'] } },
-
-    // Dark mode testing
-    {
-      name: 'Dark Mode',
-      use: {
-        ...devices['Desktop Chrome'],
-        colorScheme: 'dark',
-      },
-    },
-
-    // Different locales
-    {
-      name: 'Japanese',
-      use: {
-        ...devices['Desktop Chrome'],
-        locale: 'ja-JP',
-        timezoneId: 'Asia/Tokyo',
-      },
-    },
-  ],
-});
-```
-
-2. **Create Tests:**
-   - Responsive design test
-   - Locale-specific test
-   - Geolocation test
-   - Dark mode test
-   - Offline functionality test
-
-3. **Run and Verify:**
-```bash
-# Run on all projects
-npx playwright test
-
-# Run on specific device
-npx playwright test --project="iPhone 12"
-
-# Run only dark mode tests
-npx playwright test --project="Dark Mode"
-```
+**Task:** Work with the fixtures project
+1. Navigate to `playwright-fixtures/`
+2. Study the examples:
+   - `examples/01-built-in-fixtures.spec.ts`
+   - `examples/02-custom-test-fixture.spec.ts`
+   - `examples/03-page-object-fixture.spec.ts`
+   - `examples/04-worker-fixture.spec.ts`
+3. Run the tests: `npx playwright test`
+4. Modify fixtures to understand behavior
+5. Create your own custom fixture
 
 ---
 
 ## ✅ Success Criteria
 
 After completing this module, you should be able to:
-- [x] Configure device emulation for mobile/tablet testing
-- [x] Test with custom viewport sizes
-- [x] Configure locale and timezone settings
-- [x] Test geolocation-based features
-- [x] Emulate dark mode and color schemes
-- [x] Test with different permissions
-- [x] Simulate offline mode
-- [x] Test without JavaScript
-- [x] Create comprehensive cross-browser test suites
+- [x] Enable and configure trace recording
+- [x] Open and navigate Trace Viewer
+- [x] Use traces to debug test failures
+- [x] Understand Playwright's fixture system
+- [x] Create custom test fixtures
+- [x] Implement Page Object Model
+- [x] Use fixtures for authentication
+- [x] Share setup logic between tests
 
 ---
 
 ## 🎓 Quick Reference
 
-### Device Emulation
+### Enabling Traces
 ```typescript
-import { devices } from '@playwright/test';
-
-// Use preset device
-test.use({ ...devices['iPhone 12'] });
-
-// Custom viewport
-test.use({
-  viewport: { width: 1920, height: 1080 },
-  deviceScaleFactor: 2,
+// playwright.config.ts
+export default defineConfig({
+  use: {
+    trace: 'on-first-retry', // 'on' | 'off' | 'retain-on-failure'
+  },
 });
 ```
 
-### Locale and Timezone
+### Viewing Traces
+```bash
+# View specific trace file
+npx playwright show-trace trace.zip
+
+# Traces are in: test-results/[test-name]/trace.zip
+```
+
+### Custom Fixture Template
 ```typescript
-test.use({
-  locale: 'ja-JP',
-  timezoneId: 'Asia/Tokyo',
+import { test as base } from '@playwright/test';
+
+type MyFixtures = {
+  myFixture: string;
+};
+
+export const test = base.extend<MyFixtures>({
+  myFixture: async ({ page }, use) => {
+    // Setup
+    const value = 'setup value';
+
+    await use(value);
+
+    // Teardown
+  },
 });
 ```
 
-### Geolocation
+### Page Object Pattern
 ```typescript
-test.use({
-  geolocation: { longitude: 139.69, latitude: 35.68 },
-  permissions: ['geolocation'],
-});
-```
+// pages/BasePage.ts
+export class BasePage {
+  constructor(protected page: Page) {}
 
-### Color Scheme
-```typescript
-test.use({
-  colorScheme: 'dark', // or 'light'
-});
-```
+  async goto(path: string) {
+    await this.page.goto(path);
+  }
+}
 
-### Network and Permissions
-```typescript
-// Offline mode
-await context.setOffline(true);
-
-// Grant permissions
-test.use({
-  permissions: ['notifications', 'geolocation', 'camera'],
-});
+// pages/LoginPage.ts
+export class LoginPage extends BasePage {
+  async login(user: string, pass: string) {
+    await this.page.fill('#username', user);
+    await this.page.fill('#password', pass);
+    await this.page.click('#submit');
+  }
+}
 ```
 
 ---
 
 ## 💡 Tips for Success
 
-1. **Test mobile first** - Many users access apps on mobile
-2. **Use preset devices** - Easier than custom configurations
-3. **Test critical locales** - Focus on your primary markets
-4. **Don't forget dark mode** - Increasingly important for users
-5. **Test offline functionality** - PWAs especially need this
-6. **Verify responsive breakpoints** - Test at common viewport sizes
-7. **Use projects for organization** - Separate mobile, tablet, desktop
+1. **Use traces liberally in CI** - Set to `retain-on-failure` for production
+2. **Trace Viewer is your best friend** - Learn to use it effectively
+3. **Start simple with fixtures** - Don't over-engineer early
+4. **Page Objects for common flows** - Login, checkout, navigation
+5. **Worker fixtures for expensive setup** - Database connections, authentication
+6. **Keep Page Objects focused** - One page or component per class
 
 ---
 
 ## 📖 Additional Resources
 
-- [Emulation Documentation](https://playwright.dev/docs/emulation)
-- [Device Descriptors](https://github.com/microsoft/playwright/blob/main/packages/playwright-core/src/server/deviceDescriptorsSource.json)
-- [Test Configuration](https://playwright.dev/docs/test-configuration)
-- [Network Emulation](https://playwright.dev/docs/network)
+- [Trace Viewer Documentation](https://playwright.dev/docs/trace-viewer)
+- [Test Fixtures Guide](https://playwright.dev/docs/test-fixtures)
+- [Page Object Model Guide](https://playwright.dev/docs/pom)
+- [Advanced Fixtures](https://playwright.dev/docs/test-advanced)
 
 ---
 
 ## ❓ Common Issues and Solutions
 
-### Issue: Mobile tests don't behave correctly
-**Solution:** Ensure `isMobile: true` and `hasTouch: true` are set:
-```typescript
-test.use({
-  ...devices['iPhone 12'],
-  isMobile: true,
-  hasTouch: true,
-});
+### Issue: Trace files not generated
+**Solution:** Check trace is enabled in config. Failed tests generate traces with `on-first-retry`
+
+### Issue: Trace Viewer won't open
+**Solution:** Make sure trace file path is correct:
+```bash
+npx playwright show-trace test-results/example-test/trace.zip
 ```
 
-### Issue: Locale doesn't change
-**Solution:** Some sites detect locale from IP or URL. Verify your test URL supports locale switching.
-
-### Issue: Geolocation not working
-**Solution:** Make sure permissions are granted:
+### Issue: Fixtures not running
+**Solution:** Make sure you're importing the custom `test` function:
 ```typescript
-test.use({
-  geolocation: { longitude: -122.42, latitude: 37.77 },
-  permissions: ['geolocation'],
-});
+import { test } from './fixtures/my-fixtures'; // ✅
+import { test } from '@playwright/test'; // ❌ (uses base test)
 ```
 
-### Issue: Dark mode not activating
-**Solution:** Verify the site respects `prefers-color-scheme` media query.
+### Issue: Fixture runs multiple times
+**Solution:** Check fixture scope. Use `{ scope: 'worker' }` for one-time setup:
+```typescript
+dbFixture: [async ({}, use) => { ... }, { scope: 'worker' }]
+```
 
 ---
 
 ## 🎯 Next Module Preview
 
-In **Module 7: Advanced Topics** (Optional), you'll learn:
-- Global setup and teardown
-- Advanced CLI usage and sharding
-- Worker isolation strategies
-- CI/CD integration
-- Performance testing
-- Visual regression testing
+In **Module 5: Test Organization and Execution**, you'll learn:
+- Running tests in parallel
+- Creating test projects for different browsers
+- Parameterizing tests with data
+- Organizing large test suites
+- Worker isolation and management
 
 ---
 
-**Ready to start? Open [1_emulation.md](1_emulation.md) to begin!**
+**Ready to start? Open [1_trace_viewer.md](1_trace_viewer.md) to begin!**
+
+---
+
+> **Note:** All contents of this workshop are proprietary and belong to **Taqelah**. Do not share or distribute without permission.

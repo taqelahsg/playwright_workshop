@@ -250,3 +250,7 @@ In **Module 4: Debugging & Test Management**, you'll learn:
 ---
 
 **Ready to start? Open [1_basic_configuration.md](1_basic_configuration.md) to begin!**
+
+---
+
+> **Note:** All contents of this workshop are proprietary and belong to **Taqelah**. Do not share or distribute without permission.

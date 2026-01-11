@@ -1,634 +1,384 @@
-# Module 8: Locator Strategies & Test Assertions
+# Module 7: Advanced Topics (Optional)
 
-**Duration:** 3-4 hours (Full coverage) | 30 minutes (Intensive workshop)
-**Level:** Intermediate
+**Duration:** 2-3 hours (Full coverage) | 30 minutes (Intensive workshop)
+**Level:** Advanced
 **Prerequisites:** Completed Modules 2-6
 
-> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 30 minutes focusing on user-facing locators (role, text, label) and auto-retrying assertions.
+> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 30 minutes with overview of global setup/teardown and CI/CD integration concepts.
 
 ---
 
 ## 🎯 Learning Objectives
 
 By the end of this module, you will be able to:
-- ✅ Understand how Playwright locators work and their auto-waiting behavior
-- ✅ Use user-facing locators (role, text, label) effectively
-- ✅ Apply locator best practices and prioritization
-- ✅ Chain and filter locators for precise element targeting
-- ✅ Work with lists and dynamic content
-- ✅ Avoid brittle selectors (CSS, XPath)
-- ✅ Master auto-retrying assertions for reliable testing
-- ✅ Use appropriate assertion types for different scenarios
-- ✅ Write accessible and resilient tests
+- ✅ Implement global setup and teardown for test suites
+- ✅ Use advanced CLI features for CI/CD
+- ✅ Implement test sharding for distributed execution
+- ✅ Create worker-scoped resources
+- ✅ Optimize test execution for large suites
+- ✅ Integrate Playwright with CI/CD pipelines
 
 ---
 
 ## 📚 Topics Covered
 
-### 1. Locator Strategies (120-150 minutes)
-**File:** [01_locator_strategies.md](01_locator_strategies.md)
+### 1. Global Setup and Teardown (90 minutes)
+**File:** [1_global_setup_teardown.md](1_global_setup_teardown.md)
 
 Learn about:
-- How locators work in Playwright
-- Auto-waiting and retry-ability
-- Recommended locator types (priority order)
-- Role locators (getByRole)
-- Text locators (getByText)
-- Label locators (getByLabel)
-- Placeholder locators (getByPlaceholder)
-- Alt text locators (getByAltText)
-- Title locators (getByTitle)
-- Test ID locators (getByTestId)
-- CSS and XPath locators (when to avoid)
-
-**Advanced features:**
-- Chaining locators
-- Filtering by text and child elements
-- Combining locators (AND/OR)
-- Working with lists
-- Locator strictness
-- Shadow DOM support
+- What is global setup/teardown?
+- When to use global setup
+- Implementing global authentication
+- Starting/stopping services
+- Database setup and cleanup
+- Sharing state between setup and tests
+- Best practices
 
 **Use cases:**
-- Login forms
-- Navigation elements
-- Forms with multiple fields
-- Dynamic content
-- Product listings
-- Shopping carts
+- One-time authentication for all tests
+- Starting mock servers
+- Database seeding
+- Environment configuration
+- Resource cleanup
 
 **Hands-on Lab:**
-- Explore: [playwright-locators/](playwright-locators/)
-- Practice all locator types
-- Implement chaining and filtering
-- Work with dynamic lists
+- Explore: [playwright-global-setup-teardown/](playwright-global-setup-teardown/)
+- Implement global authentication
+- Create database setup
+- Share configuration across tests
 
-### 2. Test Assertions (90-120 minutes)
-**File:** [02_test_assertions.md](02_test_assertions.md)
+---
+
+### 2. Advanced CLI and Sharding (45 minutes)
+**File:** [2_advanced_cli.md](2_advanced_cli.md)
 
 Learn about:
-- Auto-retrying assertions and how they work
-- Visibility and state assertions
-- Content assertions (text, value, attributes)
-- Form and input assertions
-- Page and URL assertions
-- Non-retrying assertions (Jest/Expect)
-- Soft assertions for multiple validations
-- Custom assertion messages
-- Polling assertions
-- Timeout configuration
+- Test sharding for parallel CI
+- Merging shard reports
+- Advanced filtering techniques
+- Test list generation
+- Custom reporters
+- Environment-specific execution
+- CI/CD integration patterns
 
-**Advanced features:**
-- Custom matchers
-- Screenshot assertions
-- Accessibility assertions
-- API response validation
-- Negating assertions with `.not`
+**Key topics:**
+- Sharding tests across multiple machines
+- Running failed tests only
+- Generating test reports
+- GitHub Actions integration
+- GitLab CI integration
 
-**Use cases:**
-- Form validation testing
-- Loading state verification
-- Dynamic content updates
-- Navigation validation
-- Multi-element verification
+---
 
-**Hands-on Lab:**
-- Practice auto-retrying assertions
-- Implement form validation tests
-- Work with soft assertions
-- Configure custom timeouts
+### 3. Advanced Parallel Execution (30 minutes)
+**File:** [3_advanced_parallel.md](3_advanced_parallel.md)
+
+Learn about:
+- Worker isolation strategies
+- Worker-scoped fixtures in depth
+- Test data isolation per worker
+- Port and resource allocation
+- Handling shared resources
+- Troubleshooting parallel issues
 
 ---
 
 ## 🧪 Lab Exercises
 
-### Lab 1: User-Facing Locators (30 minutes)
+### Lab 1: Global Authentication Setup (45 minutes)
 
-**Task:** Practice using role, text, and label locators
+**Task:** Implement global authentication that runs once before all tests
 
-1. **Using Role Locators:**
+1. **Create global-setup.ts:**
 ```typescript
-test('navigate using role locators', async ({ page }) => {
-  await page.goto('https://example.com');
+import { chromium, FullConfig } from '@playwright/test';
 
-  // Click a button
-  await page.getByRole('button', { name: 'Submit' }).click();
+async function globalSetup(config: FullConfig) {
+  console.log('🔐 Performing global authentication...');
 
-  // Click a link
-  await page.getByRole('link', { name: 'Learn more' }).click();
+  const browser = await chromium.launch();
+  const context = await browser.newContext();
+  const page = await context.newPage();
 
-  // Find a heading
-  await expect(page.getByRole('heading', { name: 'Welcome' })).toBeVisible();
-
-  // Check a checkbox
-  await page.getByRole('checkbox', { name: 'Accept terms' }).check();
-});
-```
-
-2. **Using Text Locators:**
-```typescript
-test('find elements by text', async ({ page }) => {
-  await page.goto('https://example.com');
-
-  // Exact text match
-  await page.getByText('Welcome back').click();
-
-  // Partial text with regex
-  await expect(page.getByText(/welcome/i)).toBeVisible();
-});
-```
-
-3. **Using Label Locators:**
-```typescript
-test('fill form using label locators', async ({ page }) => {
+  // Navigate and login
   await page.goto('https://example.com/login');
+  await page.fill('#username', process.env.TEST_USERNAME!);
+  await page.fill('#password', process.env.TEST_PASSWORD!);
+  await page.click('#submit');
 
-  await page.getByLabel('Email address').fill('test@example.com');
-  await page.getByLabel('Password').fill('secret123');
-  await page.getByLabel('Remember me').check();
-  await page.getByRole('button', { name: 'Log in' }).click();
+  // Wait for authentication
+  await page.waitForURL('**/dashboard');
+
+  // Save authentication state
+  await context.storageState({ path: 'playwright/.auth/user.json' });
+
+  await browser.close();
+
+  console.log('✅ Authentication completed');
+}
+
+export default globalSetup;
+```
+
+2. **Configure in playwright.config.ts:**
+```typescript
+export default defineConfig({
+  globalSetup: require.resolve('./global-setup'),
+  use: {
+    storageState: 'playwright/.auth/user.json',
+  },
+});
+```
+
+3. **Create tests that use authenticated state:**
+```typescript
+test('access protected page', async ({ page }) => {
+  // Already authenticated!
+  await page.goto('/dashboard');
+  await expect(page.locator('.user-name')).toBeVisible();
 });
 ```
 
 ---
 
-### Lab 2: Advanced Locator Techniques (45 minutes)
+### Lab 2: Database Setup and Teardown (45 minutes)
 
-**Task:** Master chaining, filtering, and combining locators
+**Task:** Set up and tear down test database
 
-1. **Chaining Locators:**
+1. **Create global-setup.ts:**
 ```typescript
-test('find nested elements', async ({ page }) => {
-  await page.goto('https://example.com/products');
+import { FullConfig } from '@playwright/test';
 
-  // Find a specific product card and click its button
-  const product = page.getByRole('article').filter({ hasText: 'Product 1' });
-  await product.getByRole('button', { name: 'Add to cart' }).click();
+async function globalSetup(config: FullConfig) {
+  console.log('🗄️ Setting up test database...');
 
-  // Verify action
-  await expect(page.getByTestId('cart-count')).toHaveText('1');
-});
-```
+  // Example: MongoDB setup
+  const client = await MongoClient.connect('mongodb://localhost:27017');
+  const db = client.db('test_db');
 
-2. **Filtering Locators:**
-```typescript
-test('filter elements by criteria', async ({ page }) => {
-  await page.goto('https://example.com/tasks');
+  // Create collections
+  await db.createCollection('users');
+  await db.createCollection('products');
 
-  // Filter by text
-  const activeTasks = page.getByRole('listitem').filter({ hasText: 'Active' });
-  await expect(activeTasks).toHaveCount(3);
-
-  // Filter by child elements
-  const tasksWithDelete = page.getByRole('listitem').filter({
-    has: page.getByRole('button', { name: 'Delete' })
-  });
-  await expect(tasksWithDelete).toHaveCount(5);
-
-  // Filter by NOT having text
-  const incompleteTasks = page.getByRole('listitem')
-    .filter({ hasNotText: 'Completed' });
-  await expect(incompleteTasks).toHaveCount(7);
-});
-```
-
-3. **Combining Locators (AND/OR):**
-```typescript
-test('combine locators', async ({ page }) => {
-  await page.goto('https://example.com');
-
-  // AND - both conditions must match
-  const subscribeButton = page.getByRole('button')
-    .and(page.getByTitle('Subscribe'));
-  await subscribeButton.click();
-
-  // OR - either condition can match
-  const newEmailButton = page.getByRole('button', { name: 'New' })
-    .or(page.getByRole('button', { name: 'New email' }));
-  await newEmailButton.click();
-});
-```
-
----
-
-### Lab 3: Working with Lists (30 minutes)
-
-**Task:** Handle lists and dynamic content
-
-```typescript
-test('work with lists', async ({ page }) => {
-  await page.goto('https://example.com/items');
-
-  // Count items
-  await expect(page.getByRole('listitem')).toHaveCount(5);
-
-  // Assert all text in order
-  await expect(page.getByRole('listitem')).toHaveText([
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5'
+  // Seed initial data
+  await db.collection('users').insertMany([
+    { username: 'testuser1', email: 'test1@example.com' },
+    { username: 'testuser2', email: 'test2@example.com' },
   ]);
 
-  // Select first item
-  await page.getByRole('listitem').first().click();
+  await client.close();
 
-  // Select last item
-  await page.getByRole('listitem').last().click();
+  console.log('✅ Database setup completed');
+}
 
-  // Select third item (zero-indexed)
-  await page.getByRole('listitem').nth(2).click();
+export default globalSetup;
+```
 
-  // Iterate through items
-  const items = page.getByRole('listitem');
-  const count = await items.count();
+2. **Create global-teardown.ts:**
+```typescript
+import { FullConfig } from '@playwright/test';
 
-  for (let i = 0; i < count; i++) {
-    const text = await items.nth(i).textContent();
-    console.log(`Item ${i}: ${text}`);
+async function globalTeardown(config: FullConfig) {
+  console.log('🧹 Cleaning up test database...');
+
+  const client = await MongoClient.connect('mongodb://localhost:27017');
+  const db = client.db('test_db');
+
+  // Drop test database
+  await db.dropDatabase();
+
+  await client.close();
+
+  console.log('✅ Cleanup completed');
+}
+
+export default globalTeardown;
+```
+
+---
+
+### Lab 3: Test Sharding for CI/CD (45 minutes)
+
+**Task:** Configure test sharding for parallel CI execution
+
+1. **Create GitHub Actions workflow:**
+```yaml
+# .github/workflows/playwright.yml
+name: Playwright Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+
+      - name: Upload blob report to GitHub Actions Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blob-report-${{ matrix.shardIndex }}
+          path: blob-report
+          retention-days: 1
+
+  merge-reports:
+    if: always()
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+
+      - name: Download blob reports from GitHub Actions Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Merge into HTML Report
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-report--attempt-${{ github.run_attempt }}
+          path: playwright-report
+          retention-days: 14
+```
+
+2. **Test locally with sharding:**
+```bash
+# Terminal 1 - Shard 1
+npx playwright test --shard=1/4
+
+# Terminal 2 - Shard 2
+npx playwright test --shard=2/4
+
+# Terminal 3 - Shard 3
+npx playwright test --shard=3/4
+
+# Terminal 4 - Shard 4
+npx playwright test --shard=4/4
+```
+
+---
+
+### Lab 4: Worker Isolation (30 minutes)
+
+**Task:** Create isolated resources per worker
+
+```typescript
+// fixtures/worker-database.ts
+import { test as base } from '@playwright/test';
+
+type WorkerFixtures = {
+  workerDatabase: string;
+};
+
+export const test = base.extend<{}, WorkerFixtures>({
+  workerDatabase: [async ({}, use, workerInfo) => {
+    const dbName = `test_db_${workerInfo.workerIndex}`;
+
+    // Setup: Create database for this worker
+    console.log(`Creating database: ${dbName}`);
+    await createDatabase(dbName);
+
+    await use(dbName);
+
+    // Teardown: Cleanup database for this worker
+    console.log(`Cleaning up database: ${dbName}`);
+    await dropDatabase(dbName);
+  }, { scope: 'worker' }],
+});
+
+// Use in tests
+test('test with isolated database', async ({ workerDatabase }) => {
+  console.log(`Using database: ${workerDatabase}`);
+  // Each worker has its own database
+});
+```
+
+---
+
+### Lab 5: Advanced CI/CD Integration (60 minutes)
+
+**Task:** Build a complete CI/CD pipeline
+
+1. **Create multiple environment configs:**
+```typescript
+// playwright.staging.config.ts
+export default defineConfig({
+  use: {
+    baseURL: 'https://staging.example.com',
+  },
+});
+
+// playwright.production.config.ts
+export default defineConfig({
+  use: {
+    baseURL: 'https://example.com',
+  },
+  retries: 0, // No retries in production
+});
+```
+
+2. **Create npm scripts:**
+```json
+{
+  "scripts": {
+    "test": "playwright test",
+    "test:staging": "playwright test --config=playwright.staging.config.ts",
+    "test:production": "playwright test --config=playwright.production.config.ts",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug"
   }
-});
+}
 ```
 
----
-
-### Lab 4: Locator Strictness (20 minutes)
-
-**Task:** Understand and handle locator strictness
-
-```typescript
-test('handle multiple matches', async ({ page }) => {
-  await page.goto('https://example.com/products');
-
-  // This throws if multiple buttons match (strict mode)
-  // await page.getByRole('button').click(); // Error!
-
-  // Solution 1: Be more specific
-  await page.getByRole('button', { name: 'Add to cart' }).click();
-
-  // Solution 2: Explicitly select first
-  await page.getByRole('button').first().click();
-
-  // Count works with multiple matches
-  const buttonCount = await page.getByRole('button').count();
-  console.log(`Found ${buttonCount} buttons`);
-
-  // Filter to narrow down
-  const deleteButtons = page.getByRole('button')
-    .filter({ hasText: 'Delete' });
-  await expect(deleteButtons).toHaveCount(3);
-});
-```
-
----
-
-### Lab 5: Real-World Patterns (45 minutes)
-
-**Task:** Apply locators to common UI patterns
-
-1. **Login Form:**
-```typescript
-test('complete login flow', async ({ page }) => {
-  await page.goto('https://example.com/login');
-
-  await page.getByLabel('Username').fill('admin');
-  await page.getByLabel('Password').fill('password123');
-  await page.getByRole('button', { name: 'Log in' }).click();
-
-  await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
-});
-```
-
-2. **Navigation:**
-```typescript
-test('navigate through site', async ({ page }) => {
-  await page.goto('https://example.com');
-
-  await page.getByRole('link', { name: 'Products' }).click();
-  await expect(page.getByRole('heading', { name: 'Our Products' })).toBeVisible();
-
-  await page.getByRole('link', { name: 'About' }).click();
-  await expect(page.getByRole('heading', { name: 'About Us' })).toBeVisible();
-});
-```
-
-3. **Shopping Cart:**
-```typescript
-test('add items to cart', async ({ page }) => {
-  await page.goto('https://example.com/products');
-
-  // Find laptop product and add to cart
-  const laptop = page.getByRole('article').filter({ hasText: 'Laptop' });
-  await laptop.getByRole('button', { name: 'Add to cart' }).click();
-
-  // Verify cart count
-  await expect(page.getByTestId('cart-count')).toHaveText('1');
-
-  // Find phone product and add to cart
-  const phone = page.getByRole('article').filter({ hasText: 'Phone' });
-  await phone.getByRole('button', { name: 'Add to cart' }).click();
-
-  // Verify cart count updated
-  await expect(page.getByTestId('cart-count')).toHaveText('2');
-});
-```
-
-4. **Complex Form:**
-```typescript
-test('fill multi-field form', async ({ page }) => {
-  await page.goto('https://example.com/register');
-
-  await page.getByLabel('First name').fill('John');
-  await page.getByLabel('Last name').fill('Doe');
-  await page.getByLabel('Email').fill('john.doe@example.com');
-  await page.getByLabel('Phone').fill('123-456-7890');
-  await page.getByLabel('Country').selectOption('USA');
-  await page.getByRole('checkbox', { name: 'Subscribe to newsletter' }).check();
-  await page.getByRole('checkbox', { name: 'Accept terms' }).check();
-  await page.getByRole('button', { name: 'Submit' }).click();
-
-  await expect(page.getByText('Registration successful')).toBeVisible();
-});
-```
-
----
-
-### Lab 6: Auto-Retrying Assertions (30 minutes)
-
-**Task:** Master visibility, state, and content assertions
-
-1. **Visibility and State Assertions:**
-```typescript
-test('verify element visibility and state', async ({ page }) => {
-  await page.goto('https://example.com');
-
-  // Visibility assertions
-  await expect(page.getByRole('heading', { name: 'Welcome' })).toBeVisible();
-  await expect(page.getByText('Loading...')).toBeHidden();
-
-  // State assertions
-  await expect(page.getByRole('button', { name: 'Submit' })).toBeEnabled();
-  await expect(page.getByRole('button', { name: 'Processing' })).toBeDisabled();
-  await expect(page.getByLabel('Email')).toBeFocused();
-});
-```
-
-2. **Content Assertions:**
-```typescript
-test('verify text and value content', async ({ page }) => {
-  await page.goto('https://example.com/profile');
-
-  // Text assertions
-  await expect(page.getByRole('heading')).toHaveText('User Profile');
-  await expect(page.getByTestId('status')).toContainText('Active');
-
-  // Value assertions
-  await expect(page.getByLabel('Username')).toHaveValue('john_doe');
-  await expect(page.getByLabel('Bio')).not.toBeEmpty();
-
-  // List text assertions
-  await expect(page.getByRole('listitem')).toHaveText([
-    'Home',
-    'Profile',
-    'Settings'
-  ]);
-});
-```
-
-3. **Attribute Assertions:**
-```typescript
-test('verify element attributes', async ({ page }) => {
-  await page.goto('https://example.com');
-
-  // Attribute value
-  await expect(page.getByRole('link', { name: 'About' })).toHaveAttribute('href', '/about');
-
-  // CSS properties
-  await expect(page.getByRole('button')).toHaveCSS('background-color', 'rgb(0, 123, 255)');
-
-  // Class and ID
-  await expect(page.getByTestId('alert')).toHaveClass('success');
-  await expect(page.getByTestId('alert')).toHaveClass(/alert-\w+/);
-});
-```
-
----
-
-### Lab 7: Form and Page Assertions (30 minutes)
-
-**Task:** Test forms, inputs, and page-level assertions
-
-1. **Form Assertions:**
-```typescript
-test('validate form inputs', async ({ page }) => {
-  await page.goto('https://example.com/register');
-
-  // Fill form
-  await page.getByLabel('Email').fill('test@example.com');
-  await page.getByRole('checkbox', { name: 'Accept terms' }).check();
-  await page.getByLabel('Country').selectOption('USA');
-
-  // Verify form state
-  await expect(page.getByLabel('Email')).toHaveValue('test@example.com');
-  await expect(page.getByRole('checkbox', { name: 'Accept terms' })).toBeChecked();
-  await expect(page.getByLabel('Subscribe')).not.toBeChecked();
-});
-```
-
-2. **Page Assertions:**
-```typescript
-test('verify page URL and title', async ({ page }) => {
-  await page.goto('https://example.com');
-
-  // URL assertions
-  await expect(page).toHaveURL('https://example.com/');
-
-  // Navigate
-  await page.getByRole('link', { name: 'Products' }).click();
-
-  // Verify navigation
-  await expect(page).toHaveURL(/\/products/);
-  await expect(page).toHaveTitle('Products - My Store');
-  await expect(page).toHaveTitle(/Products/);
-});
-```
-
----
-
-### Lab 8: Soft Assertions and Custom Messages (25 minutes)
-
-**Task:** Use soft assertions and custom messages for better debugging
-
-1. **Soft Assertions:**
-```typescript
-test('validate multiple UI elements', async ({ page }) => {
-  await page.goto('https://example.com/dashboard');
-
-  // All assertions will run even if some fail
-  await expect.soft(page.getByRole('heading')).toHaveText('Dashboard');
-  await expect.soft(page.getByTestId('user-name')).toContainText('John');
-  await expect.soft(page.getByTestId('notifications')).toHaveCount(3);
-  await expect.soft(page.getByRole('button', { name: 'Logout' })).toBeVisible();
-
-  // All failures reported at the end
-});
-```
-
-2. **Custom Messages:**
-```typescript
-test('use custom messages for clarity', async ({ page }) => {
-  await page.goto('https://example.com/cart');
-
-  await page.getByRole('button', { name: 'Add to cart' }).first().click();
-
-  await expect(
-    page.getByTestId('cart-count'),
-    'Cart count should update after adding item'
-  ).toHaveText('1');
-
-  await expect(
-    page.getByRole('alert'),
-    'Success message should appear after adding to cart'
-  ).toContainText('Item added');
-});
-```
-
----
-
-### Lab 9: Polling and Timeout Configuration (20 minutes)
-
-**Task:** Handle async operations and configure timeouts
-
-1. **Polling Assertions:**
-```typescript
-test('poll for API status', async ({ page }) => {
-  await page.goto('https://example.com/jobs');
-
-  // Trigger long-running job
-  await page.getByRole('button', { name: 'Start job' }).click();
-
-  // Poll for completion
-  await expect.poll(async () => {
-    const status = await page.getByTestId('job-status').textContent();
-    return status;
-  }, {
-    timeout: 30000,
-    intervals: [1000, 2000, 5000]
-  }).toBe('Completed');
-});
-```
-
-2. **Custom Timeouts:**
-```typescript
-test('configure timeouts for slow operations', async ({ page }) => {
-  await page.goto('https://example.com/reports');
-
-  // Generate report
-  await page.getByRole('button', { name: 'Generate Report' }).click();
-
-  // Wait longer for slow operation
-  await expect(
-    page.getByText('Report ready')
-  ).toBeVisible({ timeout: 60000 });
-
-  // Fast timeout for cached data
-  await expect(
-    page.getByTestId('cached-data')
-  ).toBeVisible({ timeout: 1000 });
-});
-```
-
----
-
-### Lab 10: Real-World Assertion Patterns (30 minutes)
-
-**Task:** Apply assertions to common testing scenarios
-
-1. **Form Validation:**
-```typescript
-test('validate form errors', async ({ page }) => {
-  await page.goto('https://example.com/login');
-
-  // Submit empty form
-  await page.getByRole('button', { name: 'Login' }).click();
-
-  // Verify error messages
-  await expect(page.getByText('Email is required')).toBeVisible();
-  await expect(page.getByText('Password is required')).toBeVisible();
-  await expect(page).toHaveURL('/login');
-
-  // Fill invalid email
-  await page.getByLabel('Email').fill('invalid-email');
-  await page.getByRole('button', { name: 'Login' }).click();
-
-  await expect(page.getByText('Invalid email format')).toBeVisible();
-});
-```
-
-2. **Loading States:**
-```typescript
-test('verify loading and content states', async ({ page }) => {
-  await page.goto('https://example.com/data');
-
-  // Loading state
-  await expect(page.getByText('Loading...')).toBeVisible();
-
-  // Content loads
-  await expect(page.getByRole('table')).toBeVisible();
-
-  // Loading disappears
-  await expect(page.getByText('Loading...')).not.toBeVisible();
-
-  // Verify data
-  await expect(page.getByRole('row')).toHaveCount(11); // header + 10 rows
-});
-```
-
-3. **Dynamic Updates:**
-```typescript
-test('verify dynamic content updates', async ({ page }) => {
-  await page.goto('https://example.com/counter');
-
-  // Initial state
-  await expect(page.getByTestId('count')).toHaveText('0');
-
-  // Increment
-  await page.getByRole('button', { name: 'Increment' }).click();
-  await expect(page.getByTestId('count')).toHaveText('1');
-
-  // Multiple increments
-  await page.getByRole('button', { name: 'Increment' }).click();
-  await page.getByRole('button', { name: 'Increment' }).click();
-  await expect(page.getByTestId('count')).toHaveText('3');
-});
-```
-
-4. **Multi-Element Verification:**
-```typescript
-test('verify list of items', async ({ page }) => {
-  await page.goto('https://example.com/todos');
-
-  // Count assertions
-  await expect(page.getByRole('listitem')).toHaveCount(5);
-
-  // Text content in order
-  await expect(page.getByRole('listitem')).toHaveText([
-    'Buy groceries',
-    'Walk the dog',
-    'Read a book',
-    'Write code',
-    'Exercise'
-  ]);
-
-  // Individual item assertions
-  await expect(page.getByRole('listitem').first()).toContainText('Buy groceries');
-  await expect(page.getByRole('listitem').last()).toContainText('Exercise');
-
-  // Filter and count
-  const completed = page.getByRole('listitem').filter({ hasText: 'Completed' });
-  await expect(completed).toHaveCount(2);
-});
+3. **Create CI configuration for multiple environments:**
+```yaml
+# .gitlab-ci.yml
+stages:
+  - test
+
+test:staging:
+  stage: test
+  script:
+    - npm ci
+    - npx playwright install --with-deps
+    - npm run test:staging
+  only:
+    - develop
+
+test:production:
+  stage: test
+  script:
+    - npm ci
+    - npx playwright install --with-deps
+    - npm run test:smoke -- --config=playwright.production.config.ts
+  only:
+    - main
 ```
 
 ---
@@ -636,286 +386,289 @@ test('verify list of items', async ({ page }) => {
 ## ✅ Success Criteria
 
 After completing this module, you should be able to:
-
-**Locator Strategies:**
-- [x] Understand how Playwright locators auto-wait and retry
-- [x] Use role-based locators effectively
-- [x] Apply text, label, and placeholder locators
-- [x] Chain locators for nested elements
-- [x] Filter locators by text and child elements
-- [x] Combine locators with AND/OR operators
-- [x] Work with lists using first, last, nth
-- [x] Handle locator strictness appropriately
-- [x] Avoid brittle CSS and XPath selectors
-
-**Test Assertions:**
-- [x] Use auto-retrying assertions for reliable tests
-- [x] Apply visibility and state assertions
-- [x] Verify content with text and value assertions
-- [x] Test forms and inputs with appropriate assertions
-- [x] Validate page URLs and titles
-- [x] Use soft assertions for comprehensive validation
-- [x] Configure custom timeouts for different scenarios
-- [x] Apply polling assertions for async operations
-- [x] Write accessible, resilient test automation
+- [x] Implement global setup and teardown
+- [x] Create authentication setup that runs once
+- [x] Set up and tear down databases
+- [x] Share state between setup and tests
+- [x] Shard tests across multiple machines
+- [x] Merge shard reports
+- [x] Create CI/CD pipelines with Playwright
+- [x] Implement worker isolation strategies
+- [x] Configure environment-specific testing
+- [x] Optimize large test suites
 
 ---
 
 ## 🎓 Quick Reference
 
-### Locator Priority (Best to Worst)
+### Global Setup
 ```typescript
-// 1. Role locators (best)
-page.getByRole('button', { name: 'Submit' })
+// playwright.config.ts
+export default defineConfig({
+  globalSetup: require.resolve('./global-setup'),
+  globalTeardown: require.resolve('./global-teardown'),
+});
 
-// 2. Text locators
-page.getByText('Welcome')
-
-// 3. Label locators
-page.getByLabel('Email address')
-
-// 4. Placeholder locators
-page.getByPlaceholder('Enter email')
-
-// 5. Alt text locators
-page.getByAltText('Logo')
-
-// 6. Title locators
-page.getByTitle('Close')
-
-// 7. Test ID locators
-page.getByTestId('submit-btn')
-
-// 8. CSS/XPath (avoid when possible)
-page.locator('.submit-button')
+// global-setup.ts
+async function globalSetup(config: FullConfig) {
+  // One-time setup
+}
+export default globalSetup;
 ```
 
-### Chaining and Filtering
-```typescript
-// Chain locators
-page.getByRole('article').getByRole('button')
+### Test Sharding
+```bash
+# Run shard 1 of 3
+npx playwright test --shard=1/3
 
-// Filter by text
-page.getByRole('listitem').filter({ hasText: 'Active' })
-
-// Filter by child
-page.getByRole('listitem').filter({
-  has: page.getByRole('button')
-})
-
-// Combine with AND
-page.getByRole('button').and(page.getByTitle('Submit'))
-
-// Combine with OR
-page.getByRole('button', { name: 'New' })
-  .or(page.getByRole('button', { name: 'Create' }))
+# Merge reports
+npx playwright merge-reports --reporter=html ./all-blob-reports
 ```
 
-### Working with Lists
+### Worker Fixtures
 ```typescript
-// Count items
-await page.getByRole('listitem').count()
-
-// Select by position
-page.getByRole('listitem').first()
-page.getByRole('listitem').last()
-page.getByRole('listitem').nth(2)
-
-// Assert all text
-await expect(page.getByRole('listitem')).toHaveText([...])
+export const test = base.extend<{}, WorkerFixtures>({
+  workerResource: [async ({}, use, workerInfo) => {
+    const resource = await createResource(workerInfo.workerIndex);
+    await use(resource);
+    await cleanupResource(resource);
+  }, { scope: 'worker' }],
+});
 ```
 
-### Common Assertions (Auto-Retrying)
+### CI/CD Commands
+```bash
+# Run only failed tests
+npx playwright test --last-failed
 
-**Visibility and State:**
-```typescript
-// Visibility
-await expect(element).toBeVisible()
-await expect(element).toBeHidden()
-await expect(element).toBeAttached()
+# Generate different report formats
+npx playwright test --reporter=html,json,junit
 
-// State
-await expect(element).toBeEnabled()
-await expect(element).toBeDisabled()
-await expect(element).toBeFocused()
-await expect(element).toBeEditable()
-```
-
-**Content:**
-```typescript
-// Text
-await expect(element).toHaveText('exact text')
-await expect(element).toContainText('partial')
-await expect(element).toHaveText(/regex/)
-
-// Value
-await expect(input).toHaveValue('value')
-await expect(input).toBeEmpty()
-
-// Lists
-await expect(items).toHaveText(['item1', 'item2'])
-await expect(items).toHaveCount(5)
-```
-
-**Attributes:**
-```typescript
-// Attributes
-await expect(link).toHaveAttribute('href', '/path')
-await expect(element).toHaveClass('active')
-await expect(element).toHaveCSS('color', 'rgb(0, 0, 0)')
-
-// Forms
-await expect(checkbox).toBeChecked()
-await expect(checkbox).not.toBeChecked()
-```
-
-**Page:**
-```typescript
-// URL and Title
-await expect(page).toHaveURL('https://example.com')
-await expect(page).toHaveURL(/\/products/)
-await expect(page).toHaveTitle('Page Title')
-```
-
-**Special:**
-```typescript
-// Soft assertions (continue on failure)
-await expect.soft(element).toBeVisible()
-
-// Polling
-await expect.poll(async () => {
-  return await getSomeValue()
-}).toBe('expected')
-
-// Custom timeout
-await expect(element).toBeVisible({ timeout: 10000 })
-
-// Negation
-await expect(element).not.toBeVisible()
+# Run with specific config
+npx playwright test --config=playwright.ci.config.ts
 ```
 
 ---
 
 ## 💡 Tips for Success
 
-**Locator Best Practices:**
-1. **Prioritize user-facing attributes** - Think like a user, not a developer
-2. **Avoid positional selectors** - `.nth()` breaks when DOM order changes
-3. **Use test IDs sparingly** - Only when role/text identification isn't feasible
-4. **Never use CSS/XPath as first choice** - They create brittle tests
-5. **Leverage filtering** - Use `.filter()` instead of complex selectors
-6. **Chain for precision** - Combine locators to narrow scope
-7. **Test accessibility** - Role-based locators encourage ARIA compliance
-8. **Understand strictness** - Single-element actions fail on multiple matches
-9. **Trust auto-waiting** - Locators handle dynamic content automatically
-10. **Keep it simple** - Most specific locator wins
-
-**Assertion Best Practices:**
-1. **Use auto-retrying assertions** - They handle timing issues automatically
-2. **Be specific with locators** - Combine good locators with good assertions
-3. **Assert user-visible state** - Test what users see, not implementation details
-4. **Choose appropriate assertion types** - Use `toContainText` for partial matches
-5. **Avoid over-asserting** - Only verify what matters for the test
-6. **Use custom messages** - Make failures easier to debug
-7. **Leverage soft assertions wisely** - Good for comprehensive validation
-8. **Configure timeouts appropriately** - Long for slow ops, short for fast ops
-9. **Prefer `.not` over manual checks** - Use built-in negation
-10. **Group related assertions** - Organize tests with clear arrange-act-assert
+1. **Use global setup for expensive operations** - Authentication, database setup
+2. **Keep global setup fast** - It runs before every test execution
+3. **Clean up in teardown** - Always clean up resources
+4. **Shard appropriately** - Balance shards based on test count
+5. **Use worker fixtures for isolation** - Prevents test interference
+6. **Monitor CI execution time** - Optimize based on metrics
+7. **Don't over-engineer** - Start simple, add complexity as needed
 
 ---
 
 ## 📖 Additional Resources
 
-**Locator Resources:**
-- [Locators Documentation](https://playwright.dev/docs/locators)
-- [Best Practices](https://playwright.dev/docs/best-practices)
-- [Locator API Reference](https://playwright.dev/docs/api/class-locator)
-- [ARIA Roles Reference](https://www.w3.org/TR/wai-aria-1.2/#role_definitions)
-- [Accessibility Testing](https://playwright.dev/docs/accessibility-testing)
-
-**Assertion Resources:**
-- [Assertions Documentation](https://playwright.dev/docs/test-assertions)
-- [Auto-Retrying Assertions](https://playwright.dev/docs/test-assertions#auto-retrying-assertions)
-- [Assertion API Reference](https://playwright.dev/docs/api/class-locatorassertions)
-- [Page Assertions](https://playwright.dev/docs/api/class-pageassertions)
-- [Generic Assertions](https://playwright.dev/docs/api/class-genericassertions)
+- [Global Setup Documentation](https://playwright.dev/docs/test-global-setup-teardown)
+- [Sharding Tests](https://playwright.dev/docs/test-sharding)
+- [CI/CD Integration](https://playwright.dev/docs/ci)
+- [GitHub Actions Example](https://playwright.dev/docs/ci-intro)
+- [GitLab CI Example](https://playwright.dev/docs/ci#gitlab-ci)
+- [Jenkins Integration](https://playwright.dev/docs/ci#jenkins)
 
 ---
 
 ## ❓ Common Issues and Solutions
 
-### Issue: Locator matches multiple elements
-**Solution:** Be more specific or use `.first()`:
+### Issue: Global setup runs multiple times
+**Solution:** Verify `globalSetup` is at config level, not project level.
+
+### Issue: Storage state not found
+**Solution:** Ensure global setup completes before tests run:
 ```typescript
-// Too broad
-await page.getByRole('button').click(); // Error!
-
-// Better - specific name
-await page.getByRole('button', { name: 'Submit' }).click();
-
-// Or explicitly select first
-await page.getByRole('button').first().click();
+// Check file exists
+if (!fs.existsSync('playwright/.auth/user.json')) {
+  throw new Error('Authentication state not found');
+}
 ```
 
-### Issue: Element not found
-**Solution:** Check your locator matches user-visible attributes:
+### Issue: Shard reports don't merge
+**Solution:** Use blob reporter in shards:
 ```typescript
-// Wrong - looking for internal value
-await page.getByText('submit_btn'); // Not visible to user
-
-// Right - looking for visible text
-await page.getByRole('button', { name: 'Submit' });
+reporter: process.env.CI ? 'blob' : 'html',
 ```
 
-### Issue: Test breaks when CSS changes
-**Solution:** Switch to user-facing locators:
+### Issue: Worker fixtures run too many times
+**Solution:** Verify scope is set to 'worker':
 ```typescript
-// Brittle - tied to CSS structure
-await page.locator('.header .nav .btn-primary').click();
-
-// Resilient - based on user perception
-await page.getByRole('button', { name: 'Sign up' }).click();
-```
-
-### Issue: Can't find element in Shadow DOM
-**Solution:** Playwright handles Shadow DOM automatically (except XPath):
-```typescript
-// Works with Shadow DOM
-await page.getByRole('button', { name: 'Submit' });
-
-// Doesn't work with Shadow DOM
-await page.locator('//button'); // XPath doesn't pierce shadow roots
+myFixture: [async ({}, use) => { ... }, { scope: 'worker' }]
 ```
 
 ---
 
-## 🎉 Module Complete!
+## 🎉 Congratulations!
 
-You now have a solid understanding of Playwright locator strategies and test assertions! You've learned:
-
-**Locator Strategies:**
-- How to use user-facing locators effectively
-- Advanced techniques like chaining, filtering, and combining
-- Best practices for resilient test automation
-- How to avoid brittle CSS and XPath selectors
-
-**Test Assertions:**
-- Auto-retrying assertions and their benefits
-- Visibility, state, and content assertions
-- Form validation and page assertions
-- Soft assertions and custom messages
-- Polling and timeout configuration
+You've completed all modules of the Playwright Workshop! You now have comprehensive knowledge of:
+- Writing and organizing tests
+- Debugging and fixing test failures
+- Running tests in parallel across browsers and devices
+- Setting up CI/CD pipelines
+- Managing enterprise-level test suites
 
 ## 🚀 Next Steps
 
-1. **Practice** - Apply locators and assertions to your test projects
-2. **Refactor** - Update existing tests to use better locators and auto-retrying assertions
-3. **Accessibility** - Use role locators to improve app accessibility
-4. **Reliability** - Replace manual waits with auto-retrying assertions
-5. **Share** - Teach your team about locator and assertion best practices
+1. **Practice** - Apply what you learned to your projects
+2. **Explore** - Check out Playwright's advanced features
+3. **Contribute** - Share your knowledge with the community
+4. **Stay Updated** - Follow Playwright releases for new features
 
 ---
 
-**Ready to start?**
-- Begin with locators: [01_locator_strategies.md](01_locator_strategies.md)
-- Then learn assertions: [02_test_assertions.md](02_test_assertions.md)
+## 📚 Additional Learning Resources
+
+- [Playwright Official Documentation](https://playwright.dev)
+- [Playwright Community](https://playwright.dev/community/welcome)
+- [Playwright Discord](https://aka.ms/playwright/discord)
+- [Playwright GitHub](https://github.com/microsoft/playwright)
+- [Playwright Blog](https://playwright.dev/blog)
+
+---
+
+**Ready to start? Open [1_global_setup_teardown.md](1_global_setup_teardown.md) to begin!**
+
+---
+
+# Test Reporting
+
+## Built-in Reporters
+
+Playwright provides 8 built-in reporters:
+
+| Reporter | Output | Best For |
+|----------|--------|----------|
+| `list` | Console | Local development (default) |
+| `line` | Console | Large test suites |
+| `dot` | Console | CI pipelines |
+| `html` | File | Debugging failures |
+| `json` | File | Automation/analytics |
+| `junit` | File | CI integration |
+| `github` | Annotations | GitHub Actions |
+| `blob` | Binary | Sharded tests |
+
+## Configuration
+
+### Single Reporter
+```typescript
+// playwright.config.ts
+export default defineConfig({
+  reporter: 'html'
+});
+```
+
+### Multiple Reporters
+```typescript
+export default defineConfig({
+  reporter: [
+    ['list'],
+    ['html', { open: 'never' }],
+    ['json', { outputFile: 'results.json' }],
+    ['junit', { outputFile: 'results.xml' }]
+  ]
+});
+```
+
+### Environment-Based
+```typescript
+export default defineConfig({
+  reporter: process.env.CI
+    ? [['dot'], ['html'], ['junit', { outputFile: 'results.xml' }]]
+    : [['list'], ['html', { open: 'on-failure' }]]
+});
+```
+
+## CLI Commands
+
+```bash
+# Run with specific reporter
+npx playwright test --reporter=html
+
+# View HTML report
+npx playwright show-report
+
+# Multiple reporters
+npx playwright test --reporter=list --reporter=html
+```
+
+## HTML Reporter Options
+
+```typescript
+['html', {
+  outputFolder: 'playwright-report',
+  open: 'on-failure'  // 'always' | 'never' | 'on-failure'
+}]
+```
+
+## Blob Reports (Sharding)
+
+For distributed test execution:
+
+```bash
+# Run sharded tests
+npx playwright test --shard=1/3 --reporter=blob
+npx playwright test --shard=2/3 --reporter=blob
+npx playwright test --shard=3/3 --reporter=blob
+
+# Merge reports
+npx playwright merge-reports --reporter html ./blob-report
+```
+
+## CI Integration
+
+### GitHub Actions
+```yaml
+- name: Run tests
+  run: npx playwright test
+- name: Upload report
+  if: always()
+  uses: actions/upload-artifact@v4
+  with:
+    name: playwright-report
+    path: playwright-report/
+```
+
+### Config for CI
+```typescript
+reporter: [
+  ['dot'],
+  ['html'],
+  ['junit', { outputFile: 'results.xml' }]
+]
+```
+
+## Custom Reporters
+
+```typescript
+// reporters/my-reporter.ts
+import type { Reporter, TestCase, TestResult } from '@playwright/test/reporter';
+
+class MyReporter implements Reporter {
+  onTestEnd(test: TestCase, result: TestResult) {
+    console.log(`${test.title}: ${result.status}`);
+  }
+}
+
+export default MyReporter;
+```
+
+Usage:
+```typescript
+reporter: ['./reporters/my-reporter.ts']
+```
+
+## Reporting Lab Exercise
+
+1. Configure HTML + JSON reporters
+2. Run tests and view HTML report
+3. Try environment-based configuration
+
+**Hands-on Lab:**
+- Explore: [playwright-report-tests/](playwright-report-tests/)
+
+---
+
+> **Note:** All contents of this workshop are proprietary and belong to **Taqelah**. Do not share or distribute without permission.
