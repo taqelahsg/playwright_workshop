@@ -28,15 +28,12 @@ Learn about:
 - What is global setup/teardown?
 - When to use global setup
 - Implementing global authentication
-- Starting/stopping services
-- Database setup and cleanup
 - Sharing state between setup and tests
 - Best practices
 
 **Use cases:**
 - One-time authentication for all tests
 - Starting mock servers
-- Database seeding
 - Environment configuration
 - Resource cleanup
 
@@ -84,7 +81,7 @@ Learn about:
 
 ## 🧪 Lab Exercises
 
-### Lab 1: Global Authentication Setup (45 minutes)
+### Global Authentication Setup
 
 **Task:** Implement global authentication that runs once before all tests
 
@@ -140,132 +137,9 @@ test('access protected page', async ({ page }) => {
 
 ---
 
-### Lab 2: Database Setup and Teardown (45 minutes)
+### Test Sharding for CI/CD
 
-**Task:** Set up and tear down test database
-
-1. **Create global-setup.ts:**
-```typescript
-import { FullConfig } from '@playwright/test';
-
-async function globalSetup(config: FullConfig) {
-  console.log('🗄️ Setting up test database...');
-
-  // Example: MongoDB setup
-  const client = await MongoClient.connect('mongodb://localhost:27017');
-  const db = client.db('test_db');
-
-  // Create collections
-  await db.createCollection('users');
-  await db.createCollection('products');
-
-  // Seed initial data
-  await db.collection('users').insertMany([
-    { username: 'testuser1', email: 'test1@example.com' },
-    { username: 'testuser2', email: 'test2@example.com' },
-  ]);
-
-  await client.close();
-
-  console.log('✅ Database setup completed');
-}
-
-export default globalSetup;
-```
-
-2. **Create global-teardown.ts:**
-```typescript
-import { FullConfig } from '@playwright/test';
-
-async function globalTeardown(config: FullConfig) {
-  console.log('🧹 Cleaning up test database...');
-
-  const client = await MongoClient.connect('mongodb://localhost:27017');
-  const db = client.db('test_db');
-
-  // Drop test database
-  await db.dropDatabase();
-
-  await client.close();
-
-  console.log('✅ Cleanup completed');
-}
-
-export default globalTeardown;
-```
-
----
-
-### Lab 3: Test Sharding for CI/CD (45 minutes)
-
-**Task:** Configure test sharding for parallel CI execution
-
-1. **Create GitHub Actions workflow:**
-```yaml
-# .github/workflows/playwright.yml
-name: Playwright Tests
-
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        shardIndex: [1, 2, 3, 4]
-        shardTotal: [4]
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Run Playwright tests
-        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-
-      - name: Upload blob report to GitHub Actions Artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: blob-report-${{ matrix.shardIndex }}
-          path: blob-report
-          retention-days: 1
-
-  merge-reports:
-    if: always()
-    needs: [test]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-
-      - name: Download blob reports from GitHub Actions Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: all-blob-reports
-          pattern: blob-report-*
-          merge-multiple: true
-
-      - name: Merge into HTML Report
-        run: npx playwright merge-reports --reporter html ./all-blob-reports
-
-      - name: Upload HTML report
-        uses: actions/upload-artifact@v4
-        with:
-          name: html-report--attempt-${{ github.run_attempt }}
-          path: playwright-report
-          retention-days: 14
-```
-
-2. **Test locally with sharding:**
+1. **Test locally with sharding:**
 ```bash
 # Terminal 1 - Shard 1
 npx playwright test --shard=1/4
@@ -279,107 +153,6 @@ npx playwright test --shard=3/4
 # Terminal 4 - Shard 4
 npx playwright test --shard=4/4
 ```
-
----
-
-### Lab 4: Worker Isolation (30 minutes)
-
-**Task:** Create isolated resources per worker
-
-```typescript
-// fixtures/worker-database.ts
-import { test as base } from '@playwright/test';
-
-type WorkerFixtures = {
-  workerDatabase: string;
-};
-
-export const test = base.extend<{}, WorkerFixtures>({
-  workerDatabase: [async ({}, use, workerInfo) => {
-    const dbName = `test_db_${workerInfo.workerIndex}`;
-
-    // Setup: Create database for this worker
-    console.log(`Creating database: ${dbName}`);
-    await createDatabase(dbName);
-
-    await use(dbName);
-
-    // Teardown: Cleanup database for this worker
-    console.log(`Cleaning up database: ${dbName}`);
-    await dropDatabase(dbName);
-  }, { scope: 'worker' }],
-});
-
-// Use in tests
-test('test with isolated database', async ({ workerDatabase }) => {
-  console.log(`Using database: ${workerDatabase}`);
-  // Each worker has its own database
-});
-```
-
----
-
-### Lab 5: Advanced CI/CD Integration (60 minutes)
-
-**Task:** Build a complete CI/CD pipeline
-
-1. **Create multiple environment configs:**
-```typescript
-// playwright.staging.config.ts
-export default defineConfig({
-  use: {
-    baseURL: 'https://staging.example.com',
-  },
-});
-
-// playwright.production.config.ts
-export default defineConfig({
-  use: {
-    baseURL: 'https://example.com',
-  },
-  retries: 0, // No retries in production
-});
-```
-
-2. **Create npm scripts:**
-```json
-{
-  "scripts": {
-    "test": "playwright test",
-    "test:staging": "playwright test --config=playwright.staging.config.ts",
-    "test:production": "playwright test --config=playwright.production.config.ts",
-    "test:smoke": "playwright test --grep @smoke",
-    "test:headed": "playwright test --headed",
-    "test:debug": "playwright test --debug"
-  }
-}
-```
-
-3. **Create CI configuration for multiple environments:**
-```yaml
-# .gitlab-ci.yml
-stages:
-  - test
-
-test:staging:
-  stage: test
-  script:
-    - npm ci
-    - npx playwright install --with-deps
-    - npm run test:staging
-  only:
-    - develop
-
-test:production:
-  stage: test
-  script:
-    - npm ci
-    - npx playwright install --with-deps
-    - npm run test:smoke -- --config=playwright.production.config.ts
-  only:
-    - main
-```
-
 ---
 
 ## ✅ Success Criteria
