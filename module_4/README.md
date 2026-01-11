@@ -21,7 +21,7 @@ By the end of this module, you will be able to:
 
 ## 📚 Topics Covered
 
-### 1. Global Setup and Teardown (90 minutes)
+### 1. Global Setup and Teardown
 **File:** [1_global_setup_teardown.md](1_global_setup_teardown.md)
 
 Learn about:
@@ -66,7 +66,7 @@ Learn about:
 
 ---
 
-### 3. Advanced Parallel Execution (30 minutes)
+### 3. Advanced Parallel Execution
 **File:** [3_advanced_parallel.md](3_advanced_parallel.md)
 
 Learn about:
@@ -162,9 +162,6 @@ After completing this module, you should be able to:
 - [x] Create authentication setup that runs once
 - [x] Set up and tear down databases
 - [x] Share state between setup and tests
-- [x] Shard tests across multiple machines
-- [x] Merge shard reports
-- [x] Create CI/CD pipelines with Playwright
 - [x] Implement worker isolation strategies
 - [x] Configure environment-specific testing
 - [x] Optimize large test suites
@@ -439,7 +436,7 @@ reporter: ['./reporters/my-reporter.ts']
 3. Try environment-based configuration
 
 **Hands-on Lab:**
-- Explore: [playwright-report-tests/](playwright-report-tests/)
+- Explore: [lab_exercise_taqelah_cart_dweb_mweb.md](lab_exercise_taqelah_cart_dweb_mweb.md)
 
 ---
 
