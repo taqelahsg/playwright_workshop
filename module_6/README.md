@@ -1,10 +1,7 @@
 # Module 6: Test Organization and Execution
 
-**Duration:** 3-4 hours (Full coverage) | 40 minutes (Intensive workshop)
 **Level:** Intermediate
 **Prerequisites:** Completed Modules 2-5
-
-> **Note:** In the intensive one-day workshop (9 AM - 3 PM), this module is covered in 40 minutes focusing on parallel execution concepts and test projects.
 
 ---
 
@@ -22,8 +19,10 @@ By the end of this module, you will be able to:
 
 ## 📚 Topics Covered
 
-### 1. Parallel Test Execution (90 minutes)
+### 1. Parallel Test Execution
 **File:** [1_parallel_execution.md](1_parallel_execution.md)
+
+> **Cross-reference:** This section covers *how workers operate* (configuring worker count, parallel modes, sharding). For advanced patterns on *setting up resources* for workers (worker-scoped fixtures, isolation strategies for shared resources), see [Module 5: Advanced Parallel Execution](../module_5/3_advanced_parallel.md).
 
 Learn about:
 - How parallel execution works in Playwright
@@ -36,15 +35,9 @@ Learn about:
 - Test sharding for CI/CD
 - Best practices for parallel testing
 
-**Hands-on Lab:**
-- Explore: [playwright-parallel-tests/](playwright-parallel-tests/)
-- Run tests with different worker counts
-- Understand serial vs parallel modes
-- Implement worker-scoped fixtures
-
 ---
 
-### 2. Test Projects (90 minutes)
+### 2. Test Projects
 **File:** [2_test_projects.md](2_test_projects.md)
 
 Learn about:
@@ -56,16 +49,9 @@ Learn about:
 - Environment-specific projects
 - Filtering tests by project
 
-**Hands-on Lab:**
-- Explore: [playwright-test-projects/](playwright-test-projects/)
-- Configure Chromium, Firefox, WebKit projects
-- Add mobile device projects
-- Set up project dependencies
-- Run tests across all browsers
-
 ---
 
-### 3. Test Parameterization (90 minutes)
+### 3. Test Parameterization
 **File:** [3_parameterization.md](3_parameterization.md)
 
 Learn about:
@@ -76,231 +62,17 @@ Learn about:
 - CSV-based test generation
 - Data-driven testing patterns
 
-**Hands-on Lab:**
-- Explore: [playwright-parameterization/](playwright-parameterization/)
-- Parameterize tests with multiple data sets
-- Create data-driven login tests
-- Use CSV files for test data
-- Implement matrix testing
-
 ---
 
-## 🧪 Lab Exercises
+## 🧪 Lab Exercise
 
-### Lab 1: Master Parallel Execution (60 minutes)
+**File:** [lab_exercise_taqelah_test_organization.md](lab_exercise_taqelah_test_organization.md)
 
-**Task 1: Experiment with Workers**
-1. Open `playwright-parallel-tests/`
-2. Run with 1 worker: `npx playwright test --workers=1`
-3. Run with 4 workers: `npx playwright test --workers=4`
-4. Compare execution times
-5. Observe the test output
-
-**Task 2: Implement Serial Mode**
-Create a test file with dependent tests:
-```typescript
-test.describe.configure({ mode: 'serial' });
-
-test('step 1: create user', async ({ page }) => {
-  // Create user
-});
-
-test('step 2: login user', async ({ page }) => {
-  // Login with created user
-});
-
-test('step 3: delete user', async ({ page }) => {
-  // Cleanup
-});
-```
-
-**Task 3: Worker Isolation**
-Create a worker-scoped fixture for isolated data:
-```typescript
-export const test = base.extend<{}, { workerId: number }>({
-  workerId: [async ({}, use) => {
-    const id = test.info().workerIndex;
-    await use(id);
-  }, { scope: 'worker' }],
-});
-
-test('uses worker-specific data', async ({ workerId }) => {
-  console.log(`Running in worker ${workerId}`);
-});
-```
-
----
-
-### Lab 2: Configure Test Projects (60 minutes)
-
-**Task 1: Multi-Browser Configuration**
-Create a config with all major browsers:
-```typescript
-export default defineConfig({
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-  ],
-});
-```
-
-**Task 2: Add Mobile Projects**
-```typescript
-{
-  name: 'Mobile Chrome',
-  use: { ...devices['Pixel 5'] },
-},
-{
-  name: 'Mobile Safari',
-  use: { ...devices['iPhone 12'] },
-}
-```
-
-**Task 3: Setup Dependencies**
-```typescript
-{
-  name: 'setup',
-  testMatch: /.*\.setup\.ts/,
-},
-{
-  name: 'chromium',
-  use: { ...devices['Desktop Chrome'] },
-  dependencies: ['setup'],
-}
-```
-
-**Task 4: Run Specific Projects**
-```bash
-# Run only Chromium
-npx playwright test --project=chromium
-
-# Run Chrome and Firefox
-npx playwright test --project=chromium --project=firefox
-
-# Run all mobile projects
-npx playwright test --project="Mobile*"
-```
-
----
-
-### Lab 3: Data-Driven Testing (60 minutes)
-
-**Task 1: Basic Parameterization**
-Create parameterized login tests:
-```typescript
-const users = [
-  { username: 'admin', password: 'admin123', role: 'Admin' },
-  { username: 'user', password: 'user123', role: 'User' },
-  { username: 'guest', password: 'guest123', role: 'Guest' },
-];
-
-users.forEach(({ username, password, role }) => {
-  test(`login as ${username}`, async ({ page }) => {
-    await page.goto('/login');
-    await page.fill('#username', username);
-    await page.fill('#password', password);
-    await page.click('#submit');
-
-    await expect(page.locator('.role')).toHaveText(role);
-  });
-});
-```
-
-**Task 2: CSV-Based Tests**
-1. Create `test-data/products.csv`:
-```csv
-productId,name,price,inStock
-1,Laptop,999.99,true
-2,Mouse,29.99,true
-3,Keyboard,79.99,false
-```
-
-2. Generate tests from CSV:
-```typescript
-import { parse } from 'csv-parse/sync';
-import * as fs from 'fs';
-
-const products = parse(fs.readFileSync('test-data/products.csv', 'utf-8'), {
-  columns: true,
-  skip_empty_lines: true,
-});
-
-products.forEach((product) => {
-  test(`verify product ${product.name}`, async ({ page }) => {
-    await page.goto(`/product/${product.productId}`);
-    await expect(page.locator('.price')).toHaveText(`$${product.price}`);
-  });
-});
-```
-
-**Task 3: Project-Level Parameterization**
-Create custom options:
-```typescript
-// fixtures/custom-test.ts
-type TestOptions = {
-  environment: 'staging' | 'production';
-};
-
-export const test = base.extend<TestOptions>({
-  environment: ['staging', { option: true }],
-});
-```
-
-```typescript
-// playwright.config.ts
-projects: [
-  {
-    name: 'staging',
-    use: { environment: 'staging' },
-  },
-  {
-    name: 'production',
-    use: { environment: 'production' },
-  },
-]
-```
-
----
-
-### Lab 4: Build a Scalable Test Suite (90 minutes)
-
-**Task:** Organize a complete test suite
-1. Create projects for:
-   - Smoke tests on all browsers
-   - Full regression on Chromium only
-   - Mobile tests on Chrome and Safari
-2. Add parameterization for:
-   - Multiple user roles
-   - Different locales
-3. Configure appropriate parallelization
-4. Add worker-scoped fixtures for isolation
-5. Run the full suite and analyze results
-
-**Expected structure:**
-```
-tests/
-├── smoke/
-│   ├── login.smoke.spec.ts
-│   └── home.smoke.spec.ts
-├── regression/
-│   ├── checkout.spec.ts
-│   └── profile.spec.ts
-├── mobile/
-│   └── navigation.mobile.spec.ts
-└── fixtures/
-    ├── auth.ts
-    └── database.ts
-```
+Practice test organization and execution concepts using the Taqelah Boutique demo e-commerce site. The lab covers:
+- Configuring parallel execution with multiple workers
+- Creating test projects for different browsers and devices
+- Implementing data-driven parameterized tests
+- Organizing tests into a scalable suite structure
 
 ---
 

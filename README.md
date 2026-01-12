@@ -1,6 +1,6 @@
 # One-Day Intensive Playwright Workshop
 
-Welcome to the comprehensive one-day Playwright Testing Workshop! This intensive workshop is designed to take you from beginner to proficient in Playwright test automation in just 6 hours (9 AM - 3 PM).
+Welcome to the comprehensive one-day Playwright Testing Workshop! This intensive workshop is designed to take you from beginner to proficient in Playwright test automation in a full day (9 AM - 6 PM).
 
 ---
 
@@ -8,67 +8,98 @@ Welcome to the comprehensive one-day Playwright Testing Workshop! This intensive
 
 This workshop is organized into progressive modules, each building on the previous one:
 
-| Module | Title | Level | Status |
-|--------|-------|-------|--------|
-| **Module 2** | [Getting Started](module_2/) | Beginner | ✅ Required |
-| **Module 3** | [Core Testing Skills](module_3/) | Beginner | ✅ Required |
-| **Module 4** | [Debugging & Test Management](module_4/) | Intermediate | ✅ Required |
-| **Module 5** | [Global Setup, CI/CD Integration & Test Reporting](module_5/) | Advanced | ⚡ Recommended |
-| **Module 6** | [Test Organization & Execution](module_6/) | Intermediate | ⚡ Recommended |
-| **Module 7** | [API Testing](module_7/) | Intermediate | ⚡ Recommended |
+| Module | Title | Level | Duration |
+|--------|-------|-------|----------|
+| **Module 1** | [TypeScript Basics](module_1/) | Pre-requisite | Self-study |
+| **Module 2** | [Getting Started](module_2/) | Beginner | 45 min |
+| **Module 3** | [Core Testing Skills](module_3/) | Beginner | 60 min |
+| **Module 4** | [Debugging & Test Management](module_4/) | Intermediate | 60 min |
+| **Module 5** | [Locators & Global Setup](module_5/) | Intermediate | 60 min |
+| **Module 6** | [Test Organization & Execution](module_6/) | Intermediate | 60 min |
+| **Module 7** | [API Testing](module_7/) | Intermediate | 45 min |
+| **Module 8** | [Building Frameworks with Claude Code](module_8/) | Advanced | 45 min |
+| **Module 9** | [Capstone Project](module_9/) | All Levels | 60 min |
 
 ---
 
 ## 🎯 One-Day Intensive Workshop Schedule
 
-### Workshop Overview: 9 AM to 3 PM
-**Comprehensive coverage of all essential Playwright topics (Modules 2-7)**
+### Workshop Overview: 9 AM to 6 PM
+**Complete coverage of Playwright from basics to production-ready frameworks**
 
-Perfect for teams needing a complete Playwright overview in a single day.
+Perfect for teams needing comprehensive Playwright training including framework development and CI/CD integration.
 
 **Key Information:**
-- ⏰ **Duration:** 6 hours (9 AM - 3 PM)
-- 📚 **Coverage:** Modules 2-7 (all essential topics)
-- ☕ **Breaks:** 2 × 15-minute breaks + 45-minute lunch
-- 👨‍🏫 **Format:** Instructor-led demos with focused hands-on practice
-- 🎯 **Net Teaching Time:** 4 hours 45 minutes
+- ⏰ **Duration:** 9 hours (9 AM - 6 PM)
+- 📚 **Coverage:** Modules 2-9 (all topics)
+- ☕ **Breaks:** 2 × 15-minute breaks + 1-hour lunch
+- 👨‍🏫 **Format:** Instructor-led demos with hands-on labs
+- 🎯 **Net Teaching Time:** ~7 hours
 
-**Workshop Schedule:**
+---
+
+### Detailed Schedule
 
 | Time | Duration | Module | Topics |
 |------|----------|--------|--------|
-| 9:00 - 9:40 AM | 40 min | **Module 2** | Getting Started, First Test |
-| 9:40 - 10:00 AM | 20 min | **Module 3** | Configuration, Codegen, CLI |
-| 10:00 - 10:20 AM | 20 min | **Module 4** | Trace Viewer, Fixtures |
-| 10:20 - 10:35 AM | 15 min | ☕ **Break** | |
-| 10:35 - 11:05 AM | 30 min | **Module 5** | Global Setup, Reporting |
-| 11:05 - 11:40 AM | 35 min | **Module 6** | Parallel Tests, Projects |
-| 11:40 - 12:20 PM | 40 min | **Module 6** | Parameterization |
-| 12:20 - 1:05 PM | 45 min | 🍽️ **Lunch** | |
-| 1:05 - 1:35 PM | 30 min | **Module 7** | API Testing Basics |
-| 1:35 - 2:05 PM | 30 min | **Module 7** | Network Mocking |
-| 2:05 - 2:30 PM | 25 min | **Wrap-up** | Q&A, Next Steps |
+| **9:00 - 9:45** | 45 min | **Module 2** | Getting Started, First Test, Basic Locators |
+| **9:45 - 10:45** | 60 min | **Module 3** | Configuration, Codegen, CLI, Annotations, Timeouts |
+| **10:45 - 11:00** | 15 min | ☕ **Break** | |
+| **11:00 - 12:00** | 60 min | **Module 4** | Trace Viewer, Fixtures, Page Object Model |
+| **12:00 - 1:00** | 60 min | 🍽️ **Lunch** | |
+| **1:00 - 2:00** | 60 min | **Module 5** | Locator Strategies, Global Setup, Emulation, Reporting |
+| **2:00 - 3:00** | 60 min | **Module 6** | Parallel Execution, Test Projects, Parameterization |
+| **3:00 - 3:15** | 15 min | ☕ **Break** | |
+| **3:15 - 4:00** | 45 min | **Module 7** | API Testing, Network Mocking |
+| **4:00 - 4:45** | 45 min | **Module 8** | Building Frameworks with Claude Code |
+| **4:45 - 5:45** | 60 min | **Module 9** | Capstone Project - Build Complete Test Suite |
+| **5:45 - 6:00** | 15 min | **Wrap-up** | Q&A, Next Steps, Resources |
 
-**What You Will Learn:**
+---
+
+### What You Will Learn
+
+**Morning Session (Modules 2-4):**
 - ✅ Write and run Playwright tests
 - ✅ Configure projects and use Codegen
-- ✅ Debug with Trace Viewer
-- ✅ Organize and run tests in parallel
-- ✅ Master locators and assertions
-- ✅ Test APIs with Playwright
-- ✅ Mock network requests
-- ✅ Generate comprehensive test reports
-- ✅ Implement global setup/teardown
+- ✅ Master CLI commands and test annotations
+- ✅ Debug failures with Trace Viewer
+- ✅ Implement Page Object Model
+- ✅ Create custom fixtures
 
-**Learning Approach:**
-- Instructor-led demos with abbreviated labs
-- Emphasis on core concepts and best practices
-- Hands-on practice for foundational modules
-- Access to all detailed module content for self-paced deep-dive after the workshop
+**Afternoon Session (Modules 5-7):**
+- ✅ Use advanced locator strategies
+- ✅ Configure global setup and teardown
+- ✅ Run tests in parallel across browsers/devices
+- ✅ Parameterize tests with data-driven approaches
+- ✅ Test REST APIs with Playwright
+- ✅ Mock and intercept network requests
+
+**Advanced Session (Modules 8-9):**
+- ✅ Build complete frameworks using Claude Code (AI-assisted)
+- ✅ Design scalable framework architecture
+- ✅ Complete hands-on capstone project
+- ✅ Apply all learned concepts to real application
+- ✅ Build production-ready test suite
+- ✅ Demonstrate end-to-end testing skills
 
 ---
 
 ## 📖 Module Details
+
+### Module 1: TypeScript Basics (Pre-requisite)
+**📖 Self-study before workshop**
+
+**Topics:**
+- Variables, types, and operators
+- Control flow (if/else, loops)
+- Arrays, tuples, and objects
+- Functions and scope
+- Best practices
+
+**Note:** Complete this module before attending the workshop if you're new to TypeScript.
+
+---
 
 ### Module 2: Getting Started
 **🎯 Goal:** Write your first Playwright test
@@ -80,7 +111,9 @@ Perfect for teams needing a complete Playwright overview in a single day.
 - Basic locators and assertions
 
 **Hands-on Projects:**
-- `playwright-hello-world-project/` (to be added)
+- `playwright-hello-world-project/`
+
+**Lab Exercise:** [lab_exercise_taqelah_login.md](module_2/lab_exercise_taqelah_login.md)
 
 **After this module:** You can write and run basic tests
 
@@ -90,15 +123,17 @@ Perfect for teams needing a complete Playwright overview in a single day.
 **🎯 Goal:** Master essential testing tools
 
 **Topics:**
-- Playwright configuration
+- Playwright configuration (`playwright.config.ts`)
 - Recording tests with Codegen
 - CLI commands and options
-- Test annotations and tags
+- Test annotations and tags (@smoke, @regression)
 - Retries and timeouts
 
 **Hands-on Projects:**
 - `playwright-annotations/`
 - `playwright-retries-timeouts/`
+
+**Lab Exercise:** [lab_exercise_taqelah_config_record_annotation_timeout.md](module_3/lab_exercise_taqelah_config_record_annotation_timout.md)
 
 **After this module:** You can configure projects, record tests, and organize test execution
 
@@ -111,29 +146,35 @@ Perfect for teams needing a complete Playwright overview in a single day.
 - Trace Viewer for debugging
 - Playwright fixtures system
 - Page Object Model pattern
-- Custom fixtures
+- Custom fixtures and authentication state
 
 **Hands-on Projects:**
 - `playwright-fixtures/`
+
+**Lab Exercise:** [lab_exercise_taqelah_auth_state.md](module_4/lab_exercise_taqelah_auth_state.md)
 
 **After this module:** You can debug any test failure and organize test code professionally
 
 ---
 
-### Module 5: Global Setup, CI/CD Integration & Test Reporting
-**🎯 Goal:** Master advanced configuration and CI/CD integration
+### Module 5: Locators & Global Setup
+**🎯 Goal:** Master locators and advanced configuration
 
 **Topics:**
+- Locator strategies (getByRole, getByTestId, etc.)
 - Global setup and teardown
-- Test reporting (HTML, JSON, JUnit, blob reports)
+- Device emulation (mobile, tablet)
+- Test reporting (HTML, JSON, JUnit)
 - Test sharding for CI/CD
-- Worker-scoped fixtures
 
 **Hands-on Projects:**
+- `playwright-locators/`
 - `playwright-global-setup-teardown/`
-- `playwright-report-tests/`
+- `playwright-emulation/`
 
-**After this module:** You can configure global setup, generate reports, and integrate with CI/CD pipelines
+**Lab Exercise:** [lab_exercise_taqelah_cart_dweb_mweb.md](module_5/lab_exercise_taqelah_cart_dweb_mweb.md.md)
+
+**After this module:** You can use advanced locators, configure global setup, and generate reports
 
 ---
 
@@ -143,13 +184,15 @@ Perfect for teams needing a complete Playwright overview in a single day.
 **Topics:**
 - Parallel test execution
 - Test projects (browsers, devices)
-- Test parameterization
-- Worker isolation
+- Test parameterization (data-driven testing)
+- Worker isolation and management
 
 **Hands-on Projects:**
 - `playwright-parallel-tests/`
 - `playwright-test-projects/`
 - `playwright-parameterization/`
+
+**Lab Exercise:** [lab_exercise_taqelah_test_organization.md](module_6/lab_exercise_taqelah_test_organization.md)
 
 **After this module:** You can run tests efficiently across multiple browsers and organize large test suites
 
@@ -174,6 +217,44 @@ Perfect for teams needing a complete Playwright overview in a single day.
 
 ---
 
+### Module 8: Building Frameworks with Claude Code
+**🎯 Goal:** Build production-ready frameworks using AI assistance
+
+**Topics:**
+- Introduction to Claude Code
+- Effective prompting for test automation
+- Framework architecture design
+- Building Page Objects with AI
+- Creating custom fixtures
+- Generating test utilities
+
+**Lab Exercise:** [lab_exercise_build_framework.md](module_8/lab_exercise_build_framework.md)
+
+**After this module:** You can rapidly scaffold and build complete test frameworks using Claude Code
+
+---
+
+### Module 9: Capstone Project
+**🎯 Goal:** Apply everything you've learned to build a complete test suite
+
+**Project Requirements:**
+- Set up complete Playwright project from scratch
+- Implement Page Object Model architecture
+- Create custom fixtures for authentication
+- Write minimum 5 comprehensive E2E tests
+- Organize tests with @smoke and @regression tags
+- Configure multi-browser execution
+- Generate and analyze test reports
+
+**Deliverables:**
+- Complete project structure with pages/, fixtures/, tests/
+- Working test suite for Taqelah Boutique Demo Site
+- HTML report with all tests passing
+
+**After this module:** You have demonstrated mastery of all Playwright concepts through a real-world project
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -182,8 +263,9 @@ Before starting the workshop, ensure you have:
 
 - **Node.js** (v18 or higher) - [Download](https://nodejs.org)
 - **Code Editor** - VS Code recommended - [Download](https://code.visualstudio.com)
-- **Basic JavaScript/TypeScript** knowledge
+- **Basic JavaScript/TypeScript** knowledge (or complete Module 1)
 - **Git** (optional) - [Download](https://git-scm.com)
+- **Claude Code** (for Module 8) - `npm install -g @anthropic-ai/claude-code`
 
 ### Installation Check
 
@@ -195,6 +277,9 @@ node --version  # Should be v18+
 
 # Check npm version
 npm --version   # Should be 9+
+
+# Check Claude Code (for Module 8)
+claude --version
 ```
 
 ### Start the Workshop
@@ -251,6 +336,7 @@ npm --version   # Should be 9+
 - [Playwright Blog](https://playwright.dev/blog) - Latest updates
 - [GitHub Repository](https://github.com/microsoft/playwright) - Source code
 - [Release Notes](https://playwright.dev/docs/release-notes) - What's new
+- [Claude Code Docs](https://docs.anthropic.com/claude-code) - AI-assisted development
 
 ---
 
@@ -261,9 +347,11 @@ Track your progress through the workshop:
 - [ ] **Module 2 Complete** - Can write and run basic tests
 - [ ] **Module 3 Complete** - Can configure projects and record tests
 - [ ] **Module 4 Complete** - Can debug failures and use fixtures
-- [ ] **Module 5 Complete** - Can configure global setup and generate reports
+- [ ] **Module 5 Complete** - Can use advanced locators and global setup
 - [ ] **Module 6 Complete** - Can organize and scale test suites
 - [ ] **Module 7 Complete** - Can test APIs and mock network requests
+- [ ] **Module 8 Complete** - Can build frameworks with Claude Code
+- [ ] **Module 9 Complete** - Built complete test suite in capstone project
 
 ---
 
@@ -279,9 +367,9 @@ After completing the one-day intensive workshop, continue your learning:
 
 ### Recommended Practice Schedule
 - **Week 1:** Deep dive into Modules 2-3 (Foundations)
-- **Week 2:** Practice Module 4 (Debugging & Fixtures)
-- **Week 3:** Master Modules 5-6 (Global Setup, Reporting & Test Organization)
-- **Week 4:** Complete Module 7 (API Testing & Network Mocking)
+- **Week 2:** Practice Module 4-5 (Debugging, Fixtures & Locators)
+- **Week 3:** Master Module 6-7 (Test Organization & API Testing)
+- **Week 4:** Complete Modules 8-9 (Frameworks & Capstone)
 
 ### Continuous Learning
 - Apply concepts to your own projects
@@ -294,7 +382,7 @@ After completing the one-day intensive workshop, continue your learning:
 ## ❓ Frequently Asked Questions
 
 ### Do I need to know TypeScript?
-Basic JavaScript is sufficient. You'll learn TypeScript concepts as you go.
+Basic JavaScript is sufficient. Complete Module 1 if you need a refresher.
 
 ### Can I use JavaScript instead of TypeScript?
 Yes! All examples work in JavaScript. Just rename `.ts` files to `.js`.
@@ -304,6 +392,9 @@ None! Playwright installs and manages browsers automatically.
 
 ### How much does Playwright cost?
 Playwright is completely free and open-source.
+
+### What is Claude Code?
+Claude Code is Anthropic's AI-powered CLI tool for code generation and assistance. It's used in Module 8 to build frameworks rapidly.
 
 ### Can I test mobile apps?
 Playwright tests web apps in mobile browsers (emulation). For native apps, consider Appium.
@@ -352,71 +443,53 @@ Need help? Here's where to find it:
 
 ---
 
-## 📋 Intensive One-Day Workshop - Instructor Guide
+## 📋 Instructor Guide
 
 ### Pre-Workshop Preparation (Critical for Success)
 
 **Before 9 AM, ensure:**
 1. ✅ Playwright installed on all participant machines
 2. ✅ Node.js v18+ verified on all systems
-3. ✅ Sample project with pre-written tests ready
-4. ✅ PlayPI Docker container running for Module 7 (API testing)
-5. ✅ Pre-generated HTML report available for Module 4 demo
-6. ✅ Test URLs bookmarked and accessible
-7. ✅ VS Code with Playwright extension installed (recommended)
+3. ✅ Claude Code installed (for Module 8)
+4. ✅ Sample project with pre-written tests ready
+5. ✅ PlayPI Docker container running for Module 7 (API testing)
+6. ✅ Pre-generated HTML report available for Module 4 demo
+7. ✅ Test URLs bookmarked and accessible
+8. ✅ VS Code with Playwright extension installed
 
-### Teaching Tips for Tight Schedule
+### Teaching Approach by Module
 
-**Modules 2-3 (Foundation - 60 minutes)**:
-- Use pre-installed environment to save setup time
-- Live code a basic test, let students follow along
-- Quick Codegen demo: record a test in 5 minutes
-- Focus on "getting tests running" over theory
+**Morning - Foundations (Modules 2-4):**
+- Heavy hands-on coding
+- Students follow along with every example
+- Focus on building muscle memory
+- Use `--headed` mode for all demos
 
-**Module 4 (Debugging & Test Management - 40 minutes)**:
-- Show Trace Viewer on a pre-failed test
-- Demonstrate fixtures with one concrete example
-- Page Object Model overview
+**Afternoon - Intermediate (Modules 5-7):**
+- Mix of demos and hands-on
+- Students code key examples
+- Instructor demos advanced concepts
+- Quick labs to reinforce learning
 
-**Module 5 (Global Setup & Reporting - 30 minutes)**:
-- Show global setup configuration
-- Show HTML report from earlier test run, explain JUnit for CI
-- Demo test sharding for CI/CD
-
-**Module 6 (Test Organization - 35 minutes)**:
-- Run tests in parallel, show before/after timing comparison
-- Demo multi-browser projects configuration
-- Quick overview of parameterization
-
-**Module 7 (API Testing - 60 minutes)**:
-- Live demo of GET/POST requests with PlayPI
-- Network mocking examples
-- Combining UI and API testing
-
-### Interactive Elements
-
-**Throughout the workshop:**
-- ✅ Ask questions while typing code (maintain engagement)
-- ✅ Use `--headed` mode for all demos (visual learning)
-- ✅ Encourage "code along" for Modules 2-3 only
-- ✅ Demo-only for Modules 4-7 (due to time constraints)
-- ✅ Quick Q&A at end of each module (2-3 minutes max)
-- ✅ Share additional resources link for self-paced learning
+**Advanced - Production (Modules 8-9):**
+- Instructor-led demos
+- Students observe and take notes
+- Focus on architecture and best practices
+- Lab exercises for independent practice
 
 ### Backup Plan (If Running Behind)
 
-**Must Cover (Core Essentials)**:
-- ✅ Module 2: Getting Started (40 min)
-- ✅ Module 3: Core Testing Skills (20 min)
-- ✅ Module 4: Trace Viewer & Fixtures (20 min)
+**Must Cover (Core Essentials - 4 hours):**
+- ✅ Module 2: Getting Started (45 min)
+- ✅ Module 3: Core Testing Skills (45 min)
+- ✅ Module 4: Debugging & Fixtures (45 min)
+- ✅ Module 5: Locators & Setup (45 min)
 
-**Abbreviated Coverage**:
-- ⚡ Module 5: Global Setup & Reporting overview (10 min)
-- ⚡ Module 6: Parallel execution concept (10 min)
-- ⚡ Module 7: API testing demo (10 min)
-
-**Reference Only**:
-- 📖 Network mocking: Mention briefly, share documentation links
+**Abbreviated Coverage (1.5 hours):**
+- ⚡ Module 6: Parallel execution overview (30 min)
+- ⚡ Module 7: API testing demo (30 min)
+- ⚡ Module 8: Claude Code overview (15 min)
+- ⚡ Module 9: Abbreviated capstone (15 min)
 
 ### Post-Workshop Follow-Up
 

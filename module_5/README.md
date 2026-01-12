@@ -69,6 +69,8 @@ Learn about:
 ### 3. Advanced Parallel Execution
 **File:** [3_advanced_parallel.md](3_advanced_parallel.md)
 
+> **Cross-reference:** This section focuses on *setting up resources* for workers (worker-scoped fixtures, isolation strategies). For the fundamentals of *how workers operate* (configuring worker count, parallel vs serial modes, sharding), see [Module 6: Parallel Execution](../module_6/1_parallel_execution.md).
+
 Learn about:
 - Worker isolation strategies
 - Worker-scoped fixtures in depth
