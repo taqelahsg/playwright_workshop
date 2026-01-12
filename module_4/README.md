@@ -185,7 +185,20 @@ test('login flow', async ({ page }) => {
 
 ---
 
-### Lab 4: Explore Fixture Examples (45 minutes)
+### Lab 4: Authentication State with Fixtures (60 minutes)
+**File:** [3_exercise_auth_state.md](3_exercise_auth_state.md)
+
+**Task:** Implement persistent login using storage state
+1. Log in to https://taqelah.sg/taqelah-demo-site.html
+2. Save authentication state (cookies, localStorage)
+3. Create a fixture that reuses the saved auth state
+4. Write tests that run as an already logged-in user
+
+**Expected outcome:** Understand how to persist and reuse authentication state across tests
+
+---
+
+### Lab 5: Explore Fixture Examples (45 minutes)
 
 **Task:** Work with the fixtures project
 1. Navigate to `playwright-fixtures/`
