@@ -250,11 +250,12 @@ Use async/await, arrow functions, and follow existing naming conventions
 
 ## Next Module Preview
 
-In **Module 9: Best Practices & CI/CD Integration**, you'll learn:
-- Production-ready framework patterns
-- CI/CD pipeline integration (GitHub Actions)
-- Test reporting and monitoring
-- Scaling test suites effectively
+In **Module 9: CI/CD & DevOps**, you'll learn:
+- CI/CD fundamentals for testing
+- GitHub Actions workflows
+- Multi-browser matrix testing
+- Test sharding for parallel execution
+- Artifact management (reports, traces)
 
 ---
 

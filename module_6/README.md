@@ -14,6 +14,8 @@ By the end of this module, you will be able to:
 - ✅ Parameterize tests with data-driven approaches
 - ✅ Organize and scale test suites effectively
 - ✅ Use worker isolation for independent test execution
+- ✅ Implement visual regression testing
+- ✅ Use screenshot comparisons and data snapshots
 
 ---
 
@@ -64,6 +66,50 @@ Learn about:
 
 ---
 
+### 4. Visual Testing Basics
+**File:** [4_visual_testing_basics.md](4_visual_testing_basics.md)
+
+Learn about:
+- What is visual regression testing?
+- When to use visual testing
+- How Playwright's screenshot comparison works
+- Baseline management workflow
+
+---
+
+### 5. Screenshot Comparison
+**File:** [5_screenshot_comparison.md](5_screenshot_comparison.md)
+
+Learn about:
+- Using `toHaveScreenshot()` for visual comparisons
+- Full page and element-level screenshots
+- Configuration options (threshold, maxDiffPixels)
+- Handling animations and dynamic content
+
+---
+
+### 6. Snapshot Testing
+**File:** [6_snapshot_testing.md](6_snapshot_testing.md)
+
+Learn about:
+- Using `toMatchSnapshot()` for data snapshots
+- API response snapshots
+- Page structure snapshots
+- Computed styles snapshots
+
+---
+
+### 7. Visual Testing Best Practices
+**File:** [7_visual_testing_best_practices.md](7_visual_testing_best_practices.md)
+
+Learn about:
+- CI/CD integration for visual tests
+- Organizing visual tests
+- Handling common issues
+- Baseline management strategies
+
+---
+
 ## 🧪 Lab Exercise
 
 **File:** [lab_exercise_taqelah_test_organization.md](lab_exercise_taqelah_test_organization.md)
@@ -73,6 +119,17 @@ Practice test organization and execution concepts using the Taqelah Boutique dem
 - Creating test projects for different browsers and devices
 - Implementing data-driven parameterized tests
 - Organizing tests into a scalable suite structure
+
+---
+
+## 🧪 Hands-on Projects
+
+| Project | Description |
+|---------|-------------|
+| `playwright-parallel-tests/` | Parallel execution examples |
+| `playwright-test-projects/` | Multi-browser and device projects |
+| `playwright-parameterization/` | Data-driven testing examples |
+| `playwright-visual-testing/` | Visual regression testing examples |
 
 ---
 
@@ -90,6 +147,9 @@ After completing this module, you should be able to:
 - [x] Use CSV files for test data
 - [x] Organize large test suites
 - [x] Implement worker isolation
+- [x] Create visual regression tests
+- [x] Use screenshot and snapshot comparisons
+- [x] Handle dynamic content in visual tests
 
 ---
 
@@ -132,6 +192,24 @@ export const test = base.extend<Options>({
 });
 ```
 
+### Visual Testing
+```typescript
+// Screenshot comparison
+await expect(page).toHaveScreenshot('homepage.png');
+
+// Element screenshot
+await expect(page.locator('form')).toHaveScreenshot('form.png');
+
+// With options
+await expect(page).toHaveScreenshot('page.png', {
+  maxDiffPixels: 100,
+  animations: 'disabled',
+});
+
+// Data snapshot
+expect(data).toMatchSnapshot('api-response.json');
+```
+
 ### CLI Commands
 ```bash
 # Run with specific workers
@@ -142,6 +220,9 @@ npx playwright test --project=chromium
 
 # Run with sharding
 npx playwright test --shard=1/3
+
+# Update visual snapshots
+npx playwright test --update-snapshots
 ```
 
 ---
@@ -155,6 +236,9 @@ npx playwright test --shard=1/3
 5. **Parameterize wisely** - Balance coverage vs maintenance
 6. **Isolate test data per worker** - Avoid race conditions
 7. **Use projects for organization** - Not just browsers
+8. **Run visual tests on single browser** - Avoid cross-browser noise
+9. **Mask dynamic content** - Timestamps, user data, etc.
+10. **Generate baselines in CI** - Not locally
 
 ---
 
@@ -165,6 +249,7 @@ npx playwright test --shard=1/3
 - [Parameterize Tests](https://playwright.dev/docs/test-parameterize)
 - [Test Configuration](https://playwright.dev/docs/test-configuration)
 - [Sharding Tests](https://playwright.dev/docs/test-sharding)
+- [Visual Comparisons](https://playwright.dev/docs/test-snapshots)
 
 ---
 
@@ -181,6 +266,12 @@ npx playwright test --shard=1/3
 
 ### Issue: Mobile tests don't behave correctly
 **Solution:** Verify device emulation is configured properly with `isMobile: true` and `hasTouch: true`.
+
+### Issue: Visual tests fail with small differences
+**Solution:** Increase `threshold` or `maxDiffPixels` in screenshot options.
+
+### Issue: Screenshots differ across OS
+**Solution:** Run visual tests in CI on consistent environment (Linux).
 
 ---
 

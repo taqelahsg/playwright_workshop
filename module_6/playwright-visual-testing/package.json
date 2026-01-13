@@ -1,0 +1,22 @@
+{
+  "name": "playwright-visual-testing",
+  "version": "1.0.0",
+  "description": "Visual regression testing examples with Playwright",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:update": "playwright test --update-snapshots",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.0.0"
+  },
+  "keywords": [
+    "playwright",
+    "visual-testing",
+    "screenshot",
+    "regression"
+  ]
+}

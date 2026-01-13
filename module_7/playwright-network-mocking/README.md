@@ -134,7 +134,7 @@ This project demonstrates all aspects of network mocking with Playwright through
 
 ```bash
 # Navigate to the project directory
-cd module_9/playwright-network-mocking
+cd module_7/playwright-network-mocking
 
 # Install dependencies
 npm install
@@ -427,7 +427,7 @@ After working through these examples, you'll be able to:
 
 ## 🤝 Contributing
 
-These examples are part of the Playwright Workshop Module 9. Feel free to:
+These examples are part of the Playwright Workshop Module 7. Feel free to:
 - Add new examples
 - Improve existing examples
 - Fix issues
@@ -441,4 +441,4 @@ ISC
 
 **Happy Testing! 🚀**
 
-For questions or issues, refer to the main [Module 9 README](../README.md).
+For questions or issues, refer to the main [Module 7 README](../README.md).

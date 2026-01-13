@@ -10,15 +10,16 @@ This workshop is organized into progressive modules, each building on the previo
 
 | Module | Title | Level | Duration |
 |--------|-------|-------|----------|
-| **Module 1** | [TypeScript Basics](module_1/) | Pre-requisite | Self-study |
-| **Module 2** | [Getting Started](module_2/) | Beginner | 45 min |
+| **Module 1** | [TypeScript Basics Tutorial](module_1/) | Pre-requisite | Self-study |
+| **Module 2** | [Getting Started with Playwright](module_2/) | Beginner | 45 min |
 | **Module 3** | [Core Testing Skills](module_3/) | Beginner | 60 min |
-| **Module 4** | [Debugging & Test Management](module_4/) | Intermediate | 60 min |
-| **Module 5** | [Locators & Global Setup](module_5/) | Intermediate | 60 min |
-| **Module 6** | [Test Organization & Execution](module_6/) | Intermediate | 60 min |
-| **Module 7** | [API Testing](module_7/) | Intermediate | 45 min |
-| **Module 8** | [Building Frameworks with Claude Code](module_8/) | Advanced | 45 min |
-| **Module 9** | [Capstone Project](module_9/) | All Levels | 60 min |
+| **Module 4** | [Debugging and Test Management](module_4/) | Intermediate | 60 min |
+| **Module 5** | [Global Setup, CI/CD Integration & Test Reporting](module_5/) | Intermediate | 60 min |
+| **Module 6** | [Test Organization and Execution](module_6/) | Intermediate | 60 min |
+| **Module 7** | [API Testing with Playwright](module_7/) | Intermediate | 45 min |
+| **Module 8** | [Building a Playwright Framework with Claude Code](module_8/) | Advanced | 45 min |
+| **Module 9** | [CI/CD with Playwright](module_9/) | Advanced | 45 min |
+| **Module 10** | [Capstone Project](module_10/) | All Levels | 60 min |
 
 ---
 
@@ -52,7 +53,8 @@ Perfect for teams needing comprehensive Playwright training including framework 
 | **3:00 - 3:15** | 15 min | ☕ **Break** | |
 | **3:15 - 4:00** | 45 min | **Module 7** | API Testing, Network Mocking |
 | **4:00 - 4:45** | 45 min | **Module 8** | Building Frameworks with Claude Code |
-| **4:45 - 5:45** | 60 min | **Module 9** | Capstone Project - Build Complete Test Suite |
+| **4:45 - 5:30** | 45 min | **Module 9** | CI/CD & DevOps |
+| **5:30 - 5:45** | 15 min | **Module 10** | Capstone Project Introduction |
 | **5:45 - 6:00** | 15 min | **Wrap-up** | Q&A, Next Steps, Resources |
 
 ---
@@ -75,13 +77,13 @@ Perfect for teams needing comprehensive Playwright training including framework 
 - ✅ Test REST APIs with Playwright
 - ✅ Mock and intercept network requests
 
-**Advanced Session (Modules 8-9):**
+**Advanced Session (Modules 8-10):**
 - ✅ Build complete frameworks using Claude Code (AI-assisted)
 - ✅ Design scalable framework architecture
+- ✅ Set up CI/CD pipelines with GitHub Actions
 - ✅ Complete hands-on capstone project
 - ✅ Apply all learned concepts to real application
 - ✅ Build production-ready test suite
-- ✅ Demonstrate end-to-end testing skills
 
 ---
 
@@ -179,22 +181,26 @@ Perfect for teams needing comprehensive Playwright training including framework 
 ---
 
 ### Module 6: Test Organization & Execution
-**🎯 Goal:** Scale your test suite
+**🎯 Goal:** Scale your test suite and implement visual testing
 
 **Topics:**
 - Parallel test execution
 - Test projects (browsers, devices)
 - Test parameterization (data-driven testing)
 - Worker isolation and management
+- Visual regression testing
+- Screenshot comparison with `toHaveScreenshot()`
+- Data snapshots with `toMatchSnapshot()`
 
 **Hands-on Projects:**
 - `playwright-parallel-tests/`
 - `playwright-test-projects/`
 - `playwright-parameterization/`
+- `playwright-visual-testing/`
 
 **Lab Exercise:** [lab_exercise_taqelah_test_organization.md](module_6/lab_exercise_taqelah_test_organization.md)
 
-**After this module:** You can run tests efficiently across multiple browsers and organize large test suites
+**After this module:** You can run tests efficiently across multiple browsers, organize large test suites, and implement visual regression testing
 
 ---
 
@@ -234,7 +240,24 @@ Perfect for teams needing comprehensive Playwright training including framework 
 
 ---
 
-### Module 9: Capstone Project
+### Module 9: CI/CD & DevOps
+**🎯 Goal:** Run tests automatically in CI/CD pipelines
+
+**Topics:**
+- CI/CD fundamentals for testing
+- GitHub Actions workflows
+- Multi-browser matrix testing
+- Test sharding for parallel execution
+- Artifact management (reports, traces)
+
+**Workflow Files:**
+- `workflows/github/` - Ready-to-use GitHub Actions
+
+**After this module:** You can set up automated test pipelines in CI/CD systems
+
+---
+
+### Module 10: Capstone Project
 **🎯 Goal:** Apply everything you've learned to build a complete test suite
 
 **Project Requirements:**
@@ -351,7 +374,8 @@ Track your progress through the workshop:
 - [ ] **Module 6 Complete** - Can organize and scale test suites
 - [ ] **Module 7 Complete** - Can test APIs and mock network requests
 - [ ] **Module 8 Complete** - Can build frameworks with Claude Code
-- [ ] **Module 9 Complete** - Built complete test suite in capstone project
+- [ ] **Module 9 Complete** - Can set up CI/CD pipelines for tests
+- [ ] **Module 10 Complete** - Built complete test suite in capstone project
 
 ---
 
@@ -369,7 +393,7 @@ After completing the one-day intensive workshop, continue your learning:
 - **Week 1:** Deep dive into Modules 2-3 (Foundations)
 - **Week 2:** Practice Module 4-5 (Debugging, Fixtures & Locators)
 - **Week 3:** Master Module 6-7 (Test Organization & API Testing)
-- **Week 4:** Complete Modules 8-9 (Frameworks & Capstone)
+- **Week 4:** Complete Modules 8-10 (Frameworks, CI/CD & Capstone)
 
 ### Continuous Learning
 - Apply concepts to your own projects
@@ -471,7 +495,7 @@ Need help? Here's where to find it:
 - Instructor demos advanced concepts
 - Quick labs to reinforce learning
 
-**Advanced - Production (Modules 8-9):**
+**Advanced - Production (Modules 8-10):**
 - Instructor-led demos
 - Students observe and take notes
 - Focus on architecture and best practices
@@ -489,7 +513,8 @@ Need help? Here's where to find it:
 - ⚡ Module 6: Parallel execution overview (30 min)
 - ⚡ Module 7: API testing demo (30 min)
 - ⚡ Module 8: Claude Code overview (15 min)
-- ⚡ Module 9: Abbreviated capstone (15 min)
+- ⚡ Module 9: CI/CD overview (15 min)
+- ⚡ Module 10: Capstone introduction (15 min)
 
 ### Post-Workshop Follow-Up
 

@@ -465,4 +465,4 @@ After completing this lab:
 3. Create additional test scenarios
 4. Integrate with your CI/CD pipeline
 
-Continue to **Module 9** to learn about best practices and CI/CD integration.
+Continue to **Module 9** to learn about CI/CD integration with GitHub Actions, then complete the **Module 10 Capstone Project**.

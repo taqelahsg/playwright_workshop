@@ -1,4 +1,4 @@
-# Module 9: API Testing with Playwright
+# Module 7: API Testing with Playwright
 
 **Duration:** 3-4 hours (Full coverage) | 20 minutes (Intensive workshop)
 **Level:** Intermediate
@@ -370,7 +370,7 @@ expect(getResponse.status()).toBe(404);
 ## 🎯 Running the Tests
 
 ```bash
-cd module_9/playwright-inventory-api-tests
+cd module_7/playwright-inventory-api-tests
 
 # Run all tests
 npx playwright test
