@@ -13,11 +13,11 @@ This workshop is organized into progressive modules, each building on the previo
 | **Module 1** | [TypeScript Basics Tutorial](module_1/) | Pre-requisite | Self-study |
 | **Module 2** | [Getting Started with Playwright](module_2/) | Beginner | 45 min |
 | **Module 3** | [Core Testing Skills](module_3/) | Beginner | 60 min |
-| **Module 4** | [Debugging and Test Management](module_4/) | Intermediate | 60 min |
-| **Module 5** | [Global Setup, CI/CD Integration & Test Reporting](module_5/) | Intermediate | 60 min |
+| **Module 4** | [Debugging and Test Management](module_4/) | Beginner to Intermediate | 60 min |
+| **Module 5** | [Global Setup, CI/CD Integration & Test Reporting](module_5/) | Advanced | 60 min |
 | **Module 6** | [Test Organization and Execution](module_6/) | Intermediate | 60 min |
 | **Module 7** | [API Testing with Playwright](module_7/) | Intermediate | 45 min |
-| **Module 8** | [Building a Playwright Framework with Claude Code](module_8/) | Advanced | 45 min |
+| **Module 8** | [Building a Playwright Framework with Claude Code](module_8/) | Intermediate to Advanced | 45 min |
 | **Module 9** | [CI/CD with Playwright](module_9/) | Advanced | 45 min |
 | **Module 10** | [Capstone Project](module_10/) | All Levels | 60 min |
 
