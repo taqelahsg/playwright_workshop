@@ -532,10 +532,11 @@ You've completed the Playwright Workshop!
 - ✅ Building complete test suites
 
 ### Next Steps:
-1. Apply these skills to your own projects
-2. Explore advanced Playwright features (components, visual testing)
-3. Join the Playwright community
-4. Share your knowledge with your team
+1. Continue to **Module 11**: Playwright Agents & MCP Server
+2. Apply these skills to your own projects
+3. Explore advanced Playwright features (components, visual testing)
+4. Join the Playwright community
+5. Share your knowledge with your team
 
 ---
 

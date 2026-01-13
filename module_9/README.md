@@ -22,6 +22,7 @@ By the end of this module, you will be able to:
 | 2 | [GitHub Actions](2_github_actions.md) | Setting up Playwright in GitHub Actions |
 | 3 | [Test Sharding](3_test_sharding.md) | Parallel execution for faster tests |
 | 4 | [Artifact Management](4_artifact_management.md) | Reports, traces, and screenshots |
+| 5 | [Playwright Docker](5_playwright_docker.md) | Running tests in Docker containers |
 
 ## Workflow Files
 

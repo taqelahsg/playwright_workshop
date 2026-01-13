@@ -20,6 +20,7 @@ This workshop is organized into progressive modules, each building on the previo
 | **Module 8** | [Building a Playwright Framework with Claude Code](module_8/) | Intermediate to Advanced | 45 min |
 | **Module 9** | [CI/CD with Playwright](module_9/) | Advanced | 45 min |
 | **Module 10** | [Capstone Project](module_10/) | All Levels | 60 min |
+| **Module 11** | [Playwright Agents & MCP Server](module_11/) | Advanced | 45 min |
 
 ---
 
@@ -278,6 +279,21 @@ Perfect for teams needing comprehensive Playwright training including framework 
 
 ---
 
+### Module 11: Playwright Agents & MCP Server
+**🎯 Goal:** Leverage AI-powered test automation with Playwright Agents and MCP
+
+**Topics:**
+- Playwright Test Agents (Planner, Generator, Healer)
+- AI-driven test generation and maintenance
+- Model Context Protocol (MCP) fundamentals
+- Configuring Playwright MCP Server
+- LLM-driven browser automation
+- Integration with Claude, VS Code, and Cursor
+
+**After this module:** You can use AI agents to generate tests automatically and enable LLM-driven browser automation
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -376,6 +392,7 @@ Track your progress through the workshop:
 - [ ] **Module 8 Complete** - Can build frameworks with Claude Code
 - [ ] **Module 9 Complete** - Can set up CI/CD pipelines for tests
 - [ ] **Module 10 Complete** - Built complete test suite in capstone project
+- [ ] **Module 11 Complete** - Can use Playwright Agents and MCP Server
 
 ---
 
