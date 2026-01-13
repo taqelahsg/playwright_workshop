@@ -89,7 +89,7 @@ Perfect for teams needing comprehensive Playwright training including framework 
 
 ## 📖 Module Details
 
-### Module 1: TypeScript Basics (Pre-requisite)
+### Module 1: TypeScript Basics Tutorial (Pre-requisite)
 **📖 Self-study before workshop**
 
 **Topics:**
@@ -103,7 +103,7 @@ Perfect for teams needing comprehensive Playwright training including framework 
 
 ---
 
-### Module 2: Getting Started
+### Module 2: Getting Started with Playwright
 **🎯 Goal:** Write your first Playwright test
 
 **Topics:**
@@ -141,7 +141,7 @@ Perfect for teams needing comprehensive Playwright training including framework 
 
 ---
 
-### Module 4: Debugging & Test Management
+### Module 4: Debugging and Test Management
 **🎯 Goal:** Debug failures and organize code effectively
 
 **Topics:**
@@ -159,7 +159,7 @@ Perfect for teams needing comprehensive Playwright training including framework 
 
 ---
 
-### Module 5: Locators & Global Setup
+### Module 5: Global Setup, CI/CD Integration & Test Reporting
 **🎯 Goal:** Master locators and advanced configuration
 
 **Topics:**
@@ -180,7 +180,7 @@ Perfect for teams needing comprehensive Playwright training including framework 
 
 ---
 
-### Module 6: Test Organization & Execution
+### Module 6: Test Organization and Execution
 **🎯 Goal:** Scale your test suite and implement visual testing
 
 **Topics:**
@@ -204,7 +204,7 @@ Perfect for teams needing comprehensive Playwright training including framework 
 
 ---
 
-### Module 7: API Testing
+### Module 7: API Testing with Playwright
 **🎯 Goal:** Test APIs effectively with Playwright
 
 **Topics:**
@@ -223,7 +223,7 @@ Perfect for teams needing comprehensive Playwright training including framework 
 
 ---
 
-### Module 8: Building Frameworks with Claude Code
+### Module 8: Building a Playwright Framework with Claude Code
 **🎯 Goal:** Build production-ready frameworks using AI assistance
 
 **Topics:**
@@ -240,7 +240,7 @@ Perfect for teams needing comprehensive Playwright training including framework 
 
 ---
 
-### Module 9: CI/CD & DevOps
+### Module 9: CI/CD with Playwright
 **🎯 Goal:** Run tests automatically in CI/CD pipelines
 
 **Topics:**
